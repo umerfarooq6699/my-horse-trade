@@ -1,10 +1,10 @@
 import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import TrendingHorses from "../components/TrendingHorses";
-import TopRatedHorses from "../components/TopRatedHorses";
-import StatsSection from "../components/StatsSection";
-import FeaturedHorses from "../components/FeaturedHorses";
-import FeaturesHighlights from "../components/FeaturesHighlights";
+import Hero from "../components/Home/Hero";
+import TrendingHorses from "../components/Home/TrendingHorses";
+import TopRatedHorses from "../components/Home/TopRatedHorses";
+import StatsSection from "../components/Home/StatsSection";
+import FeaturedHorses from "../components/Home/FeaturedHorses";
+import FeaturesHighlights from "../components/Home/FeaturesHighlights";
 import Footer from "../components/Footer";
 
 export default function Home() {

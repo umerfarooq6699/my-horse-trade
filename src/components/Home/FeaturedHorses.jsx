@@ -9,7 +9,7 @@ const featuredHorses = [
         age: 5,
         price: 32000,
         location: "Scotland, UK",
-        image: "/images/horse2.png",
+        image: "/images/home-trending1.png",
         tag: "Featured"
     },
     {
@@ -19,7 +19,7 @@ const featuredHorses = [
         age: 6,
         price: 45000,
         location: "Spain",
-        image: "/images/horse1.png",
+        image: "/images/home-trending1.png",
         tag: "Active"
     },
     {
@@ -29,7 +29,7 @@ const featuredHorses = [
         age: 7,
         price: 28000,
         location: "Germany",
-        image: "/images/horse2.png",
+        image: "/images/home-trending1.png",
         tag: "Best Deal"
     },
     {
@@ -39,7 +39,7 @@ const featuredHorses = [
         age: 4,
         price: 18500,
         location: "Texas, USA",
-        image: "/images/horse1.png",
+        image: "/images/home-trending1.png",
         tag: null
     }
 ];

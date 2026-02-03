@@ -9,7 +9,7 @@ const topRated = [
         reviews: 12,
         price: 35000,
         category: "Endurance",
-        image: "/images/horse1.png"
+        image: "/images/home-trending1.png",
     },
     {
         id: 102,
@@ -18,7 +18,7 @@ const topRated = [
         reviews: 8,
         price: 42000,
         category: "Dressage",
-        image: "/images/horse2.png"
+        image: "/images/home-trending1.png",
     },
     {
         id: 103,
@@ -27,7 +27,7 @@ const topRated = [
         reviews: 24,
         price: 28500,
         category: "Show Jumping",
-        image: "/images/horse1.png"
+        image: "/images/home-trending1.png",
     }
 ];
 

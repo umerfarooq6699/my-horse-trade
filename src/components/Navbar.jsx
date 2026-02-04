@@ -23,7 +23,7 @@ export default function Navbar() {
                 <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
                     <Link href="/" className="text_color">Home</Link>
                     <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">About</Link>
-                    <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">Marketplace</Link>
+                    <Link href="/marketplace" className="hover:text-[var(--theme-color)] transition-colors">Marketplace</Link>
                     <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">Subscriptions</Link>
                     <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">Profile</Link>
                     <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">Contact Us</Link>

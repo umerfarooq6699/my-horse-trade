@@ -1,6 +1,12 @@
 "use client";
 
 import HorseCard from "./HorseCard";
+import image1 from "../../assets/images/marketplace1.png"
+import image2 from "../../assets/images/marketplace2.png"
+import image3 from "../../assets/images/marketplace3.png"
+import image4 from "../../assets/images/marketplace4.png"
+import image5 from "../../assets/images/marketplace5.png"
+import image6 from "../../assets/images/marketplace6.png"
 
 const mockHorses = [
     {
@@ -11,7 +17,7 @@ const mockHorses = [
         height: 16.2,
         location: "Kentucky, USA",
         price: 45000,
-        image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?q=80&w=2071",
+        image: image1.src,
         isPremium: true,
     },
     {
@@ -22,7 +28,7 @@ const mockHorses = [
         height: 15.1,
         location: "Dubai, UAE",
         price: 125000,
-        image: "https://images.unsplash.com/photo-1537151672256-6cab2e7f7c8d?q=80&w=2070",
+        image: image2.src,
         isVerified: true,
     },
     {
@@ -33,7 +39,7 @@ const mockHorses = [
         height: 17.0,
         location: "Berlin, Germany",
         price: 62000,
-        image: "https://images.unsplash.com/photo-1598974357801-cbca100e65d3?q=80&w=1974",
+        image: image3.src,
     },
     {
         id: 4,
@@ -43,7 +49,7 @@ const mockHorses = [
         height: 16.0,
         location: "Madrid, Spain",
         price: 85000,
-        image: "https://images.unsplash.com/photo-1517436073-3b102283a005?q=80&w=2074",
+        image: image4.src,
         isPremium: true,
     },
     {
@@ -54,7 +60,7 @@ const mockHorses = [
         height: 16.3,
         location: "Ocala, FL, USA",
         price: 38500,
-        image: "https://images.unsplash.com/photo-1518467166778-b88f373ffec7?q=80&w=2069",
+        image: image5.src,
     },
     {
         id: 6,
@@ -64,12 +70,13 @@ const mockHorses = [
         height: 16.1,
         location: "Amsterdam, NL",
         price: 55000,
-        image: "https://images.unsplash.com/photo-1553284965-519894676527?q=80&w=2071",
+        image: image6.src,
         isNew: true,
     },
 ];
 
 export default function HorseGrid({ viewMode }) {
+    console.log(image1)
     return (
         <div>
             <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>

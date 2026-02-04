@@ -8,6 +8,7 @@ import HorseMainInfo from "@/components/marketplace/detail/HorseMainInfo";
 import SpecsRibbon from "@/components/marketplace/detail/SpecsRibbon";
 import PerformanceSidebar from "@/components/marketplace/detail/PerformanceSidebar";
 import PedigreeSection from "@/components/marketplace/detail/PedigreeSection";
+import image1 from "@/assets/images/marketplace1.png"
 
 export default function HorseDetailPage({ params }) {
     const [activeTab, setActiveTab] = useState("Overview");
@@ -111,7 +112,7 @@ export default function HorseDetailPage({ params }) {
                         {[1, 2, 3, 4].map(i => (
                             <div key={i} className="bg-white border border-gray-100 rounded-3xl overflow-hidden group hover:shadow-2xl hover:shadow-gray-100 transition-all p-2">
                                 <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-gray-100 mb-4 relative">
-                                    <img src={`https://images.unsplash.com/photo-1518467166778-b88f373ffec7?q=80&w=500&sig=${i}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                    <img src={image1.src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
                                         <div className="bg-white/80 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-black text-gray-900 shadow-sm">$85k</div>
                                     </div>

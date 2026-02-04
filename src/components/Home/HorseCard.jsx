@@ -30,7 +30,7 @@ export default function HorseCard({ horse }) {
 
                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-50">
                     <p className="text-xl font-bold text_color">${horse.price.toLocaleString()}</p>
-                    <Link href={`/horses/${horse.id}`} className="text-xs font-bold text-gray-900 uppercase tracking-widest hover:text-[var(--theme-color)] transition-colors flex items-center gap-1">
+                    <Link href="#" className="text-xs font-bold text-gray-900 uppercase tracking-widest hover:text-[var(--theme-color)] transition-colors flex items-center gap-1">
                         View
                     </Link>
                 </div>

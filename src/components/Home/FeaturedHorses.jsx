@@ -52,7 +52,7 @@ export default function FeaturedHorses() {
                     title="Featured Horses"
                     subtitle="Hand-Picked For You"
                     linkText="View All Featured"
-                    linkUrl="/featured"
+                    linkUrl="#"
                 />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -22,11 +22,11 @@ export default function Navbar() {
                 {/* Desktop Links */}
                 <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
                     <Link href="/" className="text_color">Home</Link>
-                    <Link href="/horses" className="hover:text-[var(--theme-color)] transition-colors">About</Link>
-                    <Link href="/marketplace" className="hover:text-[var(--theme-color)] transition-colors">Marketplace</Link>
-                    <Link href="/subscriptions" className="hover:text-[var(--theme-color)] transition-colors">Subscriptions</Link>
-                    <Link href="/profile" className="hover:text-[var(--theme-color)] transition-colors">Profile</Link>
-                    <Link href="/contact" className="hover:text-[var(--theme-color)] transition-colors">Contact Us</Link>
+                    <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">About</Link>
+                    <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">Marketplace</Link>
+                    <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">Subscriptions</Link>
+                    <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">Profile</Link>
+                    <Link href="#" className="hover:text-[var(--theme-color)] transition-colors">Contact Us</Link>
                 </div>
 
                 {/* Right Actions */}
@@ -35,10 +35,10 @@ export default function Navbar() {
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
                     </button>
 
-                    <Link href="/login" className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <Link href="#" className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                         Login
                     </Link>
-                    <Link href="/signup" className="px-5 py-2.5 text-sm font-medium text-white bg_color rounded-lg hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200">
+                    <Link href="#" className="px-5 py-2.5 text-sm font-medium text-white bg_color rounded-lg hover:bg-blue-700 transition-colors shadow-sm shadow-blue-200">
                         Sign Up
                     </Link>
                 </div>
@@ -53,13 +53,13 @@ export default function Navbar() {
             {isOpen && (
                 <div className="md:hidden border-t border-gray-100 bg-white absolute w-full p-4 flex flex-col gap-4 shadow-xl">
                     <Link href="/" className="text_color font-medium">Home</Link>
-                    <Link href="/horses" className="text-gray-600 font-medium">Horses</Link>
-                    <Link href="/marketplace" className="text-gray-600 font-medium">Marketplace</Link>
-                    <Link href="/events" className="text-gray-600 font-medium">Events</Link>
-                    <Link href="/contact" className="text-gray-600 font-medium">Contact Us</Link>
+                    <Link href="#" className="text-gray-600 font-medium">Horses</Link>
+                    <Link href="#" className="text-gray-600 font-medium">Marketplace</Link>
+                    <Link href="#" className="text-gray-600 font-medium">Events</Link>
+                    <Link href="#" className="text-gray-600 font-medium">Contact Us</Link>
                     <div className="flex gap-2 pt-2">
-                        <Link href="/login" className="flex-1 text-center py-2 border border-gray-200 rounded-lg">Login</Link>
-                        <Link href="/signup" className="flex-1 text-center py-2 bg_color text-white rounded-lg">Sign Up</Link>
+                        <Link href="#" className="flex-1 text-center py-2 border border-gray-200 rounded-lg">Login</Link>
+                        <Link href="#" className="flex-1 text-center py-2 bg_color text-white rounded-lg">Sign Up</Link>
                     </div>
                 </div>
             )}

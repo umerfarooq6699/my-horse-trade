@@ -39,7 +39,7 @@ export default function TopRatedHorses() {
                     title="Top Rated Horses"
                     subtitle="Expert Choice"
                     linkText="See Top Rated"
-                    linkUrl="/top-rated"
+                    linkUrl="#"
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

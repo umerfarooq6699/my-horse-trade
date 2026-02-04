@@ -29,10 +29,10 @@ export default function Hero() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Link href="/horses" className="w-full sm:w-auto px-8 py-4 bg_color hover:bg-blue-700 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-blue-900/20">
+                    <Link href="#" className="w-full sm:w-auto px-8 py-4 bg_color hover:bg-blue-700 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-blue-900/20">
                         Find a Horse ↗
                     </Link>
-                    <Link href="/sell" className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-semibold rounded-xl transition-all">
+                    <Link href="#" className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-semibold rounded-xl transition-all">
                         Sell a Horse
                     </Link>
                 </div>

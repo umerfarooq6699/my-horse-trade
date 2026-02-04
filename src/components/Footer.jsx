@@ -25,20 +25,20 @@ export default function Footer() {
                     <div>
                         <h4 className="text-white font-bold mb-6">Platform</h4>
                         <ul className="space-y-3 text-sm">
-                            <li><Link href="/horses" className="hover:text-white transition-colors">Browse Horses</Link></li>
-                            <li><Link href="/auctions" className="hover:text-white transition-colors">Live Auctions</Link></li>
-                            <li><Link href="/sell" className="hover:text-white transition-colors">Sell a Horse</Link></li>
-                            <li><Link href="/transport" className="hover:text-white transition-colors">Transport</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">Browse Horses</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">Live Auctions</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">Sell a Horse</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">Transport</Link></li>
                         </ul>
                     </div>
 
                     <div>
                         <h4 className="text-white font-bold mb-6">Company</h4>
                         <ul className="space-y-3 text-sm">
-                            <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                            <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
-                            <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
-                            <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">About Us</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">Careers</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">Blog</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">Contact</Link></li>
                         </ul>
                     </div>
 
@@ -58,8 +58,8 @@ export default function Footer() {
                 <div className="flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
                     <p>© 2026 Valueans Software. All rights reserved.</p>
                     <div className="flex gap-6 mt-4 md:mt-0">
-                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                        <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
                     </div>
                 </div>
             </div>

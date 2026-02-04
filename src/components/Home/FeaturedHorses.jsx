@@ -46,8 +46,8 @@ const featuredHorses = [
 
 export default function FeaturedHorses() {
     return (
-        <section className="py-20 bg-white">
-            <div className="container-width px-4">
+        <section className="mobile_spaces lg_spaces bg-white">
+            <div className="container-width">
                 <SectionHeader
                     title="Featured Horses"
                     subtitle="Hand-Picked For You"

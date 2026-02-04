@@ -4,7 +4,20 @@
   --background: #ffffff;
   --foreground: #111827;
   --primary: #2563EB;
+  --theme-color: #2563EB;
 }
+
+/* ... existing code ... */
+
+/* Utils */
+.bg_color {
+  background-color: var(--theme-color);
+}
+
+.text_color {
+  color: var(--theme-color);
+}
+
 
 @theme inline {
   --color-background: var(--background);
@@ -31,6 +44,19 @@ body {
 
 .container-width {
   max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 1rem;
+}
+
+/* Utils */
+.bg_color {
+  background-color: #2563EB;
+}
+
+.mobile_spaces {
+  padding: 24px 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .lg_spaces {
+    padding: 50px 65px;
+  }
 }

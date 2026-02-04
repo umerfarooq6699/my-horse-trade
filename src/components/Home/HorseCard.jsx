@@ -24,13 +24,13 @@ export default function HorseCard({ horse }) {
             {/* Content */}
             <div className="p-5 flex-1 flex flex-col">
                 <div className="mb-4">
-                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-1">{horse.name}</h3>
+                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-[var(--theme-color)] transition-colors mb-1">{horse.name}</h3>
                     <p className="text-sm text-gray-400 font-medium">{horse.breed} • {horse.age} Years</p>
                 </div>
 
                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-50">
-                    <p className="text-xl font-bold text-blue-600">${horse.price.toLocaleString()}</p>
-                    <Link href={`/horses/${horse.id}`} className="text-xs font-bold text-gray-900 uppercase tracking-widest hover:text-blue-600 transition-colors flex items-center gap-1">
+                    <p className="text-xl font-bold text_color">${horse.price.toLocaleString()}</p>
+                    <Link href={`/horses/${horse.id}`} className="text-xs font-bold text-gray-900 uppercase tracking-widest hover:text-[var(--theme-color)] transition-colors flex items-center gap-1">
                         View
                     </Link>
                 </div>

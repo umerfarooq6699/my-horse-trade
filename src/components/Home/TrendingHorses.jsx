@@ -72,8 +72,8 @@ export default function TrendingHorses() {
     };
 
     return (
-        <section className="py-20 bg-white">
-            <div className="container-width px-4">
+        <section className="bg-white mobile_spaces lg_spaces">
+            <div className="container-width">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
                     <div>
@@ -81,7 +81,7 @@ export default function TrendingHorses() {
                             <span className="text-orange-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.6-3.3.3.9.6 1.7.9 2.8zm7 6.8c0-1.2-.6-2.3-1.6-3-.9.7-1.4 1.8-1.4 3a3 3 0 1 0 3 0z" /></svg>
                             </span>
-                            <span className="text-blue-600 font-bold text-xs tracking-widest uppercase">Hot Right Now</span>
+                            <span className="text_color font-bold text-xs tracking-widest uppercase">Hot Right Now</span>
                         </div>
                         <h2 className="text-4xl font-bold text-gray-900">Trending Horses</h2>
                     </div>
@@ -90,13 +90,13 @@ export default function TrendingHorses() {
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => scroll('left')}
-                            className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-600 hover:border-blue-600 hover:text-blue-600 transition-all hover:shadow-md bg-white"
+                            className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-600 hover:border-[var(--theme-color)] hover:text-[var(--theme-color)] transition-all hover:shadow-md bg-white"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
                         </button>
                         <button
                             onClick={() => scroll('right')}
-                            className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-600 hover:border-blue-600 hover:text-blue-600 transition-all hover:shadow-md bg-white"
+                            className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-600 hover:border-[var(--theme-color)] hover:text-[var(--theme-color)] transition-all hover:shadow-md bg-white"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
                         </button>
@@ -106,7 +106,7 @@ export default function TrendingHorses() {
                 {/* Slider Container */}
                 <div
                     ref={scrollContainerRef}
-                    className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+                    className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     {trendingHorses.map((horse) => (

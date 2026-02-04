@@ -2,18 +2,18 @@ import Link from "next/link";
 
 export default function Hero() {
     return (
-        <section className="relative w-full h-[600px] md:h-[700px] flex items-center justify-center overflow-hidden">
+        <section className="relative w-full h-[600px] md:h-[600px] flex items-center justify-center overflow-hidden">
             {/* Background Image */}
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: "url('/images/home-trending1.png')" }}
+                style={{ backgroundImage: "url('/images/home-hero.png')" }}
             ></div>
 
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/40 z-10 bg-gradient-to-t from-gray-900/80 via-transparent to-black/20"></div>
 
             {/* Content */}
-            <div className="relative z-20 container-width text-center px-4">
+            <div className="relative z-20 container-width text-center mobile_spaces lg_spaces">
                 <span className="inline-block py-1.5 px-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold tracking-wider text-white mb-6 uppercase">
                     Best Horse Marketplace
                 </span>
@@ -29,7 +29,7 @@ export default function Hero() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Link href="/horses" className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-blue-900/20">
+                    <Link href="/horses" className="w-full sm:w-auto px-8 py-4 bg_color hover:bg-blue-700 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-blue-900/20">
                         Find a Horse ↗
                     </Link>
                     <Link href="/sell" className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-semibold rounded-xl transition-all">

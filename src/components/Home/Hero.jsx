@@ -1,4 +1,5 @@
 import Link from "next/link";
+import homeHero from "../../assets/images/home-hero.png";
 
 export default function Hero() {
     return (
@@ -6,7 +7,7 @@ export default function Hero() {
             {/* Background Image */}
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: "url('/images/home-hero.png')" }}
+                style={{ backgroundImage: `url(${homeHero.src})` }}
             ></div>
 
             {/* Overlay */}

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import HorseCard from "./HorseCard";
+import trendingImage from "../../assets/images/home-trending1.png";
 
 const trendingHorses = [
     {
@@ -11,7 +12,7 @@ const trendingHorses = [
         age: 5,
         price: 28500,
         location: "Kentucky, USA",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: "Trending"
     },
     {
@@ -21,7 +22,7 @@ const trendingHorses = [
         age: 3,
         price: 42000,
         location: "Dubai, UAE",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: "Trending"
     },
     {
@@ -31,7 +32,7 @@ const trendingHorses = [
         age: 4,
         price: 55000,
         location: "Netherlands",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: "Trending"
     },
     {
@@ -41,7 +42,7 @@ const trendingHorses = [
         age: 6,
         price: 88000,
         location: "Texas, USA",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: "Trending"
     },
     {
@@ -51,7 +52,7 @@ const trendingHorses = [
         age: 5,
         price: 32000,
         location: "Spain",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: "Trending"
     }
 ];

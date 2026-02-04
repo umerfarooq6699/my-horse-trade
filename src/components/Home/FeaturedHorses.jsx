@@ -1,5 +1,6 @@
 import SectionHeader from "./SectionHeader";
 import HorseCard from "./HorseCard";
+import trendingImage from "../../assets/images/home-trending1.png";
 
 const featuredHorses = [
     {
@@ -9,7 +10,7 @@ const featuredHorses = [
         age: 5,
         price: 32000,
         location: "Scotland, UK",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: "Featured"
     },
     {
@@ -19,7 +20,7 @@ const featuredHorses = [
         age: 6,
         price: 45000,
         location: "Spain",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: "Active"
     },
     {
@@ -29,7 +30,7 @@ const featuredHorses = [
         age: 7,
         price: 28000,
         location: "Germany",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: "Best Deal"
     },
     {
@@ -39,7 +40,7 @@ const featuredHorses = [
         age: 4,
         price: 18500,
         location: "Texas, USA",
-        image: "/images/home-trending1.png",
+        image: trendingImage.src,
         tag: null
     }
 ];

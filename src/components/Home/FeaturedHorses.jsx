@@ -1,6 +1,9 @@
 import SectionHeader from "./SectionHeader";
 import HorseCard from "./HorseCard";
-import trendingImage from "../../assets/images/home-trending1.png";
+import image1 from "../../assets/images/marketplace1.png";
+import image2 from "../../assets/images/marketplace2.png";
+import image3 from "../../assets/images/marketplace3.png";
+import image4 from "../../assets/images/marketplace4.png";
 
 const featuredHorses = [
     {
@@ -10,7 +13,7 @@ const featuredHorses = [
         age: 5,
         price: 32000,
         location: "Scotland, UK",
-        image: trendingImage.src,
+        image: image1.src,
         tag: "Featured"
     },
     {
@@ -20,7 +23,7 @@ const featuredHorses = [
         age: 6,
         price: 45000,
         location: "Spain",
-        image: trendingImage.src,
+        image: image2.src,
         tag: "Active"
     },
     {
@@ -30,7 +33,7 @@ const featuredHorses = [
         age: 7,
         price: 28000,
         location: "Germany",
-        image: trendingImage.src,
+        image: image3.src,
         tag: "Best Deal"
     },
     {
@@ -40,7 +43,7 @@ const featuredHorses = [
         age: 4,
         price: 18500,
         location: "Texas, USA",
-        image: trendingImage.src,
+        image: image4.src,
         tag: null
     }
 ];

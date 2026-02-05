@@ -2,7 +2,12 @@
 
 import { useRef } from "react";
 import HorseCard from "./HorseCard";
-import trendingImage from "../../assets/images/home-trending1.png";
+import image1 from "../../assets/images/marketplace1.png";
+import image2 from "../../assets/images/marketplace2.png";
+import image3 from "../../assets/images/marketplace3.png";
+import image4 from "../../assets/images/marketplace4.png";
+import image5 from "../../assets/images/marketplace5.png";
+import image6 from "../../assets/images/marketplace6.png";
 
 const trendingHorses = [
     {
@@ -12,7 +17,7 @@ const trendingHorses = [
         age: 5,
         price: 28500,
         location: "Kentucky, USA",
-        image: trendingImage.src,
+        image: image2.src,
         tag: "Trending"
     },
     {
@@ -22,7 +27,7 @@ const trendingHorses = [
         age: 3,
         price: 42000,
         location: "Dubai, UAE",
-        image: trendingImage.src,
+        image: image3.src,
         tag: "Trending"
     },
     {
@@ -32,7 +37,7 @@ const trendingHorses = [
         age: 4,
         price: 55000,
         location: "Netherlands",
-        image: trendingImage.src,
+        image: image4.src,
         tag: "Trending"
     },
     {
@@ -42,7 +47,7 @@ const trendingHorses = [
         age: 6,
         price: 88000,
         location: "Texas, USA",
-        image: trendingImage.src,
+        image: image5.src,
         tag: "Trending"
     },
     {
@@ -52,7 +57,7 @@ const trendingHorses = [
         age: 5,
         price: 32000,
         location: "Spain",
-        image: trendingImage.src,
+        image: image6.src,
         tag: "Trending"
     }
 ];
@@ -84,7 +89,7 @@ export default function TrendingHorses() {
                             </span>
                             <span className="text_color font-bold text-xs tracking-widest uppercase">Hot Right Now</span>
                         </div>
-                        <h2 className="text-4xl font-bold text-gray-900">Trending Horses</h2>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Trending Horses</h2>
                     </div>
 
                     {/* Slider Controls */}

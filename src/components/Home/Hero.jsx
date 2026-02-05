@@ -3,7 +3,7 @@ import homeHero from "../../assets/images/home-hero.png";
 
 export default function Hero() {
     return (
-        <section className="relative w-full h-[600px] md:h-[600px] flex items-center justify-center overflow-hidden">
+        <section className="relative w-full h-[500px] sm:h-[600px] flex items-center justify-center overflow-hidden">
             {/* Background Image */}
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
@@ -19,18 +19,18 @@ export default function Hero() {
                     Best Horse Marketplace
                 </span>
 
-                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
+                <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight px-4 sm:px-0">
                     The Future of <br className="hidden md:block" />
                     <span className="text-white">Horse Trading</span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed font-light px-4">
                     The online marketplace where incredible horses find good homes.
                     We built the most advanced trading platform for you.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Link href="#" className="w-full sm:w-auto px-8 py-4 bg_color hover:bg-blue-700 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-blue-900/20">
+                    <Link href="/marketplace" className="w-full sm:w-auto px-8 py-4 bg_color hover:bg-blue-700 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-blue-900/20">
                         Find a Horse ↗
                     </Link>
                     <Link href="#" className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-semibold rounded-xl transition-all">

@@ -4,8 +4,8 @@ export default function FeaturesHighlights() {
             <div className="container-width text-center">
 
                 <span className="text_color font-bold uppercase tracking-widest text-xs mb-3 block">Why Choose Us</span>
-                <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">The Smartest Way to Trade Horses</h2>
-                <p className="text-gray-500 max-w-2xl mx-auto mb-16 text-lg">Managing and trading studs and mares is complex. We simplify the entire process with trusted verification, secure payments, and global reach.</p>
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">The Smartest Way to Trade Horses</h2>
+                <p className="text-gray-500 max-w-2xl mx-auto mb-16 text-base sm:text-lg">Managing and trading studs and mares is complex. We simplify the entire process with trusted verification, secure payments, and global reach.</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Feature 1 */}

@@ -11,7 +11,7 @@ export default function ImageGallery({ images, tags }) {
             {/* Main Image Container */}
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden group">
                 <img
-                    src={images[activeImage]}
+                    src={images[activeImage]?.src || images[activeImage]}
                     alt="Main horse view"
                     className="w-full h-full object-cover"
                 />
@@ -47,7 +47,7 @@ export default function ImageGallery({ images, tags }) {
                         onClick={() => setActiveImage(idx)}
                         className={`aspect-video rounded-xl overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-blue-600 ring-2 ring-blue-50' : 'border-transparent hover:border-gray-200'}`}
                     >
-                        <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                        <img src={img?.src || img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
                     </button>
                 ))}
                 <button className="aspect-video rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center text-xs font-bold text-gray-400 hover:bg-gray-100 hover:border-gray-300 transition-all">

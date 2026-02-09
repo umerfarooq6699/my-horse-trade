@@ -226,7 +226,7 @@ export default function FilterSidebar() {
                 <h3 className="font-semibold text-gray-900 text-sm mb-4">Discipline</h3>
                 <div className="flex flex-wrap gap-2">
                     {disciplines.map((discipline) => (
-                        <button key={discipline} className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${discipline === 'Jumping' ? 'bg-blue-50 border-blue-200 text-[var(--theme-color)]' : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'}`}>
+                        <button key={discipline} className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${discipline === 'Jumping' ? 'bg-blue-50 border_color text_color' : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'}`}>
                             {discipline}
                         </button>
                     ))}
@@ -260,7 +260,7 @@ export default function FilterSidebar() {
                 </div>
             </div>
 
-            <button className="w-full bg_color text-white py-3 rounded-xl font-semibold text-sm hover:bg-blue-700 transition-colors shadow-sm shadow-blue-100">
+            <button className="w-full bg_color text-white py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-colors shadow-sm shadow-blue-100">
                 Show 324 Horses
             </button>
         </aside>

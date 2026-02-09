@@ -23,7 +23,7 @@ export default function ImageGallery({ images, tags }) {
                             {tag}
                         </span>
                     ))}
-                    <span className="px-4 py-1.5 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+                    <span className="px-4 py-1.5 bg_color text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
                         PREMIUM
                     </span>
                 </div>
@@ -45,7 +45,7 @@ export default function ImageGallery({ images, tags }) {
                     <button
                         key={idx}
                         onClick={() => setActiveImage(idx)}
-                        className={`aspect-video rounded-xl overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-blue-600 ring-2 ring-blue-50' : 'border-transparent hover:border-gray-200'}`}
+                        className={`aspect-video rounded-xl overflow-hidden border-2 transition-all ${activeImage === idx ? 'border_color ring-2 ring-blue-50' : 'border-transparent hover:border-gray-200'}`}
                     >
                         <img src={img?.src || img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
                     </button>

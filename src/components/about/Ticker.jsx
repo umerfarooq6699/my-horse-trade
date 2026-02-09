@@ -15,7 +15,7 @@ export default function Ticker() {
                 {[...items, ...items, ...items].map((item, index) => (
                     <div key={index} className="flex items-center mx-8">
                         <span className="text-[#E2E8F0] text-3xl font-black tracking-widest italic flex items-center gap-4">
-                            <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                            <span className="w-2 h-2 bg_color rounded-full"></span>
                             {item}
                         </span>
                     </div>

@@ -44,7 +44,7 @@ export default function SignupLeft() {
                                 />
                             </div>
                         ))}
-                        <div className="w-10 h-10 rounded-full border-2 border-[#0F172A] bg-blue-600 flex items-center justify-center text-xs font-bold text-white">
+                        <div className="w-10 h-10 rounded-full border-2 border-[#0F172A] bg_color flex items-center justify-center text-xs font-bold text-white">
                             +2k
                         </div>
                     </div>

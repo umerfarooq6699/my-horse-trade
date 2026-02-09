@@ -83,7 +83,7 @@ export default function SignupForm() {
                                             }`}
                                         {...formik.getFieldProps("fullName")}
                                     />
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color transition-colors">
                                         <User size={20} />
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@ export default function SignupForm() {
                                             }`}
                                         {...formik.getFieldProps("emailAddress")}
                                     />
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color transition-colors">
                                         <Mail size={20} />
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@ export default function SignupForm() {
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-500 transition-colors"
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text_color transition-colors"
                                         >
                                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                         </button>
@@ -161,11 +161,11 @@ export default function SignupForm() {
                                     type="checkbox"
                                     id="agreeTerms"
                                     name="agreeTerms"
-                                    className="w-5 h-5 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                    className="w-5 h-5 rounded-md border-gray-300 text_color focus:ring_color cursor-pointer"
                                     {...formik.getFieldProps("agreeTerms")}
                                 />
                                 <label htmlFor="agreeTerms" className="text-sm text-gray-500 font-medium cursor-pointer">
-                                    I agree to the <Link href="#" className="text-[#2563EB] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#2563EB] hover:underline">Privacy Policy</Link>.
+                                    I agree to the <Link href="#" className="text_color hover:underline">Terms of Service</Link> and <Link href="#" className="text_color hover:underline">Privacy Policy</Link>.
                                 </label>
                             </div>
                             {formik.touched.agreeTerms && formik.errors.agreeTerms && (
@@ -179,13 +179,13 @@ export default function SignupForm() {
                         <button
                             type="submit"
                             disabled={formik.isSubmitting}
-                            className="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
+                            className="w-full flex items-center justify-center gap-2 bg_color text-white py-4 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
                         >
                             Create Account <ArrowRight size={20} />
                         </button>
 
                         <p className="text-center text-sm text-gray-500 font-medium mt-4">
-                            Already have an account? <Link href="/login" className="text-[#2563EB] font-bold hover:underline">Sign In</Link>
+                            Already have an account? <Link href="/login" className="text_color font-bold hover:underline">Sign In</Link>
                         </p>
                     </div>
                 </form>

@@ -18,6 +18,10 @@
   color: var(--theme-color);
 }
 
+.border_color {
+  border-color: var(--theme-color);
+}
+
 
 @theme inline {
   --color-background: var(--background);
@@ -49,6 +53,7 @@ body {
 /* Utils */
 .bg_color {
   background-color: #2563EB;
+  /* background-color: green; */
 }
 
 .mobile_spaces {

@@ -28,7 +28,7 @@ export default function ContactForm() {
     return (
         <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
             <div className="flex items-center gap-3 mb-8">
-                <div className="text-blue-600">
+                <div className="text_color">
                     <Mail size={24} />
                 </div>
                 <h3 className="text-xl font-bold text-[#0F172A]">Send us a message</h3>
@@ -43,7 +43,7 @@ export default function ContactForm() {
                             type="text"
                             name="fullName"
                             placeholder="John Doe"
-                            className={`w-full px-5 py-4 bg-gray-50 border rounded-2xl focus:outline-none transition-all ${formik.touched.fullName && formik.errors.fullName ? "border-red-300 ring-1 ring-red-100" : "border-gray-100 focus:border-blue-300 focus:ring-4 focus:ring-blue-50"
+                            className={`w-full px-5 py-4 bg-gray-50 border rounded-2xl focus:outline-none transition-all ${formik.touched.fullName && formik.errors.fullName ? "border-red-300 ring-1 ring-red-100" : "border-gray-100 focus:border_color focus:ring-4 focus:ring-blue-50"
                                 }`}
                             {...formik.getFieldProps("fullName")}
                         />
@@ -59,7 +59,7 @@ export default function ContactForm() {
                             type="email"
                             name="emailAddress"
                             placeholder="john@example.com"
-                            className={`w-full px-5 py-4 bg-gray-50 border rounded-2xl focus:outline-none transition-all ${formik.touched.emailAddress && formik.errors.emailAddress ? "border-red-300 ring-1 ring-red-100" : "border-gray-100 focus:border-blue-300 focus:ring-4 focus:ring-blue-50"
+                            className={`w-full px-5 py-4 bg-gray-50 border rounded-2xl focus:outline-none transition-all ${formik.touched.emailAddress && formik.errors.emailAddress ? "border-red-300 ring-1 ring-red-100" : "border-gray-100 focus:border_color focus:ring-4 focus:ring-blue-50"
                                 }`}
                             {...formik.getFieldProps("emailAddress")}
                         />
@@ -74,7 +74,7 @@ export default function ContactForm() {
                     <label className="text-sm font-semibold text-gray-700 ml-1">Subject</label>
                     <select
                         name="subject"
-                        className={`w-full px-5 py-4 bg-gray-50 border rounded-2xl focus:outline-none transition-all appearance-none cursor-pointer ${formik.touched.subject && formik.errors.subject ? "border-red-300 ring-1 ring-red-100" : "border-gray-100 focus:border-blue-300 focus:ring-4 focus:ring-blue-50"
+                        className={`w-full px-5 py-4 bg-gray-50 border rounded-2xl focus:outline-none transition-all appearance-none cursor-pointer ${formik.touched.subject && formik.errors.subject ? "border-red-300 ring-1 ring-red-100" : "border-gray-100 focus:border_color focus:ring-4 focus:ring-blue-50"
                             }`}
                         {...formik.getFieldProps("subject")}
                     >
@@ -96,7 +96,7 @@ export default function ContactForm() {
                         name="message"
                         rows="6"
                         placeholder="Tell us more about your inquiry..."
-                        className={`w-full px-5 py-4 bg-gray-50 border rounded-2xl focus:outline-none transition-all resize-none ${formik.touched.message && formik.errors.message ? "border-red-300 ring-1 ring-red-100" : "border-gray-100 focus:border-blue-300 focus:ring-4 focus:ring-blue-50"
+                        className={`w-full px-5 py-4 bg-gray-50 border rounded-2xl focus:outline-none transition-all resize-none ${formik.touched.message && formik.errors.message ? "border-red-300 ring-1 ring-red-100" : "border-gray-100 focus:border_color focus:ring-4 focus:ring-blue-50"
                             }`}
                         {...formik.getFieldProps("message")}
                     ></textarea>
@@ -107,7 +107,7 @@ export default function ContactForm() {
 
                 <button
                     type="submit"
-                    className="flex items-center gap-2 bg-[#2563EB] text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 transform active:scale-95"
+                    className="flex items-center gap-2 bg_color text-white px-8 py-4 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-95"
                 >
                     Send Message <Send size={18} />
                 </button>

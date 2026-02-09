@@ -39,7 +39,7 @@ export default function MeetInnovators() {
                             A diverse team of equestrians, engineers, and visionaries working together.
                         </p>
                     </div>
-                    <Link href="#" className="flex items-center gap-2 text-blue-600 font-bold text-sm hover:gap-3 transition-all">
+                    <Link href="#" className="flex items-center gap-2 text_color font-bold text-sm hover:gap-3 transition-all">
                         View All Members <ArrowRight size={16} />
                     </Link>
                 </div>
@@ -56,7 +56,7 @@ export default function MeetInnovators() {
                             </div>
                             <div className="p-6">
                                 <h3 className="text-lg font-bold text-[#0F172A] mb-1">{member.name}</h3>
-                                <p className="text-blue-600 text-sm font-semibold mb-3 uppercase tracking-wider">{member.role}</p>
+                                <p className="text_color text-sm font-semibold mb-3 uppercase tracking-wider">{member.role}</p>
                                 <p className="text-gray-500 text-sm leading-relaxed">
                                     {member.bio}
                                 </p>

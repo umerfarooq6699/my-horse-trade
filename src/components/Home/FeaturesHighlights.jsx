@@ -21,7 +21,7 @@ export default function FeaturesHighlights() {
 
                     {/* Feature 2 */}
                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100/50 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 group text-left">
-                        <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center text_color mb-6 group-hover:scale-110 transition-transform duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="2" y2="22" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-3">Secure Escrow</h3>
@@ -32,7 +32,7 @@ export default function FeaturesHighlights() {
 
                     {/* Feature 3 */}
                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100/50 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 group text-left">
-                        <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center text_color mb-6 group-hover:scale-110 transition-transform duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="2" x2="22" y1="12" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-3">Global Logistics</h3>

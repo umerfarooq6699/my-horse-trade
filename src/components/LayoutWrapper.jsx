@@ -8,16 +8,21 @@ export default function LayoutWrapper({ children }) {
     const pathname = usePathname();
 
     // Define routes where Navbar and Footer should be hidden
-    const hideLayoutRoutes = ["/signup", "/login", "/forgot-password"];
-    const shouldHide = hideLayoutRoutes.includes(pathname);
+    const hideHeaderFooterRoutes = ["/signup", "/login", "/forgot-password"];
+    const hideFooterOnlyRoutes = ["/profile"];
+
+    const shouldHideAll = hideHeaderFooterRoutes.includes(pathname);
+    const shouldHideFooter = shouldHideAll || pathname.startsWith("/profile");
 
     return (
         <>
-            <div className={shouldHide ? "absolute top-0 left-0 w-full z-50" : ""}>
+            <div className={shouldHideAll ? "absolute top-0 left-0 w-full z-50" : ""}>
                 <Navbar />
             </div>
-            {children}
-            {!shouldHide && <Footer />}
+            <main className={shouldHideAll ? "" : "pt-20"}>
+                {children}
+            </main>
+            {!shouldHideFooter && <Footer />}
         </>
     );
 }

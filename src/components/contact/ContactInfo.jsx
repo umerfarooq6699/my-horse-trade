@@ -49,14 +49,14 @@ export default function ContactInfo() {
                 <div className="space-y-8">
                     {contactLinks.map((link, index) => (
                         <div key={index} className="flex gap-4 group">
-                            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                            <div className="w-12 h-12 rounded-xl bg-blue-50 text_color flex items-center justify-center shrink-0 group-hover:bg_color group-hover:text-white transition-colors duration-300">
                                 {link.icon}
                             </div>
                             <div>
                                 <h5 className="font-bold text-[#0F172A] mb-1">{link.title}</h5>
                                 <p className="text-sm text-gray-500 mb-2 leading-relaxed">{link.description}</p>
                                 {link.detailType === "email" ? (
-                                    <a href={`mailto:${link.detail}`} className="text-[#2563EB] font-bold text-sm hover:underline">
+                                    <a href={`mailto:${link.detail}`} className="text_color font-bold text-sm hover:underline">
                                         {link.detail}
                                     </a>
                                 ) : (

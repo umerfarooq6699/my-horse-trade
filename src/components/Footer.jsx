@@ -13,7 +13,7 @@ export default function Footer() {
                             <div className="bg_color p-1.5 rounded-lg">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-horse-head"><path d="M5 18a7 7 0 0 0 14 0c0-4.4-1.6-4.9-6-5.5C10 12 10 10 9 8c-1-2-1-3-2-3-1 0-1 2-2 3-1 1-1 2-1 3 0 4-1 6-2 7 0 0 1 0 2 0" /></svg>
                             </div>
-                            <span className="text-xl font-bold text-gray-900 tracking-tight">
+                            <span className="text-xl font-bold text-white tracking-tight">
                                 MyHorse<span className="text_color">Trade</span>
                             </span>
                         </Link>
@@ -54,7 +54,7 @@ export default function Footer() {
                                 placeholder="Enter email"
                                 className="flex-1 px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--theme-color)] focus:border-transparent"
                             />
-                            <button className="bg_color text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+                            <button className="bg_color text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors">
                                 Join
                             </button>
                         </form>

@@ -15,7 +15,7 @@ export default function PerformanceSidebar() {
             {/* Performance Attributes */}
             <div className="p-8 bg-white border border-gray-100 rounded-[32px] shadow-sm">
                 <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                    <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text_color">
                         <Activity size={20} />
                     </div>
                     <h3 className="font-extrabold text-gray-900">Performance Attributes</h3>
@@ -26,11 +26,11 @@ export default function PerformanceSidebar() {
                         <div key={idx}>
                             <div className="flex justify-between items-center mb-3">
                                 <span className="text-[10px] font-black text-gray-400 tracking-widest">{attr.name}</span>
-                                <span className="text-[10px] font-black text-blue-600 tracking-widest">{attr.value}%</span>
+                                <span className="text-[10px] font-black text_color tracking-widest">{attr.value}%</span>
                             </div>
                             <div className="h-1.5 bg-gray-50 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-blue-600 rounded-full transition-all duration-1000"
+                                    className="h-full bg_color rounded-full transition-all duration-1000"
                                     style={{ width: `${attr.value}%` }}
                                 ></div>
                             </div>
@@ -62,7 +62,7 @@ export default function PerformanceSidebar() {
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="text-xs text-gray-500 font-medium">X-Rays</span>
-                        <span className="text-xs font-bold text-blue-600 px-3 py-1 bg-blue-50 rounded-lg">32 Files</span>
+                        <span className="text-xs font-bold text_color px-3 py-1 bg-blue-50 rounded-lg">32 Files</span>
                     </div>
                     <div className="flex justify-between items-center pt-4 border-t border-gray-50">
                         <span className="text-xs text-gray-500 font-medium">Shoeing</span>

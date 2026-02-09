@@ -32,7 +32,7 @@ export default function HorseCard({ horse }) {
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex gap-2">
                     {isPremium && (
-                        <span className="px-3 py-1 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+                        <span className="px-3 py-1 bg_color text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
                             Premium
                         </span>
                     )}
@@ -42,7 +42,7 @@ export default function HorseCard({ horse }) {
                         </span>
                     )}
                     {isNew && (
-                        <span className="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+                        <span className="px-3 py-1 bg-blue-50 text_color text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
                             New
                         </span>
                     )}
@@ -57,21 +57,21 @@ export default function HorseCard({ horse }) {
             {/* Content Container */}
             <div className="p-5 flex flex-col flex-1">
                 <div className="mb-4">
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-[var(--theme-color)] transition-colors mb-1">{name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900 group-hover:text_color transition-colors mb-1">{name}</h3>
                     <p className="text-sm text-gray-500">{breed}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-y-4 gap-x-2 mb-6">
                     <div className="flex items-center gap-2 text-gray-600">
-                        <Calendar size={16} className="text-blue-200" />
+                        <Calendar size={16} className="text_color opacity-30" />
                         <span className="text-xs font-medium">{age} Years</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-600">
-                        <Ruler size={16} className="text-blue-200" />
+                        <Ruler size={16} className="text_color opacity-30" />
                         <span className="text-xs font-medium">{height} hh</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-600 col-span-2">
-                        <MapPin size={16} className="text-blue-200" />
+                        <MapPin size={16} className="text_color opacity-30" />
                         <span className="text-xs font-medium">{location}</span>
                     </div>
                 </div>
@@ -83,7 +83,7 @@ export default function HorseCard({ horse }) {
                     </div>
                     <Link
                         href={`/marketplace/${horse.id || 1}`}
-                        className="flex items-center gap-1 px-4 py-2 bg-gray-50 text-gray-900 text-xs font-semibold rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-all"
+                        className="flex items-center gap-1 px-4 py-2 bg-gray-50 text-gray-900 text-xs font-semibold rounded-lg group-hover:bg_color group-hover:text-white transition-all"
                     >
                         Details
                         <ChevronRight size={14} />

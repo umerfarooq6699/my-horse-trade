@@ -12,7 +12,7 @@ export default function PedigreeSection() {
                     </div>
                     <h3 className="font-extrabold text-gray-900">Pedigree Lineage</h3>
                 </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-xs font-bold hover:bg-blue-100 transition-all">
+                <button className="flex items-center gap-2 px-4 py-2 bg-blue-50 text_color rounded-xl text-xs font-bold hover:bg-blue-100 transition-all">
                     View Full Document
                     <FileText size={14} />
                 </button>

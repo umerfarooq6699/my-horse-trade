@@ -43,7 +43,7 @@ export default function LoginForm() {
                             type="text"
                             name="identifier"
                             placeholder=""
-                            className={`w-full pl-5 pr-5 py-3.5 bg-gray-50/50 border rounded-xl focus:outline-none transition-all text-sm ${formik.touched.identifier && formik.errors.identifier ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
+                            className={`w-full pl-5 pr-5 py-3.5 bg-gray-50/50 border rounded-xl focus:outline-none transition-all text-sm ${formik.touched.identifier && formik.errors.identifier ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border_color focus:bg-white"
                                 }`}
                             {...formik.getFieldProps("identifier")}
                         />
@@ -61,14 +61,14 @@ export default function LoginForm() {
                             type={showPassword ? "text" : "password"}
                             name="password"
                             placeholder=""
-                            className={`w-full pl-5 pr-12 py-3.5 bg-gray-50/50 border rounded-xl focus:outline-none transition-all text-sm ${formik.touched.password && formik.errors.password ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
+                            className={`w-full pl-5 pr-12 py-3.5 bg-gray-50/50 border rounded-xl focus:outline-none transition-all text-sm ${formik.touched.password && formik.errors.password ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border_color focus:bg-white"
                                 }`}
                             {...formik.getFieldProps("password")}
                         />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-700 transition-colors"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text_color hover:opacity-80 transition-colors"
                         >
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
@@ -85,14 +85,14 @@ export default function LoginForm() {
                             type="checkbox"
                             id="rememberMe"
                             name="rememberMe"
-                            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-gray-300 text_color focus:ring_color cursor-pointer"
                             {...formik.getFieldProps("rememberMe")}
                         />
                         <label htmlFor="rememberMe" className="text-xs text-gray-400 font-medium cursor-pointer">
                             Remember me
                         </label>
                     </div>
-                    <Link href="/forgot-password" className="text-[#2563EB] text-xs font-medium hover:underline">
+                    <Link href="/forgot-password" className="text_color text-xs font-medium hover:underline">
                         Forgot Password?
                     </Link>
                 </div>
@@ -100,13 +100,13 @@ export default function LoginForm() {
                 <button
                     type="submit"
                     disabled={formik.isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 bg-[#1d63ed] text-white py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-md transform active:scale-[0.98]"
+                    className="w-full flex items-center justify-center gap-2 bg_color text-white py-3.5 rounded-xl font-semibold hover:opacity-90 transition-all shadow-md transform active:scale-[0.98]"
                 >
                     Log In
                 </button>
 
                 <p className="text-center text-sm text-gray-500 font-medium pt-2">
-                    New to MyHorseTrade? <Link href="/signup" className="text-[#2563EB] font-bold hover:underline">Create an account</Link>
+                    New to MyHorseTrade? <Link href="/signup" className="text_color font-bold hover:underline">Create an account</Link>
                 </p>
             </form>
         </div>

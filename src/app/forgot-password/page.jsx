@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
                 <div className="bg-white w-full max-w-[500px] rounded-[32px] p-6 sm:p-10 shadow-2xl shadow-blue-100/50 border border-gray-50 flex flex-col items-center text-center">
                     {/* Icon */}
                     <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-8">
-                        <RotateCcw className="text-blue-600" size={32} />
+                        <RotateCcw className="text_color" size={32} />
                     </div>
 
                     <h1 className="text-xl sm:text-2xl font-bold text-[#0F172A] mb-3">Reset Password</h1>
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
                         <button
                             type="submit"
                             disabled={formik.isSubmitting}
-                            className="w-full bg-[#1d63ed] text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
+                            className="w-full bg_color text-white py-4 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
                         >
                             Send Reset Link
                         </button>
@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
 
                     <div className="mt-12 flex items-center gap-2">
                         <p className="text-gray-400 text-sm font-medium">Remember your password?</p>
-                        <Link href="/login" className="text-blue-600 font-bold text-sm hover:underline flex items-center gap-1">
+                        <Link href="/login" className="text_color font-bold text-sm hover:underline flex items-center gap-1">
                             Log In <ArrowRight size={16} />
                         </Link>
                     </div>

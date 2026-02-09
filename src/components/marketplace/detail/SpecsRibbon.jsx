@@ -14,7 +14,7 @@ export default function SpecsRibbon({ horse }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             {specs.map((spec, idx) => (
                 <div key={idx} className="p-5 bg-white border border-gray-100 rounded-3xl flex items-center gap-4 hover:shadow-xl hover:shadow-gray-50 transition-all">
-                    <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
+                    <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                         <spec.icon size={24} />
                     </div>
                     <div>

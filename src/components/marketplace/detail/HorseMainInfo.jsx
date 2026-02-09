@@ -18,7 +18,7 @@ export default function HorseMainInfo({ horse }) {
 
             <div className="flex items-baseline gap-2">
                 <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">ASKING PRICE</span>
-                <p className="text-4xl font-black text-blue-600">
+                <p className="text-4xl font-black text_color">
                     ${horse.price.toLocaleString()} <span className="text-lg font-bold text-gray-400">USD</span>
                 </p>
             </div>
@@ -29,7 +29,7 @@ export default function HorseMainInfo({ horse }) {
             </p>
 
             <div className="flex flex-col gap-3">
-                <button className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
+                <button className="w-full py-4 bg_color text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-blue-100">
                     Make an Offer
                     <Send size={18} />
                 </button>
@@ -71,20 +71,20 @@ export default function HorseMainInfo({ horse }) {
             {/* Trust Badges */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-blue-50/50 rounded-2xl flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm">
+                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text_color shadow-sm">
                         <CheckCircle2 size={24} />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">STATUS</p>
+                        <p className="text-[10px] font-black text_color uppercase tracking-widest">STATUS</p>
                         <p className="text-xs font-bold text-gray-900">Vet Checked</p>
                     </div>
                 </div>
                 <div className="p-4 bg-blue-50/50 rounded-2xl flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm">
+                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text_color shadow-sm">
                         <Globe size={24} />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">SHIPPING</p>
+                        <p className="text-[10px] font-black text_color uppercase tracking-widest">SHIPPING</p>
                         <p className="text-xs font-bold text-gray-900">Global Ready</p>
                     </div>
                 </div>

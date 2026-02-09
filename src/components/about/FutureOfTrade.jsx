@@ -3,19 +3,19 @@ import { Shield, Zap, FileSearch } from "lucide-react";
 export default function FutureOfTrade() {
     const features = [
         {
-            icon: <Shield className="text-blue-600" size={24} />,
+            icon: <Shield className="text_color" size={24} />,
             title: "Maximum Security",
             description: "Blockchain-backed transaction systems ensure your funds and assets are safe at every stage of trade and management.",
             bgColor: "bg-blue-50/50"
         },
         {
-            icon: <Zap className="text-blue-600" size={24} />,
+            icon: <Zap className="text_color" size={24} />,
             title: "Unmatched Speed",
             description: "Instant listings, real-time communications, and streamlined financing to get you from discovery to ownership in record time.",
             bgColor: "bg-blue-50/50"
         },
         {
-            icon: <FileSearch className="text-blue-600" size={24} />,
+            icon: <FileSearch className="text_color" size={24} />,
             title: "Pedigree Verification",
             description: "Integrated database checks to verify lineage and health history automatically, ensuring you know exactly who you're buying.",
             bgColor: "bg-blue-50/50"

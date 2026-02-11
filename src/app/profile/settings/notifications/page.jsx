@@ -10,7 +10,7 @@ export default function NotificationSettingsPage() {
                 <div className="flex-1 px-4 py-6 md:px-8 lg:px-12 lg:py-10 pt-4 lg:pt-8 space-y-6 lg:space-y-8">
                     {/* Page Header */}
                     <div className="bg-white px-4 py-5 md:px-6 md:py-6 rounded-[28px] border border-gray-100 shadow-sm">
-                        <h1 className="text-2xl md:text-3xl font-[600] text-gray-900 mb-1">Notification Preferences</h1>
+                        <h1 className="text-xl sm:text-2xl md:text-3xl font-[600] text-gray-900 mb-1">Notification Preferences</h1>
                         <p className="text-gray-500 text-sm md:text-base font-[500]">
                             Manage how and when MyHorseTrade communicates with you.
                         </p>

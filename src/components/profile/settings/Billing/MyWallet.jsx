@@ -1,4 +1,4 @@
-"use client";
+import Link from "next/link";
 
 export default function MyWallet() {
     return (
@@ -17,12 +17,18 @@ export default function MyWallet() {
                     </div>
                 </div>
                 <div className="flex gap-3">
-                    <button className="px-3 md:px-6 py-2.5 bg_color text-white font-bold rounded-lg text-sm hover:opacity-90 transition-opacity whitespace-nowrap">
+                    <Link
+                        href="/profile/settings/billing/wallet"
+                        className="px-3 md:px-6 py-2.5 bg_color text-white font-bold rounded-lg text-sm hover:opacity-90 transition-opacity whitespace-nowrap flex items-center justify-center"
+                    >
                         Go to Wallet
-                    </button>
-                    <button className="px-3 md:px-6 py-2.5 bg-white border border-blue-200 text_color font-bold rounded-lg text-sm hover:bg-blue-50 transition-colors whitespace-nowrap">
+                    </Link>
+                    <Link
+                        href="/profile/settings/billing/wallet/withdraw"
+                        className="px-3 md:px-6 py-2.5 bg-white border border-blue-200 text_color font-bold rounded-lg text-sm hover:bg-blue-50 transition-colors whitespace-nowrap flex items-center justify-center"
+                    >
                         Withdraw
-                    </button>
+                    </Link>
                 </div>
             </div>
 

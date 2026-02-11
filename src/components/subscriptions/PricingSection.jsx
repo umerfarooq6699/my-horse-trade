@@ -46,8 +46,8 @@ export default function PricingSection() {
     ];
 
     return (
-        <section className="bg-white py-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-4">
+        <section className="bg-white py-6 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-18 max-w-7xl mx-auto px-0">
                 {plans.map((plan, index) => (
                     <div
                         key={index}

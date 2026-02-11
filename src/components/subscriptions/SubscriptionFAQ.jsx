@@ -21,9 +21,9 @@ export default function SubscriptionFAQ() {
     ];
 
     return (
-        <section className="bg-white py-20 px-4">
+        <section className="bg-white py-4 sm:py-12 px-2 sm:px-4">
             <div className="container-width mx-auto max-w-3xl">
-                <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] text-center mb-12">
+                <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-[#0F172A] text-center mb-5 sm:mb-12">
                     Frequently Asked Questions
                 </h2>
 

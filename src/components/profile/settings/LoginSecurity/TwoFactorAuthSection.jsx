@@ -2,7 +2,7 @@
 
 export default function TwoFactorAuthSection() {
     return (
-        <div className="bg-white rounded-2xl border border-gray-100 p-8">
+        <div className="bg-white rounded-2xl border border-gray-100 p-3 sm:p-8">
             <div className="flex items-center justify-between mb-8">
                 <h3 className="text-lg font-bold text-gray-900">Two-Factor Authentication</h3>
                 <span className="bg-red-50 text-red-500 text-[10px] font-bold px-2 py-1 rounded border border-red-100 uppercase tracking-wide">
@@ -10,7 +10,7 @@ export default function TwoFactorAuthSection() {
                 </span>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6 p-6 border border-gray-50 rounded-xl bg-gray-50/30">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6 p-2 sm:p-6 border border-gray-50 rounded-xl bg-gray-50/30">
                 <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0 text_color">
                         <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

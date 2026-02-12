@@ -74,15 +74,15 @@ export default function SettingsSidebar() {
                         <Link
                             key={item.name}
                             href={item.href}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
-                                    ? "bg-blue-50 text_color font-semibold"
-                                    : "text-gray-600 hover:bg-gray-50 font-medium"
+                            className={`flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-200 ${isActive
+                                ? "bg-blue-50 text_color font-semibold"
+                                : "text-slate-600 hover:bg-gray-50 font-medium"
                                 }`}
                         >
-                            <span className={isActive ? "text_color" : "text-gray-500"}>
+                            <span className={isActive ? "text_color" : "text-slate-500"}>
                                 {item.icon}
                             </span>
-                            <span className="text-sm">{item.name}</span>
+                            <span className="text-[13px] font-semibold">{item.name}</span>
                         </Link>
                     );
                 })}

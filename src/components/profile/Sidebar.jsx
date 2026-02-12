@@ -94,15 +94,15 @@ export default function Sidebar({ isOpen, onClose }) {
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 group ${isActive
-                                    ? "bg-blue-50 text_color shadow-sm"
-                                    : "text-gray-600 hover:bg-gray-50/50 hover:text-gray-900"
+                                className={`flex items-center gap-4 px-5 py-3 rounded-xl transition-all duration-300 group ${isActive
+                                    ? "bg-blue-50 text_color"
+                                    : "text-slate-600 hover:bg-gray-50/50"
                                     }`}
                             >
-                                <span className={`${isActive ? "text_color" : "text-gray-600 group-hover:text-gray-600"}`}>
+                                <span className={`${isActive ? "text_color" : "text-slate-500 group-hover:text-slate-600"}`}>
                                     {item.icon}
                                 </span>
-                                <span className="text-sm font-extrabold tracking-tight">{item.name}</span>
+                                <span className="text-[13px] font-semibold tracking-tight">{item.name}</span>
                             </Link>
                         )
                     })}

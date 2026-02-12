@@ -19,9 +19,9 @@ export default function ListingTabs() {
                     <button
                         key={tab.name}
                         onClick={() => setActiveTab(tab.name)}
-                        className={`pb-4 px-1 text-sm font-[600] transition-all relative ${activeTab === tab.name
+                        className={`pb-4 px-1 text-[12px] font-semibold transition-all relative ${activeTab === tab.name
                             ? "text_color"
-                            : "text-gray-600 hover:text-gray-900"
+                            : "text-slate-600 hover:text-slate-900"
                             }`}
                     >
                         {tab.name}

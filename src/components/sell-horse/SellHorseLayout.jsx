@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function SellHorseLayout({ children, currentStep = 1, nextLink = "#", backLink = "#" }) {
     return (
-        <div className="bg-[#f8fafc] min-h-screen pt-16 pb-20">
+        <div className="bg-[#f8fafc] min-h-screen pt-8 md:pt-10 mb-8 md:pb-16">
             <div className="container-width mx-auto px-6 lg:px-14">
                 <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
                     {/* Left Sidebar - Progress */}

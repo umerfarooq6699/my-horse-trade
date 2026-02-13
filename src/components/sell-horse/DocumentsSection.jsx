@@ -8,7 +8,7 @@ export default function DocumentsSection() {
     ];
 
     return (
-        <section className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm mb-8">
+        <section className="bg-white rounded-[32px] p-5 md:p-8 border border-gray-100 shadow-sm md:mb-8">
             <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                     <FileText size={20} strokeWidth={2} />

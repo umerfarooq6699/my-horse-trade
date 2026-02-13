@@ -7,7 +7,7 @@ export default function NarrativeSection() {
     const [description, setDescription] = useState("");
 
     return (
-        <section className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm mb-8">
+        <section className="bg-white rounded-[32px] p-4 md:p-8 border border-gray-100 shadow-sm md:mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
@@ -16,10 +16,6 @@ export default function NarrativeSection() {
                     <h2 className="text-xl font-bold text-[#1e293b]">Description</h2>
                 </div>
 
-                <button className="flex items-center gap-2 px-4 py-2 bg-blue-50/50 text_color rounded-xl text-[11px] font-bold uppercase tracking-widest border border-blue-100/50 hover:bg-blue-50 transition-all group">
-                    <Sparkles size={14} className="group-hover:scale-110 transition-transform" />
-                    AI Assist
-                </button>
             </div>
 
             <div className="flex flex-col border border-gray-100 rounded-3xl overflow-hidden focus-within:ring-2 focus-within:ring_color/20 focus-within:border_color transition-all">
@@ -43,7 +39,7 @@ export default function NarrativeSection() {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Tell their story. Mention temperament, health history, competition results..."
-                    className="w-full min-h-[400px] p-8 text-[15px] font-medium text-[#1e293b] leading-relaxed bg-white focus:outline-none resize-none"
+                    className="w-full min-h-[150px] p-8 text-[15px] font-medium text-[#1e293b] leading-relaxed bg-white focus:outline-none resize-none"
                     maxLength={5000}
                 />
 

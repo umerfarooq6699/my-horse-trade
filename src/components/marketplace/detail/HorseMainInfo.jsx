@@ -1,6 +1,7 @@
 "use client";
 
 import { Heart, Send, CheckCircle2, Globe } from "lucide-react";
+import Link from "next/link";
 
 export default function HorseMainInfo({ horse }) {
     return (
@@ -33,10 +34,13 @@ export default function HorseMainInfo({ horse }) {
                     Make an Offer
                     <Send size={18} />
                 </button>
-                <button className="w-full py-4 bg-white border border-gray-100 text-gray-900 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-all">
+                <Link
+                    href="/messages"
+                    className="w-full py-4 bg-white border border-gray-100 text-gray-900 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-all"
+                >
                     Contact Seller
                     <Globe size={18} />
-                </button>
+                </Link>
             </div>
 
             {/* Seller Card */}

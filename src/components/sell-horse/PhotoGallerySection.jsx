@@ -13,7 +13,7 @@ export default function PhotoGallerySection() {
     const [photos, setPhotos] = useState(initialPhotos);
 
     return (
-        <section className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm mb-8">
+        <section className="bg-white rounded-[32px] p-3 md:p-8 border border-gray-100 shadow-sm md:mb-8">
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
@@ -28,7 +28,7 @@ export default function PhotoGallerySection() {
 
             <div className="flex flex-col gap-6">
                 {/* Upload Area */}
-                <div className="relative border-2 border-dashed border-gray-100 rounded-[32px] p-12 flex flex-col items-center justify-center gap-4 hover:border_color hover:bg-blue-50/10 transition-all cursor-pointer group">
+                <div className="relative border-2 border-dashed border-gray-100 rounded-[32px] p-3 md:p-8 flex flex-col items-center justify-center gap-4 hover:border_color hover:bg-blue-50/10 transition-all cursor-pointer group">
                     <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text_color group-hover:scale-110 transition-transform">
                         <UploadCloud size={32} />
                     </div>

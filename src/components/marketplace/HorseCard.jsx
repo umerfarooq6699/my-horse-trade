@@ -83,10 +83,10 @@ export default function HorseCard({ horse }) {
                     </div>
                     <Link
                         href={`/marketplace/${horse.id || 1}`}
-                        className="flex items-center gap-1 px-4 py-2 bg-gray-50 text-gray-900 text-xs font-semibold rounded-lg group-hover:bg_color group-hover:text-white transition-all"
+                        className="flex items-center gap-1.5 px-5 py-2.5 bg_color text-white text-[11px] font-black uppercase tracking-wider rounded-xl hover:opacity-90 hover:shadow-lg hover:shadow-blue-200/50 transition-all active:scale-[0.98]"
                     >
                         Details
-                        <ChevronRight size={14} />
+                        <ChevronRight size={14} strokeWidth={3} />
                     </Link>
                 </div>
             </div>

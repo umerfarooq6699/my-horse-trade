@@ -20,7 +20,7 @@ export default function InclusionsTermsSection() {
     };
 
     return (
-        <section className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm">
+        <section className="bg-white rounded-[32px] p-4 md:p-8 border border-gray-100 shadow-sm">
             <div className="flex items-center gap-3 mb-8">
                 <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                     <ClipboardCheck size={20} strokeWidth={2} />

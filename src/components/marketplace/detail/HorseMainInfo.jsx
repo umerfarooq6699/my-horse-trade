@@ -2,8 +2,12 @@
 
 import { Heart, Send, CheckCircle2, Globe } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import OfferPopup from "./OfferPopup";
 
 export default function HorseMainInfo({ horse }) {
+    const [showOfferPopup, setShowOfferPopup] = useState(false);
+
     return (
         <div className="flex flex-col gap-8">
             <div className="flex justify-between items-start">
@@ -30,10 +34,18 @@ export default function HorseMainInfo({ horse }) {
             </p>
 
             <div className="flex flex-col gap-3">
-                <button className="w-full py-4 bg_color text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-blue-100">
+                <button
+                    onClick={() => setShowOfferPopup(true)}
+                    className="w-full py-4 bg_color text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-blue-100"
+                >
                     Make an Offer
                     <Send size={18} />
                 </button>
+                <OfferPopup
+                    isOpen={showOfferPopup}
+                    onClose={() => setShowOfferPopup(false)}
+                    horse={horse}
+                />
                 <Link
                     href="/messages"
                     className="w-full py-4 bg-white border border-gray-100 text-gray-900 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-all"

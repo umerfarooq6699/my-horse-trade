@@ -45,7 +45,7 @@ export default function TopRatedHorses() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {topRated.map((horse) => (
-                        <div key={horse.id} className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-blue-100 hover:shadow-lg hover:shadow-blue-50 transition-all group bg-white">
+                        <Link key={horse.id} href={`/marketplace/${horse.id}`} className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-blue-100 hover:shadow-lg hover:shadow-blue-50 transition-all group bg-white">
                             <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 relative">
                                 <img src={horse.image} alt={horse.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                             </div>
@@ -59,7 +59,7 @@ export default function TopRatedHorses() {
                                 <p className="text-xs text-gray-500 mb-2 uppercase tracking-wide font-medium">{horse.category}</p>
                                 <p className="text_color font-bold">${horse.price.toLocaleString()}</p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>

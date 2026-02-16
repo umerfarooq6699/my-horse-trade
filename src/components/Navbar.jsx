@@ -25,7 +25,7 @@ export default function Navbar() {
         { name: "Marketplace", href: "/marketplace" },
         { name: "Subscription", href: "/subscriptions" },
         { name: "Buy Horses", href: "/marketplace" },
-        { name: "Sell Horse", href: "/marketplace" },
+        { name: "Sell Horse", href: "/sell-horse" },
         { name: "Auctions", href: "/marketplace" },
         { name: "Community", href: "/marketplace" },
     ];

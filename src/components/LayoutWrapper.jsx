@@ -11,7 +11,8 @@ export default function LayoutWrapper({ children }) {
     const hideHeaderFooterRoutes = ["/signup", "/login", "/forgot-password"];
     const hideFooterOnlyRoutes = ["/profile"];
 
-    const shouldHideAll = hideHeaderFooterRoutes.includes(pathname);
+    const isAdminRoute = pathname.startsWith("/admin");
+    const shouldHideAll = hideHeaderFooterRoutes.includes(pathname) || isAdminRoute;
     const shouldHideFooter = shouldHideAll || pathname.startsWith("/profile");
 
     return (

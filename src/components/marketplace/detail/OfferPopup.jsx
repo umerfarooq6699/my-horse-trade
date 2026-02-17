@@ -63,9 +63,9 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
                     <div className="p-5 sm:p-6 pb-8 sm:pb-6">
                         <div className="flex items-center justify-between mb-4 p-3 bg-blue-50/50 rounded-2xl border border-blue-100/50">
                             <div>
-                                <p className="text-[8px] sm:text-[9px] font-black text_color uppercase tracking-widest mb-0.5">Previous Highest Bid</p>
-                                <p className="text-base sm:text-lg font-black text-gray-900">
-                                    ${(horse.price - 5000).toLocaleString()} <span className="text-[9px] font-bold text-gray-400">USD</span>
+                                <p className="text-[14px] text_color mb-0.5">Previous Highest Bid</p>
+                                <p className="text-base sm:text-lg font-[600] text-gray-900">
+                                    ${(horse.price - 5000).toLocaleString()} <span className="text-[10px] text-gray-700">USD</span>
                                 </p>
                             </div>
                             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-xl flex items-center justify-center text_color shadow-sm flex-shrink-0 ml-2">
@@ -75,7 +75,7 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
 
                         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-3.5">
                             <div className="space-y-1">
-                                <label className="text-[11px] sm:text-xs font-bold text-gray-700 ml-1">Your Offer Amount</label>
+                                <label className="text-[13px] sm:text-xs text-gray-900 ml-1 font-[500]">Your Offer Amount</label>
                                 <div className="relative group">
                                     <input
                                         type="number"
@@ -85,24 +85,21 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
                                         placeholder="Enter amount"
                                         className="w-full pl-10 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-xl focus:outline-none focus:border-blue-400 focus:bg-white transition-all text-base font-bold"
                                     />
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color transition-colors">
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color">
                                         <DollarSign size={16} strokeWidth={3} />
                                     </div>
                                 </div>
-                                <p className="text-[10px] text-gray-400 font-medium ml-1">Min next bid: ${(horse.price - 4000).toLocaleString()}</p>
+                                <p className="text-[13px] text-gray-900 font-medium ml-1">Min next bid: ${(horse.price - 4000).toLocaleString()}</p>
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full flex items-center justify-center gap-2 bg_color text-white py-3.5 rounded-xl text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98] mt-2 sm:mt-0"
+                                className="w-full cursor-pointer flex items-center justify-center gap-2 bg_color text-white py-3.5 rounded-xl text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98] mt-2 sm:mt-0"
                             >
                                 Place a Bid
                                 <Gavel size={16} />
                             </button>
 
-                            <p className="text-center text-[10px] text-gray-400 font-medium px-4 leading-tight mt-4 sm:mt-0">
-                                By placing a bid, you agree to our Terms of Use and acknowledge that this is a binding offer.
-                            </p>
                         </form>
                     </div>
                 </div>

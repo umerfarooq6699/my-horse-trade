@@ -36,14 +36,6 @@ export default function HorseDetailPage({ params }) {
     return (
         <main className="min-h-screen bg-white">
             <div className="container-width px-4 sm:px-6 py-6 sm:py-8">
-                {/* Breadcrumbs */}
-                <nav className="flex flex-wrap items-center gap-2 text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 sm:mb-10">
-                    <Link href="/marketplace" className="hover:text-blue-600 transition-colors">MARKETPLACE</Link>
-                    <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" strokeWidth={3} />
-                    <span className="hover:text-blue-600 cursor-pointer">WARMBLOODS</span>
-                    <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" strokeWidth={3} />
-                    <span className="text-gray-900 truncate max-w-[150px] sm:max-w-none">{horse.name}</span>
-                </nav>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                     {/* Left Column: Media and Tabs */}
@@ -71,8 +63,8 @@ export default function HorseDetailPage({ params }) {
                             <div className="prose prose-blue max-w-none">
                                 {activeTab === "Overview" && (
                                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                                        <h2 className="text-xl sm:text-2xl font-black text-gray-900 mb-4 sm:mb-6 font-display">About Nebula Strider V</h2>
-                                        <div className="text-gray-500 leading-relaxed space-y-4 font-medium">
+                                        <h2 className="text-xl sm:text-2xl font-[600] text-gray-900 mb-4 sm:mb-6 font-display tracking-tight">About Nebula Strider V</h2>
+                                        <div className="text-gray-500 leading-relaxed space-y-4 text-justify md:font-medium">
                                             <p>Nebula Strider V is a top-tier prospect for international show jumping. With a calm temperament and explosive power off the ground, he represents the future of the sport. Currently training at 1.40m with scope for more. His lateral work is exceptional, and he demonstrates a rare intelligence in the ring, often correcting stride distance autonomously.</p>
                                             <p>Originally imported from the Netherlands, he has been under the saddle of Olympic-level trainers for the past 18 months. He is fully sound, requires no maintenance, and travels exceptionally well. Perfect for an ambitious Young Rider or professional looking to add a Grand Prix prospect to their string.</p>
                                         </div>
@@ -105,7 +97,7 @@ export default function HorseDetailPage({ params }) {
                 {/* Related Horses Section */}
                 <div className="mt-16 sm:mt-24">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8 sm:mb-10">
-                        <h2 className="text-2xl sm:text-3xl font-black text-gray-900">More from this Lineage</h2>
+                        <h2 className="text-2xl sm:text-3xl font-[600] text-gray-900 tracking-tight">More from this Lineage</h2>
                         <Link href="/marketplace" className="text-sm font-bold text-blue-600 hover:underline flex items-center gap-1">
                             View All <ChevronRight size={16} />
                         </Link>

@@ -43,7 +43,7 @@ export default function ContactInfo() {
             </div>
 
             {/* Contact Details Card */}
-            <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm space-y-8">
+            <div className="bg-white rounded-3xl p-4 sm:p-8 border border-gray-100 shadow-sm space-y-8">
                 <h4 className="text-xl font-bold text-[#0F172A]">Other ways to connect</h4>
 
                 <div className="space-y-8">

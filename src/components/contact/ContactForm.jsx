@@ -26,7 +26,7 @@ export default function ContactForm() {
     });
 
     return (
-        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+        <div className="bg-white rounded-3xl p-4 sm:p-8 border border-gray-100 shadow-sm">
             <div className="flex items-center gap-3 mb-8">
                 <div className="text_color">
                     <Mail size={24} />

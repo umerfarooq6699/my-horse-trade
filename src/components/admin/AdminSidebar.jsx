@@ -2,41 +2,46 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import {
-    BarChart3,
+    LayoutGrid,
     Users,
-    FileText,
-    DollarSign,
-    CreditCard,
-    AlertTriangle,
+    ListTodo,
+    ReceiptText,
+    Monitor,
+    Gavel,
     Layers,
-    Scale,
     MessageSquare,
     Settings,
     LogOut,
     ChevronDown,
-    Layout
+    Layout,
+    PawPrint
 } from "lucide-react";
 
 const mainItems = [
-    { name: "Dashboard", href: "/admin", icon: <BarChart3 className="w-5 h-5" /> },
+    { name: "Dashboard", href: "/admin", icon: <LayoutGrid className="w-5 h-5" /> },
     { name: "Users", href: "/admin/users", icon: <Users className="w-5 h-5" /> },
-    { name: "Listings", href: "/admin/listings", icon: <FileText className="w-5 h-5" /> },
-    { name: "Transactions", href: "/admin/transactions", icon: <DollarSign className="w-5 h-5" /> },
-    { name: "Subscriptions", href: "/admin/subscriptions", icon: <CreditCard className="w-5 h-5" /> },
-    { name: "Disputes", href: "/admin/disputes", icon: <AlertTriangle className="w-5 h-5" />, badge: 3 },
+    { name: "Listings", href: "/admin/listings", icon: <ListTodo className="w-5 h-5" /> },
+    { name: "Transactions", href: "/admin/transactions", icon: <ReceiptText className="w-5 h-5" /> },
+    { name: "Subscriptions", href: "/admin/subscriptions", icon: <Monitor className="w-5 h-5" /> },
+    { name: "Disputes", href: "/admin/disputes", icon: <Gavel className="w-5 h-5" />, badge: 3 },
 ];
 
 const contentItems = [
     { name: "Pages", href: "/admin/content/pages", icon: <Layout className="w-5 h-5" /> },
     {
         name: "Legal Docs",
-        href: "#",
-        icon: <Scale className="w-5 h-5" />,
+        href: "/admin/legal",
+        icon: <Gavel className="w-5 h-5" />,
         hasDropdown: true,
-        subItems: ["Privacy Policy", "Terms of Service", "Cookie Policy"]
+        subItems: [
+            { name: "Privacy Policy", href: "/admin/legal/privacy-policy" },
+            { name: "Terms of Service", href: "/admin/legal/terms-of-service" },
+            { name: "Cookie Policy", href: "/admin/legal/cookie-policy" }
+        ]
     },
-    { name: "Forum Categories", href: "/admin/content/forums", icon: <Layers className="w-5 h-5" /> },
+    { name: "Forum Categories", href: "/admin/content/forums", icon: <MessageSquare className="w-5 h-5" /> },
 ];
 
 const systemItems = [
@@ -46,21 +51,47 @@ const systemItems = [
 
 export default function AdminSidebar({ isOpen, onClose }) {
     const pathname = usePathname();
+    const [openDropdowns, setOpenDropdowns] = useState({ "Legal Docs": true });
+
+    // Keep dropdowns open if child is active
+    useEffect(() => {
+        const initialStates = {};
+        [...mainItems, ...contentItems, ...systemItems].forEach(item => {
+            if (item.hasDropdown && item.subItems.some(sub => pathname === sub.href)) {
+                initialStates[item.name] = true;
+            }
+        });
+        setOpenDropdowns(prev => ({ ...prev, ...initialStates }));
+    }, [pathname]);
+
+    const toggleDropdown = (name, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setOpenDropdowns(prev => ({
+            ...prev,
+            [name]: !prev[name]
+        }));
+    };
 
     const NavItem = ({ name, href, icon, badge, hasDropdown, subItems }) => {
-        const isActive = pathname === href;
+        const isSelfActive = pathname === href;
+        const isChildActive = subItems && subItems.some(sub => pathname === sub.href);
+        const isActive = isSelfActive; // Highlight only if exactly this route is active
+        const isExpanded = openDropdowns[name];
+
         return (
             <div className="mb-1">
                 <Link
-                    href={href}
+                    href={hasDropdown ? "#" : href}
+                    onClick={(e) => hasDropdown && toggleDropdown(name, e)}
                     className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                            ? "bg-[#2563EB] text-white shadow-lg shadow-blue-100"
-                            : "text-[#64748B] hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-[#2563EB] text-white shadow-lg shadow-blue-100"
+                        : "text-[#64748B] hover:bg-gray-50 hover:text-gray-900"
                         }`}
                 >
                     <div className="flex items-center gap-3">
-                        <span className={`${isActive ? "text-white" : "group-hover:text-gray-900"}`}>{icon}</span>
-                        <span className="text-sm font-semibold tracking-tight">{name}</span>
+                        <span className={`${isActive ? "text-white" : "group-hover:text-gray-900"} ${isChildActive && !isActive ? "text-[#2563EB]" : ""}`}>{icon}</span>
+                        <span className={`text-sm font-semibold tracking-tight ${isChildActive && !isActive ? "text-[#1E293B]" : ""}`}>{name}</span>
                     </div>
                     {badge && (
                         <span className="bg-[#EF4444] text-white text-[10px] font-bold px-2 py-0.5 rounded-full ring-2 ring-white">
@@ -68,20 +99,23 @@ export default function AdminSidebar({ isOpen, onClose }) {
                         </span>
                     )}
                     {hasDropdown && (
-                        <ChevronDown className={`w-4 h-4 transition-transform ${isActive ? "rotate-0" : "-rotate-90 opacity-50"}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-0" : "-rotate-90 opacity-50"} ${isChildActive && !isActive ? "text-[#1E293B]" : ""}`} />
                     )}
                 </Link>
                 {hasDropdown && (
-                    <div className="pl-12 mt-1 space-y-1">
-                        {subItems.map((sub, i) => (
-                            <Link
-                                key={i}
-                                href="#"
-                                className="block py-2 text-xs font-medium text-[#64748B] hover:text-[#2563EB] transition-colors"
-                            >
-                                {sub}
-                            </Link>
-                        ))}
+                    <div className={`pl-12 mt-1 space-y-1 relative transition-all duration-200 before:absolute before:left-[26px] before:top-0 before:bottom-4 before:w-[1px] before:bg-[#F1F5F9] ${isExpanded ? "block" : "hidden"}`}>
+                        {subItems.map((sub, i) => {
+                            const isSubActive = pathname === sub.href;
+                            return (
+                                <Link
+                                    key={i}
+                                    href={sub.href}
+                                    className={`block py-2 text-sm font-medium transition-colors ${isSubActive ? "text-[#2563EB]" : "text-[#94A3B8] hover:text-[#2563EB]"}`}
+                                >
+                                    {sub.name}
+                                </Link>
+                            );
+                        })}
                     </div>
                 )}
             </div>
@@ -108,14 +142,10 @@ export default function AdminSidebar({ isOpen, onClose }) {
 
                 {/* Logo */}
                 <div className="p-8 pb-4">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#2563EB] rounded-xl flex items-center justify-center">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L4 9V21L12 17L20 21V9L12 2Z" fill="white" />
-                            </svg>
-                        </div>
+                    <Link href="/admin" className="flex items-center gap-3">
+                        <PawPrint className="w-8 h-8 text-[#2563EB] fill-[#2563EB]" />
                         <h1 className="text-[20px] font-black tracking-tighter text-[#1e293b]">MyHorseTrade</h1>
-                    </div>
+                    </Link>
                 </div>
 
                 {/* Navigation Sections */}

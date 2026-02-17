@@ -12,7 +12,7 @@ export default function HorseMainInfo({ horse }) {
         <div className="flex flex-col gap-8">
             <div className="flex justify-between items-start">
                 <div>
-                    <h1 className="text-4xl font-extrabold text-gray-900 mb-2 leading-tight">
+                    <h1 className="text-4xl font-[600] text-gray-900 mb-2 leading-tight tracking-tight">
                         {horse.name}
                     </h1>
                 </div>
@@ -22,9 +22,9 @@ export default function HorseMainInfo({ horse }) {
             </div>
 
             <div className="flex items-baseline gap-2">
-                <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">ASKING PRICE</span>
+                <span className="text-sm font-bold text-gray-600 uppercase tracking-widest">ASKING PRICE</span>
                 <p className="text-4xl font-black text_color">
-                    ${horse.price.toLocaleString()} <span className="text-lg font-bold text-gray-400">USD</span>
+                    ${horse.price.toLocaleString()} <span className="text-lg font-bold text-gray-600">USD</span>
                 </p>
             </div>
 

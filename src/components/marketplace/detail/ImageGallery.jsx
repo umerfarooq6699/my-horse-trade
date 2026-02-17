@@ -9,7 +9,7 @@ export default function ImageGallery({ images, tags }) {
     return (
         <div className="flex flex-col gap-4">
             {/* Main Image Container */}
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden group">
+            <div className="relative aspect-[16/9] rounded-3xl overflow-hidden group">
                 <img
                     src={images[activeImage]?.src || images[activeImage]}
                     alt="Main horse view"

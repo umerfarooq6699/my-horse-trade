@@ -60,6 +60,19 @@ body {
   padding: 24px 16px;
 }
 
+.mobile_heading {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+  /* text-gray-900 */
+}
+
+.mobile_para {
+  font-size: 14px !important;
+  color: #9ca3af !important;
+  /* text-gray-400 */
+}
+
 @media screen and (min-width: 768px) {
   .lg_spaces {
     padding: 50px 65px;

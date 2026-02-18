@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Lock, CreditCard } from "lucide-react";
 
 export default function CreditCardForm({ totalAmount }) {
+    const router = useRouter();
     return (
         <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -75,7 +77,10 @@ export default function CreditCardForm({ totalAmount }) {
 
             {/* Submit Button */}
             <div className="space-y-4 pt-4">
-                <button className="w-full bg_color text-white py-5 rounded-[24px] text-base font-black flex items-center justify-center gap-3 shadow-xl shadow-blue-100 hover:scale-[1.01] active:scale-[0.99] transition-all">
+                <button
+                    onClick={() => router.push("/auction-won/escrow-confirmation")}
+                    className="w-full bg_color text-white py-5 rounded-[24px] text-base font-black flex items-center justify-center gap-3 shadow-xl shadow-blue-100 hover:scale-[1.01] active:scale-[0.99] transition-all"
+                >
                     Deposit ${totalAmount.toLocaleString()}.00 Securely
                 </button>
 

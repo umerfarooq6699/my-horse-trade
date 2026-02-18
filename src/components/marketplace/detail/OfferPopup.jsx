@@ -2,11 +2,15 @@
 
 import { X, Gavel, DollarSign } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function OfferPopup({ isOpen, onClose, horse }) {
     const [bidAmount, setBidAmount] = useState("");
+    const router = useRouter();
 
-    // Disable background scroll when popup is open
+
+
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -22,7 +26,15 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`Bid of $${bidAmount} placed for ${horse.name}! (Simulation)`);
+        const currentBid = Number(bidAmount);
+        const previousHighestBid = horse.price - 5000;
+
+        if (currentBid <= previousHighestBid) {
+            alert(`Your bid must be greater than the previous highest bid ($${previousHighestBid.toLocaleString()})`);
+            return;
+        }
+
+        router.push("/auction-won");
         onClose();
     };
 

@@ -29,47 +29,38 @@ export default function EscrowDepositPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] pb-20 pt-8">
+        <div className="min-h-screen bg-[#F8FAFC] pb-9 sm:pb-20 pt-5 sm:pt-6">
             <div className="container-width mx-auto px-6 lg:px-14">
 
-                {/* Breadcrumbs */}
-                <nav className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-8">
-                    <Link href="/" className="hover:text_color transition-colors">Home</Link>
-                    <ChevronRight size={12} strokeWidth={3} className="text-gray-300" />
-                    <span className="hover:text_color cursor-pointer transition-colors">Transaction #4092</span>
-                    <ChevronRight size={12} strokeWidth={3} className="text-gray-300" />
-                    <span className="text-[#1e293b]">Escrow Deposit</span>
-                </nav>
-
                 {/* Header Section */}
-                <div className="text-center mb-8">
+                <div className="text-center mb-3">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 mb-6">
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
                         <span className="text-[11px] font-black text-green-600 uppercase tracking-widest">Auction Won</span>
                     </div>
-                    <h1 className="text-5xl lg:text-6xl font-black text-[#1e293b] mb-4 tracking-tight">
+                    <h1 className="mobile_heading lg_heading text-5xl lg:text-6xl mb-4 tracking-tight">
                         Congratulations! <span className="text-gray-400">You Won!</span>
                     </h1>
-                    <p className="text-[17px] font-bold text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                    <p className="mobile_para max-w-2xl mx-auto leading-relaxed">
                         You are the highest bidder for <span className="text-[#1e293b] font-black">{mockData.horse.name}</span>. Let's make it official and start the transfer process.
                     </p>
                 </div>
 
                 {/* Stepper */}
-                <div className="mb-14">
+                <div className="sm:mb-10">
                     <AuctionWonStepper currentStep={3} />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
                     {/* Left Column: Payment Form */}
-                    <div className="lg:col-span-8 bg-white rounded-[32px] p-10 border border-gray-100 shadow-sm">
+                    <div className="lg:col-span-8 bg-white rounded-[10px] sm:rounded-[20px] p-4 sm:p-10 border border-gray-100 shadow-sm">
                         <div className="mb-10">
-                            <h2 className="text-4xl font-black text-[#1e293b] tracking-tight mb-2">Secure Escrow Deposit</h2>
-                            <p className="text-[15px] font-bold text-gray-400">Step 3 of 4: Your funds are held safely until you confirm delivery.</p>
+                            <h2 className="mobile_heading lg_heading text-4xl tracking-tight mb-2">Secure Escrow Deposit</h2>
+                            <p className="mobile_para">Step 3 of 4: Your funds are held safely until you confirm delivery.</p>
                         </div>
 
-                        <div className="space-y-2 mb-8">
-                            <span className="block text-[11px] font-black text-gray-400 uppercase tracking-widest">Select Payment Method</span>
+                        <div className="space-y-2">
+                            <span className="block text-[14px] font-[700] text-gray-600">Select Payment Method</span>
                             <PaymentMethodTabs activeMethod={paymentMethod} onMethodChange={setPaymentMethod} />
                         </div>
 

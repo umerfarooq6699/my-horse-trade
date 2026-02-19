@@ -37,7 +37,7 @@ export default function AuctionWonPage() {
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
                         <span className="text-[11px] font-black text-green-600 uppercase tracking-widest">Auction Won</span>
                     </div>
-                    <h1 className="mobile_heading sm:text-6xl mb-4 tracking-tight">
+                    <h1 className="mobile_heading lg_heading sm:text-6xl mb-4 tracking-tight">
                         Congratulations! <span className="text-gray-400">You Won!</span>
                     </h1>
                     <p className="mobile_para sm:font-[600] sm:text-[17px] max-w-2xl mx-auto">

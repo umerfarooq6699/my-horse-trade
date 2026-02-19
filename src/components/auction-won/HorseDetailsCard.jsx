@@ -19,7 +19,7 @@ export default function HorseDetailsCard({ horse }) {
                 <div>
                     <div className="flex justify-between items-start mb-4">
                         <div>
-                            <h2 className="mobile_heading sm:text-3xl tracking-tight">{horse.name}</h2>
+                            <h2 className="mobile_heading lg_heading sm:text-3xl tracking-tight">{horse.name}</h2>
                             <p className="mobile_para mt-1">
                                 {horse.breed} • {horse.gender} • {horse.age} Years Old
                             </p>
@@ -32,13 +32,13 @@ export default function HorseDetailsCard({ horse }) {
 
                     <div className="flex gap-12">
                         <div>
-                            <span className="block text-[14px] mb-1 text-gray-500">Winning Bid</span>
-                            <span className="text-[20px] font-[700] text-gray-900 transition-all hover:text_color cursor-default">
+                            <span className="block mobile_para mb-1">Winning Bid</span>
+                            <span className="mobile_heading lg_heading transition-all hover:text_color cursor-default">
                                 ${horse.winningBid?.toLocaleString()}
                             </span>
                         </div>
                         <div>
-                            <span className="block text-[14px] text-gray-500 mb-1">Location</span>
+                            <span className="block mobile_para mb-1">Location</span>
                             <div className="flex items-center gap-1.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text_color"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
                                 <span className="text-sm font-bold text-[#1e293b]">{horse.location}</span>

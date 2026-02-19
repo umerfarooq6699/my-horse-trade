@@ -12,8 +12,8 @@ export default function AgreementAcceptance() {
     const isFormValid = agreementChecked && inspectionChecked && signature.trim().length > 0;
 
     return (
-        <div className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm space-y-8 mt-6">
-            <h3 className="text-lg font-black text-[#1e293b] tracking-tight">Acceptance</h3>
+        <div className="bg-white rounded-[10px] sm:rounded-[20px] p-4 sm:p-8 border border-gray-100 shadow-sm space-y-3 sm:space-y-8 mt-6">
+            <h3 className="mobile_heading lg_heading">Acceptance</h3>
 
             <div className="space-y-6">
                 {/* Checkbox 1 */}
@@ -29,8 +29,8 @@ export default function AgreementAcceptance() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${agreementChecked ? 'scale-100' : 'scale-0'}`}><polyline points="20 6 9 17 4 12" /></svg>
                         </div>
                     </div>
-                    <span className="text-[12px] font-bold text-gray-600 group-hover:text-gray-900 transition-colors leading-relaxed">
-                        I have read and agree to the <span className="text_color cursor-pointer hover:underline">Terms of Service</span> and <span className="text_color cursor-pointer hover:underline">Privacy Policy</span>.
+                    <span className="text-[12px] text-gray-500">
+                        I have read and agree to the <span className="text_color font-[700] cursor-pointer hover:underline">Terms of Service</span> and <span className="text_color font-[700] cursor-pointer hover:underline">Privacy Policy</span>.
                     </span>
                 </label>
 
@@ -47,21 +47,21 @@ export default function AgreementAcceptance() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${inspectionChecked ? 'scale-100' : 'scale-0'}`}><polyline points="20 6 9 17 4 12" /></svg>
                         </div>
                     </div>
-                    <span className="text-[12px] font-bold text-gray-600 group-hover:text-gray-900 transition-colors leading-relaxed">
+                    <span className="text-[12px] text-gray-500">
                         I accept the 48-hour inspection window terms as described in Article 4.
                     </span>
                 </label>
             </div>
 
             <div className="space-y-3">
-                <span className="block text-[10px] font-black text-gray-500 uppercase tracking-widest">Digital Signature</span>
+                <span className="block text-[12px] font-[800] text-black uppercase tracking-widest">Digital Signature</span>
                 <div className="relative">
                     <input
                         type="text"
                         placeholder="Type full name to sign"
                         value={signature}
                         onChange={(e) => setSignature(e.target.value)}
-                        className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-6 py-4 text-sm font-black text-[#1e293b] focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all placeholder:text-gray-400"
+                        className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-6 py-4 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all placeholder:text-gray-400"
                     />
                     {signature.length > 0 && (
                         <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
@@ -70,7 +70,7 @@ export default function AgreementAcceptance() {
                         </div>
                     )}
                 </div>
-                <p className="text-[10px] font-bold text-gray-500">By typing your name, you are electronically signing this agreement.</p>
+                <p className="text-[12px] text-gray-500">By typing your name, you are electronically signing this agreement.</p>
             </div>
 
             <div className="space-y-4 pt-2">

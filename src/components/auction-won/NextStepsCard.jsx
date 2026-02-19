@@ -23,10 +23,10 @@ export default function NextStepsCard() {
     ];
 
     return (
-        <div className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm space-y-8 flex-1">
+        <div className="bg-white rounded-[10px] sm:rounded-[20px] p-4 sm:p-8 border border-gray-100 shadow-sm space-y-8 flex-1">
             <div className="flex items-center gap-3">
                 <ListTodo size={18} className="text_color" />
-                <h3 className="text-sm font-black text-[#1e293b] tracking-tight">Next Steps</h3>
+                <h3 className="mobile_heading lg_heading">Next Steps</h3>
             </div>
 
             <div className="space-y-8">
@@ -36,8 +36,8 @@ export default function NextStepsCard() {
                             {step.isCompleted ? <CheckCircle2 size={24} strokeWidth={2.5} /> : <Circle size={24} strokeWidth={2.5} />}
                         </div>
                         <div className="space-y-1">
-                            <h4 className={`text-sm font-black ${step.isCompleted ? "text-[#1e293b]" : "text-gray-500"}`}>{step.title}</h4>
-                            <p className="text-[12px] font-bold text-gray-400 leading-relaxed">
+                            <h4 className={`mobile_heading !text-sm ${step.isCompleted ? "text-[#1e293b]" : "text-gray-500"}`}>{step.title}</h4>
+                            <p className="mobile_para !text-[12px] !leading-relaxed">
                                 {step.description}
                             </p>
                         </div>

@@ -23,15 +23,15 @@ export default function EscrowTrustBadges() {
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 border-t border-gray-100 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:pt-12 border-t border-gray-100 mt-12">
             {badges.map((badge, idx) => (
                 <div key={idx} className="flex items-center gap-4 group">
                     <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg_color/5 group-hover:text_color transition-all duration-300">
                         <badge.icon size={22} strokeWidth={2} />
                     </div>
                     <div>
-                        <h4 className="text-sm font-black text-[#1e293b] mb-1">{badge.title}</h4>
-                        <p className="text-[12px] font-bold text-gray-400 leading-tight">{badge.description}</p>
+                        <h4 className="mobile_heading lg_heading !text-sm mb-1">{badge.title}</h4>
+                        <p className="mobile_para !leading-tight">{badge.description}</p>
                     </div>
                 </div>
             ))}

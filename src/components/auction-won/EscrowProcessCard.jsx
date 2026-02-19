@@ -26,18 +26,18 @@ export default function EscrowProcessCard() {
     ];
 
     return (
-        <div className="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm space-y-8 mt-6">
-            <h3 className="text-lg font-black text-[#1e293b] tracking-tight">How Escrow Works</h3>
+        <div className="bg-white rounded-[10px] sm:rounded-[20px] p-4 sm:p-8 border border-gray-100 shadow-sm space-y-8 mt-6">
+            <h3 className="mobile_heading lg_heading">How Escrow Works</h3>
 
-            <div className="space-y-10 relative pl-4">
+            <div className="space-y-5 md:space-y-10 relative pl-4">
                 {/* Connection Line */}
                 <div className="absolute left-[31px] top-4 bottom-4 w-0.5 bg-gray-50 z-0"></div>
 
                 {steps.map((step) => (
                     <div key={step.id} className="relative z-10 flex gap-6">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 shrink-0 transition-all ${step.status === 'completed'
-                                ? "bg_color border_color text-white"
-                                : "bg-white border-gray-100 text-gray-300"
+                            ? "bg_color border_color text-white"
+                            : "bg-white border-gray-100 text-gray-300"
                             }`}>
                             {step.status === 'completed' ? (
                                 <Check size={16} strokeWidth={4} />
@@ -46,11 +46,11 @@ export default function EscrowProcessCard() {
                             )}
                         </div>
                         <div className="space-y-1.5">
-                            <h4 className={`text-[12px] font-black uppercase tracking-widest transition-colors ${step.status === 'completed' ? "text-[#1e293b]" : "text-gray-400"
+                            <h4 className={`mobile_heading !text-[14px] !font-[700] transition-colors ${step.status === 'completed' ? "text-[#1e293b]" : "text-gray-400"
                                 }`}>
                                 {step.title}
                             </h4>
-                            <p className="text-[12px] font-bold text-gray-400 leading-relaxed max-w-[200px]">
+                            <p className="mobile_para !leading-relaxed max-w-[200px]">
                                 {step.description}
                             </p>
                         </div>

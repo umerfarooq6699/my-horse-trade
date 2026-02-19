@@ -11,7 +11,7 @@ export default function NextStepCard() {
             <div className="bg-white rounded-[10px] dm:rounded-[20px] p-4 sm:p-8 border border-gray-100 shadow-sm relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg_color opacity-[0.03] rounded-bl-full -mr-12 -mt-12 transition-all duration-500 group-hover:scale-110"></div>
 
-                <h3 className="mobile_heading sm:text-2xl mb-4">Next Step: Contract</h3>
+                <h3 className="mobile_heading lg_heading sm:text-2xl mb-4">Next Step: Contract</h3>
                 <p className="mobile_para mb-2 sm:mb-8">
                     Please review and digitally sign the bill of sale to initiate the escrow funding phase.
                 </p>
@@ -32,7 +32,7 @@ export default function NextStepCard() {
 
             {/* Help Card */}
             <div className="bg-gray-50/50 rounded-[10px] bg-white sm:rounded-[20px] p-5 sm:p-8 border border-dashed border-gray-200">
-                <h4 className="mobile_heading sm:text-2xl mb-6">Need help with this trade?</h4>
+                <h4 className="mobile_heading lg_heading sm:text-2xl mb-6">Need help with this trade?</h4>
                 <div className="space-y-5">
                     <a href="#" className="flex items-center gap-4 text-gray-500 hover:text_color transition-colors group">
                         <div className="p-2 bg-white rounded-lg border border-gray-100 group-hover:border_color transition-colors">

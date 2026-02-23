@@ -84,14 +84,15 @@ export default function HorseGrid({ viewMode }) {
                 ))}
             </div>
 
-            <div className="mt-12 flex justify-center">
-                <button className="flex items-center gap-3 px-8 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 font-bold hover:bg-gray-50 transition-all shadow-sm">
-                    <div className="w-5 h-5 flex items-center justify-center border-2 border-[var(--theme-color)] rounded-md">
-                        <div className="w-1.5 h-1.5 bg-[var(--theme-color)] rounded-full"></div>
+            <div className="mt-7 sm:mt-12 flex justify-center">
+                <button className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-3 bg_color text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100/50">
+                    <div className="w-5 h-5 flex items-center justify-center border-2 border-white/30 rounded-md">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                     </div>
                     Load More Horses
                 </button>
             </div>
+
         </div>
     );
 }

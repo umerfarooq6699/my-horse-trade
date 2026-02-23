@@ -22,11 +22,11 @@ export default function HorseCard({ horse }) {
     return (
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden group hover:shadow-xl hover:shadow-gray-100 transition-all duration-300 flex flex-col h-full">
             {/* Image Container */}
-            <div className="relative h-56 overflow-hidden">
+            <div className="relative h-[160px] overflow-hidden">
                 <img
                     src={image}
                     alt={name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full sm:h-full h-[160px] object-cover group-hover:scale-110 transition-transform duration-500"
                 />
 
                 {/* Badges */}
@@ -55,31 +55,31 @@ export default function HorseCard({ horse }) {
             </div>
 
             {/* Content Container */}
-            <div className="p-5 flex flex-col flex-1">
-                <div className="mb-4">
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text_color transition-colors mb-1">{name}</h3>
-                    <p className="text-sm text-gray-500">{breed}</p>
+            <div className="p-2 sm:p-5 flex flex-col flex-1">
+                <div className="mb-2 sm:mb-4">
+                    <h3 className="mobile_heading lg_leading">{name}</h3>
+                    <p className="mobile_para">{breed}</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-y-4 gap-x-2 mb-6">
+                <div className="grid grid-cols-2 gap-y-2 sm:gap-y-4 gap-x-2 mb-2 sm:mb-6">
                     <div className="flex items-center gap-2 text-gray-600">
-                        <Calendar size={16} className="text_color opacity-30" />
-                        <span className="text-xs font-medium">{age} Years</span>
+                        <Calendar size={16} className="text_color" />
+                        <span className="mobile_para">{age} Years</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-600">
-                        <Ruler size={16} className="text_color opacity-30" />
-                        <span className="text-xs font-medium">{height} hh</span>
+                        <Ruler size={16} className="text_color" />
+                        <span className="mobile_para">{height} hh</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-600 col-span-2">
-                        <MapPin size={16} className="text_color opacity-30" />
-                        <span className="text-xs font-medium">{location}</span>
+                        <MapPin size={16} className="text_color" />
+                        <span className="mobile_para">{location}</span>
                     </div>
                 </div>
 
-                <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
+                <div className="mt-auto sm:pt-4 border-t border-gray-50 flex items-center justify-between">
                     <div>
-                        <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-0.5">Price</p>
-                        <p className="text-lg font-extrabold text-gray-900">${price.toLocaleString()}</p>
+                        <p className="mobile_para">Price</p>
+                        <p className="mobile_heading lg_leading">${price.toLocaleString()}</p>
                     </div>
                     <Link
                         href={`/marketplace/${horse.id || 1}`}
@@ -89,6 +89,7 @@ export default function HorseCard({ horse }) {
                         <ChevronRight size={14} strokeWidth={3} />
                     </Link>
                 </div>
+
             </div>
         </div>
     );

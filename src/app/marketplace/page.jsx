@@ -7,6 +7,7 @@ import HorseGrid from "@/components/marketplace/HorseGrid";
 
 export default function MarketplacePage() {
     const [viewMode, setViewMode] = useState('grid');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [activeFilters, setActiveFilters] = useState([
         { id: 1, label: "Price: $5k-$25k" },
         { id: 2, label: "Warmblood" },
@@ -20,10 +21,10 @@ export default function MarketplacePage() {
 
     return (
         <main className="min-h-screen bg-white">
-            <div className="container-width px-6 py-8">
+            <div className="container-width px-3 sm:px-6 py-4 sm:py-8">
                 <div className="flex flex-col md:flex-row gap-8">
                     {/* Sidebar */}
-                    <FilterSidebar />
+                    <FilterSidebar isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
 
                     {/* Main Content */}
                     <div className="flex-1">
@@ -32,6 +33,7 @@ export default function MarketplacePage() {
                             onRemoveFilter={removeFilter}
                             viewMode={viewMode}
                             setViewMode={setViewMode}
+                            onOpenFilters={() => setIsFilterOpen(true)}
                         />
                         <HorseGrid viewMode={viewMode} />
                     </div>

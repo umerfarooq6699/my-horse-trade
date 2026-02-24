@@ -8,20 +8,20 @@ export default function MetricsSection() {
     const [height, setHeight] = useState(16.2);
 
     return (
-        <section className="bg-white rounded-[32px] p-4 md:p-8 border border-gray-100 shadow-sm md:mb-8">
-            <div className="flex items-center gap-3 mb-8">
+        <section className="bg-white rounded-[10px] sm:rounded-[20px] p-4 md:p-5 border border-gray-100 shadow-sm md:mb-8">
+            <div className="flex items-center gap-3 mb-4 md:mb-6">
                 <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                     <Activity size={20} strokeWidth={2} />
                 </div>
-                <h2 className="text-xl font-bold text-[#1e293b]">Metrics</h2>
+                <h2 className="text-[20px] font-[700] text-[#1e293b]">Metrics</h2>
             </div>
 
-            <div className="flex flex-col gap-10">
+            <div className="grid grid-cols-1 gap-3 md:gap-6">
                 {/* Age Slider */}
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center justify-between">
-                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Age (Years)</label>
-                        <span className="text-[13px] font-bold text_color">{age} yrs</span>
+                        <label className="text-[12px] md:text-[14px] font-bold text-[#1e293b] ml-1">Age (Years)</label>
+                        <span className="text-[15px] font-bold text_color">{age} yrs</span>
                     </div>
                     <div className="relative w-full h-1.5 bg-gray-100 rounded-full group">
                         <input
@@ -51,8 +51,8 @@ export default function MetricsSection() {
                 {/* Height Slider */}
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center justify-between">
-                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Height (Hands)</label>
-                        <span className="text-[13px] font-bold text_color">{height.toFixed(1)} hh</span>
+                        <label className="text-[12px] md:text-[14px] font-bold text-[#1e293b] ml-1">Height (Hands)</label>
+                        <span className="text-[15px] font-bold text_color">{height.toFixed(1)} hh</span>
                     </div>
                     <div className="relative w-full h-1.5 bg-gray-100 rounded-full group">
                         <input

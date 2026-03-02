@@ -9,12 +9,12 @@ const topics = [
 
 export default function QuickTopicsSection() {
     return (
-        <section className="bg-white rounded-[32px] p-4 md:p-8 border border-gray-100 shadow-sm">
-            <div className="flex items-center gap-3 mb-6">
+        <section className="bg-white rounded-[10px] sm:rounded-[20px] p-4 md:p-4 border border-gray-100 shadow-sm md:mb-8">
+            <div className="flex items-center gap-3 mb-4 md:mb-6">
                 <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                     <PlusCircle size={20} strokeWidth={2} />
                 </div>
-                <h2 className="text-xl font-bold text-[#1e293b]">Quick Topics</h2>
+                <h2 className="text-[20px] font-[700] text-[#1e293b]">Quick Topics</h2>
             </div>
 
             <div className="flex flex-col gap-6">

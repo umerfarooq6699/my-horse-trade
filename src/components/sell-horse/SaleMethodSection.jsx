@@ -7,7 +7,7 @@ export default function SaleMethodSection() {
     const [method, setMethod] = useState("Auction"); // "Fixed" or "Auction"
 
     return (
-        <section className="bg-white rounded-[10px] md:rounded-[20px] p-4 md:p-5 border border-gray-100 shadow-sm">
+        <section className="bg-white rounded-[10px] md:rounded-[20px] p-4 md:p-4 border border-gray-100 shadow-sm">
             <div className="flex items-center gap-3 mb-4 md:mb-6">
                 <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                     <Tag size={20} strokeWidth={2.5} />
@@ -17,29 +17,29 @@ export default function SaleMethodSection() {
 
             <div className="flex flex-col gap-8">
                 {/* Method Toggle */}
-                <div className="flex gap-3 md:gap-4">
+                <div className="flex w-full gap-2 md:gap-4">
                     <button
                         onClick={() => setMethod("Fixed")}
-                        className={`flex flex-col items-center justify-center gap-2 p-3 md:p-4 w-[110px] md:w-[140px] aspect-square rounded-[15px] md:rounded-[20px] border-2 transition-all ${method === 'Fixed'
-                            ? 'border_color bg-blue-50/30'
-                            : 'border-gray-100 hover:border-gray-200 bg-gray-50/30'
+                        className={`flex flex-1 items-center justify-center gap-1.5 md:gap-2.5 py-3 md:py-4 px-2 md:px-4 rounded-[12px] md:rounded-[15px] border-2 transition-all ${method === 'Fixed'
+                            ? 'border_color bg-blue-50/5'
+                            : 'border-gray-50 bg-gray-50/30 hover:border-gray-200'
                             }`}
                     >
-                        <Tag size={20} className={method === 'Fixed' ? 'text_color' : 'text-gray-300'} />
-                        <span className={`text-[10px] md:text-[12px] font-bold uppercase text-center leading-tight ${method === 'Fixed' ? 'text-[#1e293b]' : 'text-gray-400'
+                        <Tag size={16} className={method === 'Fixed' ? 'text_color' : 'text-gray-400'} strokeWidth={2.5} />
+                        <span className={`text-[10px] md:text-[13px] font-bold uppercase whitespace-nowrap ${method === 'Fixed' ? 'text-[#1e293b]' : 'text-gray-400'
                             }`}>
                             Fixed Price
                         </span>
                     </button>
                     <button
                         onClick={() => setMethod("Auction")}
-                        className={`flex flex-col items-center justify-center gap-2 p-3 md:p-4 w-[110px] md:w-[140px] aspect-square rounded-[15px] md:rounded-[20px] border-2 transition-all ${method === 'Auction'
-                            ? 'border_color bg-blue-50/30'
-                            : 'border-gray-100 hover:border-gray-200 bg-gray-50/30'
+                        className={`flex flex-1 items-center justify-center gap-1.5 md:gap-2.5 py-3 md:py-4 px-2 md:px-4 rounded-[12px] md:rounded-[15px] border-2 transition-all ${method === 'Auction'
+                            ? 'border_color bg-blue-50/5'
+                            : 'border-gray-50 bg-gray-50/30 hover:border-gray-200'
                             }`}
                     >
-                        <Gavel size={20} className={method === 'Auction' ? 'text_color' : 'text-gray-300'} />
-                        <span className={`text-[10px] md:text-[12px] font-bold uppercase ${method === 'Auction' ? 'text-[#1e293b]' : 'text-gray-400'
+                        <Gavel size={16} className={method === 'Auction' ? 'text_color' : 'text-gray-400'} strokeWidth={2.5} />
+                        <span className={`text-[10px] md:text-[13px] font-bold uppercase whitespace-nowrap ${method === 'Auction' ? 'text-[#1e293b]' : 'text-gray-400'
                             }`}>
                             Auction
                         </span>

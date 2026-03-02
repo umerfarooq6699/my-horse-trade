@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import HorseCard from "./HorseCard";
 import image1 from "../../assets/images/marketplace1.png";
 import image2 from "../../assets/images/marketplace2.png";
@@ -17,8 +18,10 @@ const trendingHorses = [
         age: 5,
         price: 28500,
         location: "Kentucky, USA",
+        height: "16.2",
         image: image2.src,
-        tag: "Trending"
+        tag: "Trending",
+        isPremium: true
     },
     {
         id: 2,
@@ -27,8 +30,10 @@ const trendingHorses = [
         age: 3,
         price: 42000,
         location: "Dubai, UAE",
+        height: "15.1",
         image: image3.src,
-        tag: "Trending"
+        tag: "Trending",
+        isVerified: true
     },
     {
         id: 3,
@@ -37,6 +42,7 @@ const trendingHorses = [
         age: 4,
         price: 55000,
         location: "Netherlands",
+        height: "16.1",
         image: image4.src,
         tag: "Trending"
     },
@@ -47,6 +53,7 @@ const trendingHorses = [
         age: 6,
         price: 88000,
         location: "Texas, USA",
+        height: "15.2",
         image: image5.src,
         tag: "Trending"
     },
@@ -57,6 +64,7 @@ const trendingHorses = [
         age: 5,
         price: 32000,
         location: "Spain",
+        height: "15.3",
         image: image6.src,
         tag: "Trending"
     }
@@ -68,7 +76,7 @@ export default function TrendingHorses() {
     const scroll = (direction) => {
         const container = scrollContainerRef.current;
         if (container) {
-            const scrollAmount = 350; // Approx card width + gap
+            const scrollAmount = 350;
             const targetScroll = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
             container.scrollTo({
                 left: targetScroll,
@@ -81,7 +89,7 @@ export default function TrendingHorses() {
         <section className="bg-white mobile_spaces lg_spaces">
             <div className="container-width">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-8 gap-4">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
                             <span className="text-orange-500">
@@ -89,30 +97,36 @@ export default function TrendingHorses() {
                             </span>
                             <span className="text_color font-bold text-xs tracking-widest uppercase">Hot Right Now</span>
                         </div>
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Trending Horses</h2>
+                        <h2 className="mobile_heading lg_heading">Trending Horses</h2>
                     </div>
 
                     {/* Slider Controls */}
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={() => scroll('left')}
-                            className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-600 hover:border-[var(--theme-color)] hover:text-[var(--theme-color)] transition-all hover:shadow-md bg-white"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
-                        </button>
-                        <button
-                            onClick={() => scroll('right')}
-                            className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-600 hover:border-[var(--theme-color)] hover:text-[var(--theme-color)] transition-all hover:shadow-md bg-white"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
-                        </button>
+                    <div className="flex items-center gap-8">
+                        <Link href="/marketplace" className="hidden md:flex items-center gap-1 text_color font-semibold hover:text-[var(--theme-color)] transition-colors group">
+                            See Trending Horses
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6" /></svg>
+                        </Link>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => scroll('left')}
+                                className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-600 hover:border-[var(--theme-color)] hover:text-[var(--theme-color)] transition-all hover:shadow-md bg-white"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                            </button>
+                            <button
+                                onClick={() => scroll('right')}
+                                className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-600 hover:border-[var(--theme-color)] hover:text-[var(--theme-color)] transition-all hover:shadow-md bg-white"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 {/* Slider Container */}
                 <div
                     ref={scrollContainerRef}
-                    className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide"
+                    className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     {trendingHorses.map((horse) => (

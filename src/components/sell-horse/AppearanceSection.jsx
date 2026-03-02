@@ -28,7 +28,7 @@ export default function AppearanceSection() {
     };
 
     return (
-        <section className="bg-white rounded-[20px] p-4 md:p-5 border border-gray-100 shadow-sm md:mb-8">
+        <section className="bg-white rounded-[10px] sm:rounded-[20px] p-4 md:p-4 border border-gray-100 shadow-sm md:mb-8">
             <div className="flex items-center gap-3 mb-4 md:mb-6">
                 <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                     <Paintbrush size={20} strokeWidth={2} />

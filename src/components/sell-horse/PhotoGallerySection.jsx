@@ -3,80 +3,101 @@
 import { useState } from "react";
 import { UploadCloud, X, Camera } from "lucide-react";
 
-const initialPhotos = [
-    { id: 1, url: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?q=80&w=400", isCover: true },
-    { id: 2, url: "https://images.unsplash.com/photo-1598974357851-cb810e7486a4?q=80&w=400", isCover: false },
-    { id: 3, url: "https://images.unsplash.com/photo-1534073733321-e126c897a936?q=80&w=400", isCover: false },
-];
+const initialPhotos = [];
 
-export default function PhotoGallerySection() {
-    const [photos, setPhotos] = useState(initialPhotos);
+export default function PhotoGallerySection({ photos, setPhotos }) {
+
+    const handleUpload = (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
+        const newPhotos = files.slice(0, 10 - photos.length).map((file, index) => ({
+            id: Date.now() + index,
+            url: URL.createObjectURL(file),
+            isCover: photos.length === 0 && index === 0
+        }));
+
+        setPhotos(prev => [...prev, ...newPhotos]);
+    };
+
+    const removePhoto = (id) => {
+        setPhotos(prev => {
+            const filtered = prev.filter(p => p.id !== id);
+            // If we removed the cover photo, set a new one if photos still exist
+            if (filtered.length > 0 && !filtered.some(p => p.isCover)) {
+                filtered[0].isCover = true;
+            }
+            return filtered;
+        });
+    };
 
     return (
-        <section className="bg-white rounded-[32px] p-3 md:p-8 border border-gray-100 shadow-sm md:mb-8">
-            <div className="flex items-center justify-between mb-8">
+        <section className="bg-white rounded-[10px] sm:rounded-[20px] p-4 md:p-8 border border-gray-100 shadow-sm md:mb-8">
+            <div className="flex items-center justify-between mb-6 md:mb-8 ">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
-                        <Camera size={20} strokeWidth={2} />
+                        <Camera size={20} className="text_color" />
                     </div>
-                    <h2 className="text-xl font-bold text-[#1e293b]">Photo Gallery</h2>
+                    <h2 className="text-[20px] md:text-[24px] font-[600] text-[#1e293b]">Photo Gallery</h2>
                 </div>
-                <span className="px-3 py-1 bg-gray-50 rounded-full text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                    {photos.length}/10 Uploaded
-                </span>
+                <div className="bg-[#f8faff] px-4 py-1.5 rounded-lg border border-gray-100">
+                    <span className="text-[12px] font-bold text-gray-400">
+                        {photos.length}/10 Uploaded
+                    </span>
+                </div>
             </div>
 
             <div className="flex flex-col gap-6">
                 {/* Upload Area */}
-                <div className="relative border-2 border-dashed border-gray-100 rounded-[32px] p-3 md:p-8 flex flex-col items-center justify-center gap-4 hover:border_color hover:bg-blue-50/10 transition-all cursor-pointer group">
-                    <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text_color group-hover:scale-110 transition-transform">
-                        <UploadCloud size={32} />
+                <div className=" relative bg-[#f8faff] border-2 border-dashed border-blue-100/50 rounded-[10px] md:rounded-[20px] p-4 md:p-8 flex flex-col items-center justify-center gap-5 hover:bg-blue-50/50 transition-all cursor-pointer group">
+                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                        <UploadCloud size={32} className="text_color" />
                     </div>
                     <div className="text-center">
-                        <p className="text-[15px] font-bold text-[#1e293b] mb-1">Click to upload or drag photos here</p>
-                        <p className="text-[11px] font-medium text-gray-400 uppercase tracking-widest">JPG, PNG or WEBP (Max 15MB)</p>
+                        <p className="text-[16px] md:text-[19px] font-[550] text-[#1e293b] mb-1">Click to upload or drag photos here</p>
+                        <p className="mobile_para">JPG, PNG or WEBP (Max 15MB)</p>
                     </div>
-                    <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" multiple />
+                    <input
+                        type="file"
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        multiple
+                        accept="image/*"
+                        onChange={handleUpload}
+                    />
                 </div>
 
                 {/* Photo Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {photos.map((photo) => (
-                        <div key={photo.id} className="relative group aspect-square rounded-2xl overflow-hidden border border-gray-100">
-                            <img src={photo.url} alt="Horse" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                {photos.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-4">
+                        {photos.map((photo) => (
+                            <div key={photo.id} className="relative group aspect-square rounded-xl overflow-hidden border border-gray-100">
+                                <img src={photo.url} alt="Horse" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
 
-                            {/* Overlay */}
-                            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                <button className="p-2 bg-white rounded-xl text-red-500 hover:scale-110 transition-transform shadow-sm">
-                                    <X size={16} strokeWidth={3} />
-                                </button>
-                            </div>
-
-                            {/* Badge */}
-                            {photo.isCover && (
-                                <div className="absolute bottom-0 left-0 w-full bg_color py-2 text-center">
-                                    <span className="text-[9px] font-bold text-white uppercase tracking-widest">Cover Photo</span>
+                                {/* Overlay */}
+                                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-end p-1.5">
+                                    <button
+                                        onClick={() => removePhoto(photo.id)}
+                                        className="p-1 bg-white/90 backdrop-blur-sm rounded-lg text-red-500 hover:bg-white hover:scale-110 transition-all shadow-sm"
+                                    >
+                                        <X size={14} strokeWidth={2.5} />
+                                    </button>
                                 </div>
-                            )}
 
-                            {/* Selection Status */}
-                            {photo.isCover && (
-                                <div className="absolute inset-0 border-4 border_color rounded-2xl pointer-events-none"></div>
-                            )}
-                        </div>
-                    ))}
+                                {/* Badge */}
+                                {photo.isCover && (
+                                    <div className="absolute bottom-0 left-0 w-full bg_color py-1.5 text-center">
+                                        <span className="text-[8px] font-bold text-white uppercase tracking-widest">Cover Photo</span>
+                                    </div>
+                                )}
 
-                    {/* Mock Uploading State */}
-                    <div className="relative aspect-square rounded-2xl border border-gray-100 bg-gray-50/50 flex flex-col items-center justify-center p-4">
-                        <button className="absolute top-2 right-2 text-gray-300">
-                            <X size={14} />
-                        </button>
-                        <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden mb-3">
-                            <div className="w-2/3 h-full bg_color animate-progress"></div>
-                        </div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Uploading... 66%</p>
+                                {/* Selection Status */}
+                                {photo.isCover && (
+                                    <div className="absolute inset-0 border-[3px] border_color rounded-xl pointer-events-none"></div>
+                                )}
+                            </div>
+                        ))}
                     </div>
-                </div>
+                )}
             </div>
         </section>
     );

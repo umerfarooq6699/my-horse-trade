@@ -20,18 +20,18 @@ export default function InclusionsTermsSection() {
     };
 
     return (
-        <section className="bg-white rounded-[32px] p-4 md:p-8 border border-gray-100 shadow-sm">
-            <div className="flex items-center gap-3 mb-8">
+        <section className="bg-white rounded-[10px] sm:rounded-[20px] p-4 md:p-4 border border-gray-100 shadow-sm md:mb-8">
+            <div className="flex items-center gap-3 mb-4 md:mb-6">
                 <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                     <ClipboardCheck size={20} strokeWidth={2} />
                 </div>
-                <h2 className="text-xl font-bold text-[#1e293b]">Inclusions & Terms</h2>
+                <h2 className="text-[20px] font-[700] text-[#1e293b]">Inclusions & Terms</h2>
             </div>
 
             <div className="flex flex-col gap-8">
                 {/* Checklist */}
                 <div className="flex flex-col gap-4">
-                    <label className="text-[11px] font-bold text-[#1e293b] uppercase tracking-widest ml-1">What is included in the sale?</label>
+                    <label className="text-[12px] md:text-[14px] font-bold text-[#1e293b] ml-1">What is included in the sale?</label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {inclusions.map((item) => (
                             <button
@@ -61,10 +61,10 @@ export default function InclusionsTermsSection() {
 
                 {/* Disclaimers */}
                 <div className="flex flex-col gap-2">
-                    <label className="text-[11px] font-bold text-[#1e293b] uppercase tracking-widest ml-1">Disclaimers / Special Conditions</label>
+                    <label className="text-[12px] md:text-[14px] font-bold text-[#1e293b] ml-1">Disclaimers / Special Conditions</label>
                     <textarea
                         placeholder="Enter any additional terms or conditions here..."
-                        className="w-full h-32 bg-gray-50/50 border border-gray-100 rounded-2xl px-6 py-4 text-[13px] font-medium text-[#1e293b] placeholder:font-light placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all resize-none"
+                        className="w-full h-32 bg-gray-50/50 border border-gray-100 rounded-[5px] md:rounded-2xl px-4 py-2 md:py-3.5 text-[12px] font-medium text-[#1e293b] placeholder:font-light placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all resize-none"
                     />
                 </div>
             </div>

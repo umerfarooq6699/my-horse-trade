@@ -13,7 +13,7 @@ export default function SellHorsePage() {
             nextLink="/sell-horse/visuals"
         >
             <div className="flex flex-col gap-2 mb-5 md:mb-9">
-                <h1 className="mobile_heading lg_heading">List Your Asset</h1>
+                <h1 className="text-xl md:text-4xl font-[700] md:font-[600] text-black uppercase tracking-tight">List Your Asset</h1>
                 <p className="mobile_para">Create a new premium listing. Reach global buyers instantly.</p>
             </div>
 

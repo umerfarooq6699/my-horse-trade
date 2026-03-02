@@ -13,8 +13,10 @@ const featuredHorses = [
         age: 5,
         price: 32000,
         location: "Scotland, UK",
+        height: "17.2",
         image: image1.src,
-        tag: "Featured"
+        tag: "Featured",
+        isPremium: true
     },
     {
         id: 6,
@@ -23,8 +25,10 @@ const featuredHorses = [
         age: 6,
         price: 45000,
         location: "Spain",
+        height: "15.3",
         image: image2.src,
-        tag: "Active"
+        tag: "Active",
+        isVerified: true
     },
     {
         id: 7,
@@ -33,8 +37,10 @@ const featuredHorses = [
         age: 7,
         price: 28000,
         location: "Germany",
+        height: "16.2",
         image: image3.src,
-        tag: "Best Deal"
+        tag: "Best Deal",
+        isNew: true
     },
     {
         id: 8,
@@ -43,6 +49,7 @@ const featuredHorses = [
         age: 4,
         price: 18500,
         location: "Texas, USA",
+        height: "15.0",
         image: image4.src,
         tag: null
     }
@@ -56,7 +63,7 @@ export default function FeaturedHorses() {
                     title="Featured Horses"
                     subtitle="Hand-Picked For You"
                     linkText="View All Featured"
-                    linkUrl="#"
+                    linkUrl="/marketplace"
                 />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

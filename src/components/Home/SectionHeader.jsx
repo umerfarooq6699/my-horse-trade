@@ -1,13 +1,13 @@
 export default function SectionHeader({ title, subtitle, linkText, linkUrl }) {
     return (
-        <div className="flex items-end justify-between mb-8 md:mb-12">
+        <div className="flex items-end justify-between mb-6 md:mb-8">
             <div>
                 {subtitle && (
                     <span className="text_color font-semibold text-sm tracking-uppercase mb-2 block uppercase tracking-wider">
                         {subtitle}
                     </span>
                 )}
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+                <h2 className="mobile_heading lg_heading">
                     {title}
                 </h2>
             </div>

@@ -85,7 +85,7 @@ export default function HorseGrid({ viewMode }) {
             </div>
 
             <div className="mt-7 sm:mt-12 flex justify-center">
-                <button className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-3 bg_color text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100/50">
+                <button className="flex items-center justify-center cursor-pointer gap-3 w-full sm:w-auto px-8 py-3 bg_color text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100/50">
                     <div className="w-5 h-5 flex items-center justify-center border-2 border-white/30 rounded-md">
                         <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                     </div>

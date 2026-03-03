@@ -3,11 +3,17 @@
 import { useState, useEffect } from "react";
 import { Filter, X, ChevronDown, Check } from "lucide-react";
 
-const breeds = [
-    { name: "Thoroughbred", count: 124 },
-    { name: "Warmblood", count: 86 },
+const breedsData = [
     { name: "Arabian", count: 42 },
-    { name: "Quarter Horse", count: 33 },
+    { name: "Thoroughbred", count: 124 },
+    { name: "American Quarter Horse", count: 33 },
+    { name: "Friesian", count: 18 },
+    { name: "Andalusian", count: 15 },
+    { name: "Appaloosa", count: 22 },
+    { name: "Dutch Warmblood", count: 45 },
+    { name: "Hanoverian", count: 38 },
+    { name: "Paint Horse", count: 27 },
+    { name: "Clydesdale", count: 12 },
 ];
 
 const temperaments = [
@@ -24,11 +30,49 @@ const colors = [
     { name: "Gray", code: "#F5F5F5" },
 ];
 
+const quickFiltersData = [
+    { name: "Featured", count: 124 },
+    { name: "Top Rated", count: 86 },
+    { name: "Trending", count: 42 },
+];
+
 export default function FilterSidebar({ isOpen, onClose }) {
     const [minPrice, setMinPrice] = useState(5000);
     const [maxPrice, setMaxPrice] = useState(50000);
     const [height, setHeight] = useState(17.2);
     const [age, setAge] = useState(12);
+    const [showAllBreeds, setShowAllBreeds] = useState(false);
+    const [selectedBreeds, setSelectedBreeds] = useState([]);
+    const [selectedTemperaments, setSelectedTemperaments] = useState([]);
+    const [selectedQuickFilters, setSelectedQuickFilters] = useState([]);
+
+    const toggleQuickFilter = (name) => {
+        setSelectedQuickFilters(prev =>
+            prev.includes(name) ? prev.filter(f => f !== name) : [...prev, name]
+        );
+    };
+
+    const handleResetAll = () => {
+        setMinPrice(5000);
+        setMaxPrice(50000);
+        setHeight(17.2);
+        setAge(12);
+        setSelectedBreeds([]);
+        setSelectedTemperaments([]);
+        setSelectedQuickFilters([]);
+    };
+
+    const toggleBreed = (name) => {
+        setSelectedBreeds(prev =>
+            prev.includes(name) ? prev.filter(b => b !== name) : [...prev, name]
+        );
+    };
+
+    const toggleTemperament = (name) => {
+        setSelectedTemperaments(prev =>
+            prev.includes(name) ? prev.filter(t => t !== name) : [...prev, name]
+        );
+    };
 
     const handleMinPriceChange = (e) => {
         const value = Math.min(Number(e.target.value), maxPrice - 1000);
@@ -48,7 +92,47 @@ export default function FilterSidebar({ isOpen, onClose }) {
                 onClick={onClose}
             ></div>
 
-            <aside className={`fixed md:sticky top-0 md:top-24 left-0 h-full md:h-[calc(100vh-120px)] w-[280px] md:w-64 z-[60] md:z-0 bg-white md:bg-transparent pr-12 py-8 md:py-0 px-6 md:px-0 transition-transform md:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} md:flex-shrink-0 md:border-r md:border-gray-100 overflow-y-auto sidebar-scrollbar`}>
+            <aside className={`fixed md:sticky top-0 md:top-24 left-0 h-full md:h-[calc(100vh-120px)] w-[280px] md:w-64 z-[60] md:z-0 bg-white md:bg-transparent pr-4 md:pr-8 py-8 md:py-0 px-6 md:px-0 transition-transform md:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} md:flex-shrink-0 md:border-r md:border-gray-100 overflow-y-auto sidebar-scrollbar`}>
+
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6 md:hidden">
+                    <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+                    <button onClick={handleResetAll} className="text-sm font-medium text-gray-400 hover:text_color transition-colors">Reset All</button>
+                </div>
+
+                {/* Desktop Header Hidden but logic shared */}
+                <div className="hidden md:flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2">
+                        <Filter size={18} className="text_color" />
+                        <h2 className="text-lg font-bold text-[#0F172A]">Filters</h2>
+                    </div>
+                    <button onClick={handleResetAll} className="text-sm font-medium text-gray-400 hover:text_color transition-colors">Reset All</button>
+                </div>
+
+                {/* Quick Filters */}
+                <div className="mb-2 pt-2 sm:mb-8 border-t border-gray-200">
+                    <h3 className="font-semibold text-gray-900 text-sm mb-4 mt-2">Quick Filters</h3>
+                    <div className="space-y-2 sm:space-y-3">
+                        {quickFiltersData.map((filter) => (
+                            <label
+                                key={filter.name}
+                                className="flex items-center justify-between group cursor-pointer"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    toggleQuickFilter(filter.name);
+                                }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-5 h-5 border rounded flex items-center justify-center transition-colors ${selectedQuickFilters.includes(filter.name) ? 'border-[var(--theme-color)] bg-[var(--theme-color)]/90' : 'border-gray-200 group-hover:border-[var(--theme-color)]'}`}>
+                                        <Check size={12} className={`text-white transition-opacity ${selectedQuickFilters.includes(filter.name) ? 'opacity-100' : 'opacity-0'}`} />
+                                    </div>
+                                    <span className={`text-sm transition-colors ${selectedQuickFilters.includes(filter.name) ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>{filter.name}</span>
+                                </div>
+                                <span className="text-xs text-gray-400">{filter.count}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
 
                 {/* Price Range */}
                 <div className="mb-2 pt-2 sm:mb-8 border-t border-gray-200">
@@ -126,19 +210,31 @@ export default function FilterSidebar({ isOpen, onClose }) {
                 <div className="mb-2 pt-2 sm:mb-8 sm:pt-6 border-t border-gray-200">
                     <h3 className="font-semibold text-gray-900 text-sm mb-4">Breed</h3>
                     <div className="space-y-2 sm:space-y-3">
-                        {breeds.map((breed) => (
-                            <label key={breed.name} className="flex items-center justify-between group cursor-pointer">
+                        {(showAllBreeds ? breedsData : breedsData.slice(0, 4)).map((breed) => (
+                            <label
+                                key={breed.name}
+                                className="flex items-center justify-between group cursor-pointer"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    toggleBreed(breed.name);
+                                }}
+                            >
                                 <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 border border-gray-200 rounded flex items-center justify-center group-hover:border-[var(--theme-color)] transition-colors">
-                                        <Check size={12} className="text-white bg-[var(--theme-color)] rounded-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    <div className={`w-5 h-5 border rounded flex items-center justify-center transition-colors ${selectedBreeds.includes(breed.name) ? 'border-[var(--theme-color)] bg-[var(--theme-color)]/90' : 'border-gray-200 group-hover:border-[var(--theme-color)]'}`}>
+                                        <Check size={12} className={`text-white transition-opacity ${selectedBreeds.includes(breed.name) ? 'opacity-100' : 'opacity-0'}`} />
                                     </div>
-                                    <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">{breed.name}</span>
+                                    <span className={`text-sm transition-colors ${selectedBreeds.includes(breed.name) ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>{breed.name}</span>
                                 </div>
                                 <span className="text-xs text-gray-400">{breed.count}</span>
                             </label>
                         ))}
                     </div>
-                    <button className="mt-4 text-xs font-medium text-[var(--theme-color)] hover:underline">+ Show more breeds</button>
+                    <button
+                        onClick={() => setShowAllBreeds(!showAllBreeds)}
+                        className="mt-4 text-xs font-medium text-[var(--theme-color)] hover:underline cursor-pointer"
+                    >
+                        {showAllBreeds ? "- Show less breeds" : "+ Show more breeds"}
+                    </button>
                 </div>
 
                 {/* Temperament */}
@@ -146,12 +242,19 @@ export default function FilterSidebar({ isOpen, onClose }) {
                     <h3 className="font-semibold text-gray-900 text-sm mb-4">Temperament</h3>
                     <div className="space-y-2 sm:space-y-3">
                         {temperaments.map((temp) => (
-                            <label key={temp.name} className="flex items-center justify-between group cursor-pointer">
+                            <label
+                                key={temp.name}
+                                className="flex items-center justify-between group cursor-pointer"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    toggleTemperament(temp.name);
+                                }}
+                            >
                                 <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 border border-gray-200 rounded flex items-center justify-center group-hover:border-[var(--theme-color)] transition-colors">
-                                        <Check size={12} className="text-white bg-[var(--theme-color)] rounded-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    <div className={`w-5 h-5 border rounded flex items-center justify-center transition-colors ${selectedTemperaments.includes(temp.name) ? 'border-[var(--theme-color)] bg-[var(--theme-color)]/90' : 'border-gray-200 group-hover:border-[var(--theme-color)]'}`}>
+                                        <Check size={12} className={`text-white transition-opacity ${selectedTemperaments.includes(temp.name) ? 'opacity-100' : 'opacity-0'}`} />
                                     </div>
-                                    <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">{temp.name}</span>
+                                    <span className={`text-sm transition-colors ${selectedTemperaments.includes(temp.name) ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>{temp.name}</span>
                                 </div>
                                 <span className="text-xs text-gray-400">{temp.count}</span>
                             </label>

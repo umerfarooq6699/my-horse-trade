@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function PersonalInformation() {
     const [formData, setFormData] = useState({
@@ -11,7 +11,9 @@ export default function PersonalInformation() {
     });
 
     const [bioLength, setBioLength] = useState(0);
+    const [profileImage, setProfileImage] = useState(null);
     const maxBioLength = 500;
+    const fileInputRef = useRef(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,6 +26,25 @@ export default function PersonalInformation() {
         });
     };
 
+    const handleUploadClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setProfileImage(imageUrl);
+        }
+    };
+
+    const handleRemovePhoto = () => {
+        setProfileImage(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
+
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -34,11 +55,15 @@ export default function PersonalInformation() {
             {/* Profile Photo Section */}
             <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-50 flex items-center justify-center flex-shrink-0 border border-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
-                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                            <circle cx="12" cy="7" r="4" />
-                        </svg>
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-50 flex items-center justify-center flex-shrink-0 border border-gray-100 overflow-hidden">
+                        {profileImage ? (
+                            <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        )}
                     </div>
                     <div className="flex-1 text-center sm:text-left">
                         <h3 className="text-sm font-bold text-gray-900 mb-1">Profile Photo</h3>
@@ -46,10 +71,23 @@ export default function PersonalInformation() {
                             This image will be shown on your profile and next to your listings. PNG, JPG or GIF, max 10MB.
                         </p>
                         <div className="flex flex-col sm:flex-row items-center gap-2">
-                            <button className="w-full sm:w-auto px-6 py-2 text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                accept="image/*"
+                                className="hidden"
+                            />
+                            <button
+                                onClick={handleRemovePhoto}
+                                className="w-full sm:w-auto px-6 py-2 text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
                                 Remove
                             </button>
-                            <button className="w-full sm:w-auto px-6 py-2 text-sm font-bold text-white bg_color rounded-lg hover:opacity-90 transition-opacity">
+                            <button
+                                onClick={handleUploadClick}
+                                className="w-full sm:w-auto px-6 py-2 text-sm font-bold text-white bg_color rounded-lg hover:opacity-90 transition-opacity"
+                            >
                                 Upload New
                             </button>
                         </div>

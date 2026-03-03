@@ -7,7 +7,15 @@ const topics = [
     "Trailer Loading", "Ideal Home", "Vices & Quirks"
 ];
 
-export default function QuickTopicsSection() {
+export default function QuickTopicsSection({ formik }) {
+    const toggleTopic = (topic) => {
+        const currentTopics = formik.values.quick_topics;
+        const newTopics = currentTopics.includes(topic)
+            ? currentTopics.filter(t => t !== topic)
+            : [...currentTopics, topic];
+        formik.setFieldValue("quick_topics", newTopics);
+    };
+
     return (
         <section className="bg-white rounded-[10px] sm:rounded-[20px] p-4 md:p-4 border border-gray-100 shadow-sm md:mb-8">
             <div className="flex items-center gap-3 mb-4 md:mb-6">
@@ -28,10 +36,15 @@ export default function QuickTopicsSection() {
                     {topics.map((topic) => (
                         <button
                             key={topic}
-                            className="px-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-[13px] font-bold text-[#1e293b] hover:bg-blue-50 hover:border_color/30 hover:text_color transition-all text-left group flex items-center justify-between"
+                            type="button"
+                            onClick={() => toggleTopic(topic)}
+                            className={`px-4 py-3 border rounded-2xl text-[13px] font-bold transition-all text-left group flex items-center justify-between ${formik.values.quick_topics.includes(topic)
+                                ? 'bg-blue-50 border_color/30 text_color'
+                                : 'bg-gray-50/50 border-gray-100 text-[#1e293b] hover:bg-blue-50 hover:border_color/30 hover:text_color'
+                                }`}
                         >
                             {topic}
-                            <PlusCircle size={14} className="text-gray-300 group-hover:text_color transition-colors" />
+                            <PlusCircle size={14} className={`${formik.values.quick_topics.includes(topic) ? 'text_color' : 'text-gray-300'} group-hover:text_color transition-colors`} />
                         </button>
                     ))}
                 </div>

@@ -20,32 +20,32 @@ export default function ForgotPasswordPage() {
     });
 
     return (
-        <main className="min-h-screen bg-[#FDFDFD] flex flex-col items-center justify-center p-4 sm:p-6 pt-[74px] bg-gradient-to-tr from-[#f8faff] via-white to-[#fdfdfd]">
+        <main className="min-h-screen bg-[#FDFDFD] flex flex-col items-center justify-center p-4 sm:p-6 pt-[89px] md:pt-[87px] bg-gradient-to-tr from-[#f8faff] via-white to-[#fdfdfd]">
             <div className="flex-1 flex items-center justify-center w-full">
-                <div className="bg-white w-full max-w-[500px] rounded-[32px] p-6 sm:p-10 shadow-2xl shadow-blue-100/50 border border-gray-50 flex flex-col items-center text-center">
+                <div className="bg-white w-full max-w-[500px] rounded-[32px] p-3 md:p-6 sm:p-10 shadow-2xl shadow-blue-100/50 border border-gray-50 flex flex-col items-center text-center">
                     {/* Icon */}
-                    <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-8">
+                    <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-3">
                         <RotateCcw className="text_color" size={32} />
                     </div>
 
-                    <h1 className="text-xl sm:text-2xl font-bold text-[#0F172A] mb-3">Reset Password</h1>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-10 leading-relaxed px-4">
+                    <h1 className="text-xl sm:text-2xl font-bold text-[#0F172A] mb-1.5 md:mb-3">Reset Password</h1>
+                    <p className="text-gray-400 text-xs sm:text-sm mb-3 md:mb-7 leading-relaxed px-4">
                         Don't worry, it happens. Enter the email associated with your account and we'll send you a recovery link.
                     </p>
 
-                    <form onSubmit={formik.handleSubmit} className="w-full space-y-8">
+                    <form onSubmit={formik.handleSubmit} className="w-full space-y-6">
                         <div className="space-y-2 text-left">
-                            <label className="text-sm font-bold text-[#0F172A] ml-1">Email Address</label>
+                            <label className="text-sm font-bold text-gray-700 ml-1">Email Address</label>
                             <div className="relative group">
                                 <input
                                     type="email"
                                     name="email"
-                                    placeholder=""
-                                    className={`w-full pl-12 pr-5 py-4 bg-gray-50/50 border rounded-2xl focus:outline-none transition-all text-sm ${formik.touched.email && formik.errors.email ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
+                                    placeholder="Enter your email"
+                                    className={`w-full pl-11 pr-5 py-2.5 mt-1 bg-gray-50/50 border rounded-[10px] focus:outline-none transition-all text-sm ${formik.touched.email && formik.errors.email ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
                                         }`}
                                     {...formik.getFieldProps("email")}
                                 />
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 flex items-center justify-center">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color transition-colors mt-0.5">
                                     <Mail size={20} />
                                 </div>
                             </div>
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
                         <button
                             type="submit"
                             disabled={formik.isSubmitting}
-                            className="w-full bg_color text-white py-4 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
+                            className="w-full bg_color text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
                         >
                             Send Reset Link
                         </button>

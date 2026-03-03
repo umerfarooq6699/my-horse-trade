@@ -17,11 +17,11 @@ export default function SellHorseLayout({ children, currentStep = 1, nextLink = 
                         {children}
 
                         {/* Bottom Actions - Now aligned with form content */}
-                        <div className="mt-5 bg-white rounded-[10px] md:rounded-[20px] p-4 sm:p-5 border border-gray-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+                        <div className=" mt-5 bg-white rounded-[10px] md:rounded-[20px] p-3 sm:p-3 border border-gray-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
                             <div className="flex items-center gap-3 w-full sm:w-auto">
                                 <button
                                     onClick={onSaveDraft}
-                                    className="flex-1 sm:flex-none px-4 sm:px-6 py-4 text-[13px] sm:text-[14px] font-bold text-gray-500 bg-gray-50/50 rounded-2xl hover:bg-gray-100 transition-all border border-gray-100/50 whitespace-nowrap"
+                                    className=" flex-1 sm:flex-none px-4 sm:px-6 py-3 text-[13px] sm:text-[14px] font-bold text-white bg_color rounded-[10px] hover:opacity-90 transition-all border border-gray-100/50 whitespace-nowrap cursor-pointer"
                                 >
                                     Save as Draft
                                 </button>
@@ -35,7 +35,7 @@ export default function SellHorseLayout({ children, currentStep = 1, nextLink = 
                             <div className="flex items-center w-full sm:w-auto">
                                 <Link
                                     href={backLink}
-                                    className="hidden sm:flex px-8 py-4 text-[14px] font-bold text-[#1e293b] bg-[#f8fafc] rounded-2xl hover:bg-gray-100 transition-all mr-4 items-center justify-center min-w-[120px]"
+                                    className="hidden sm:flex px-8 py-3 text-[14px] font-bold text-[#1e293b] bg-gray-300 rounded-[10px] hover:bg-gray-200 transition-all mr-4 items-center justify-center min-w-[120px]"
                                 >
                                     Back
                                 </Link>
@@ -47,7 +47,7 @@ export default function SellHorseLayout({ children, currentStep = 1, nextLink = 
                                 ) : (
                                     <Link
                                         href={nextLink}
-                                        className="w-full sm:w-auto px-6 sm:px-10 py-4 text-[13px] sm:text-[14px] font-bold text-white bg_color rounded-2xl hover:opacity-90 transition-all shadow-lg shadow-blue-100 flex items-center justify-center gap-2 group whitespace-nowrap"
+                                        className=" w-full sm:w-auto px-6 sm:px-10 py-3 text-[13px] sm:text-[14px] font-bold text-white bg_color rounded-[10px] hover:opacity-90 transition-all shadow-lg shadow-blue-100 flex items-center justify-center gap-2 group whitespace-nowrap"
                                     >
                                         Next Step
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>

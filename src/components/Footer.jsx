@@ -4,9 +4,9 @@ import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="bg-[rgb(15,23,42)] border-t border-gray-100 pt-16 pb-8">
-            <div className="container-width px-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <footer className="mobile_spaces lg_spaces bg-[rgb(15,23,42)] border-t border-gray-100">
+            <div className="">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-y-8 mb-12">
                     {/* Brand Section */}
                     <div className="col-span-1 md:col-span-1">
                         <Link href="/" className="flex items-center gap-2 mb-6">
@@ -23,7 +23,7 @@ export default function Footer() {
                     </div>
 
                     {/* Quick Links */}
-                    <div>
+                    <div className="md:ml-12">
                         <h4 className="font-semibold text-white mb-6">Platform</h4>
                         <ul className="space-y-4 text-sm text-gray-500">
                             <li><Link href="/" className="hover:text-[var(--theme-color)] transition-colors">Home</Link></li>
@@ -48,13 +48,13 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-white mb-6">Newsletter</h4>
                         <p className="text-sm text-gray-500 mb-4">Subscribe to get the latest horse listings.</p>
-                        <form className="flex gap-2">
+                        <form className="flex flex-col sm:flex-row gap-3">
                             <input
                                 type="email"
                                 placeholder="Enter email"
-                                className="flex-1 px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--theme-color)] focus:border-transparent"
+                                className="w-full sm:flex-1 px-4 py-2.5 bg-white/5 text-white text-sm border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--theme-color)] focus:border-transparent transition-all placeholder:text-gray-600"
                             />
-                            <button className="bg_color text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-colors">
+                            <button type="button" className="cursor-pointer w-full sm:w-auto bg_color text-white px-8 py-2.5 rounded-lg text-sm font-bold hover:opacity-90 transition-all uppercase tracking-wide">
                                 Join
                             </button>
                         </form>

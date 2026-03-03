@@ -34,32 +34,72 @@ export default function SignupForm() {
         }
     });
 
+    const inputs = [
+        {
+            name: "fullName",
+            label: "Full Name",
+            placeholder: "Enter your full name",
+            type: "text",
+            icon: <User size={20} />
+        },
+        {
+            name: "emailAddress",
+            label: "Email Address",
+            placeholder: "your@email.com",
+            type: "email",
+            icon: <Mail size={20} />
+        }
+    ];
+
+    const passwordInputs = [
+        {
+            name: "password",
+            label: "Password",
+            placeholder: "••••••••",
+            isPassword: true
+        },
+        {
+            name: "confirmPassword",
+            label: "Confirm",
+            placeholder: "••••••••",
+            isPassword: true,
+            hideIcon: true
+        }
+    ];
+
     return (
-        <div className="w-full max-w-lg mx-auto py-4 px-6 lg:px-0 h-full flex flex-col justify-center">
+        <div className="w-full max-w-lg mx-auto py-4 px-3 md:px-6 lg:px-0 h-full flex flex-col justify-center">
             <div className="bg-white rounded-[32px] border border-gray-100 shadow-xl shadow-gray-100/50 flex flex-col max-h-[90vh] lg:max-h-[85vh]">
                 <form onSubmit={formik.handleSubmit} className="flex flex-col flex-1 overflow-hidden">
                     {/* Scrollable Content Area (Header + Fields) */}
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
                         {/* Header Area (Inside Scroll) */}
-                        <div className="p-5 sm:p-6 lg:p-8 pb-0">
+                        <div className="pt-6 sm:p-6 lg:pb-4 pb-0 px-2">
                             <div className="mb-6 text-center lg:text-left">
                                 <h2 className="text-xl sm:text-2xl font-bold text-[#0F172A] mb-1 leading-tight">Create Account</h2>
                                 <p className="text-gray-500 text-[10px] sm:text-xs font-medium">Enter your details to access the platform.</p>
                             </div>
 
                             {/* Social Logins */}
-                            <div className="grid grid-cols-2 gap-3 mb-6">
-                                <button type="button" className="flex items-center justify-center gap-3 px-6 py-3 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all font-semibold text-[#0F172A] text-sm">
-                                    <img src="https://www.google.com/favicon.ico" alt="Google" className="w-4 h-4 grayscale opacity-70" />
+                            <div className="grid grid-cols-2 gap-3 mb-5">
+                                <button type="button" className="cursor-pointer flex items-center justify-center gap-3 px-6 py-3 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all font-semibold text-[#0F172A] text-sm">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z" fill="#EA4335" />
+                                    </svg>
                                     Google
                                 </button>
-                                <button type="button" className="flex items-center justify-center gap-3 px-6 py-3 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all font-semibold text-[#0F172A] text-sm">
-                                    <img src="https://www.apple.com/favicon.ico" alt="Apple" className="w-4 h-4 grayscale opacity-70" />
+                                <button type="button" className="cursor-pointer flex items-center justify-center gap-3 px-6 py-3 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all font-semibold text-[#0F172A] text-sm">
+                                    <svg viewBox="0 0 256 315" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M213.803 167.03c.442 47.58 41.74 63.413 42.147 63.581-.443 1.218-6.606 22.514-21.726 44.5-13.114 18.983-26.69 37.893-47.886 38.291-20.8 0-27.674-12.8-51.536-12.8-23.863 0-31.544 12.4-51.13 13.2-20.404.793-35.986-20.574-49.207-39.46-27.06-38.69-47.58-109.184-19.682-157.653 13.845-24.033 38.646-39.243 65.522-39.642 20.404-.413 39.643 13.623 52.22 13.623 12.553 0 35.59-16.892 59.943-14.419 10.193.442 38.85 4.104 57.306 31.026-1.488.928-34.116 19.897-33.723 60.154M177.37.001c11.028 1.341 27.674 9.1 35.152 17.892 6.694 7.79 12.684 19.467 10.155 30.9-.387.897-2.345 2.541-3.66 3.01-10.873 1.474-27.423-6.522-35.253-15.82C176.471 28.514 171.196 15.659 177.37 0z" fill="#000000" />
+                                    </svg>
                                     Apple
                                 </button>
                             </div>
 
-                            <div className="relative mb-6">
+                            <div className="relative mb-2">
                                 <div className="absolute inset-0 flex items-center">
                                     <div className="w-full border-t border-gray-100"></div>
                                 </div>
@@ -70,89 +110,58 @@ export default function SignupForm() {
                         </div>
 
                         {/* Fields (Inside Scroll) */}
-                        <div className="px-5 sm:px-6 lg:p-8 pt-0 space-y-4">
-                            {/* Full Name */}
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-700 ml-1">Full Name</label>
-                                <div className="relative group">
-                                    <input
-                                        type="text"
-                                        name="fullName"
-                                        placeholder="Enter your full name"
-                                        className={`w-full pl-11 pr-4 py-3 bg-gray-50/50 border rounded-xl focus:outline-none transition-all text-sm ${formik.touched.fullName && formik.errors.fullName ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
-                                            }`}
-                                        {...formik.getFieldProps("fullName")}
-                                    />
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color transition-colors">
-                                        <User size={20} />
+                        <div className=" pt-3 px-3 sm:px-6 lg:pb-5 lg:pt-1 space-y-2 md:space-y-4">
+                            {inputs.map((input) => (
+                                <div key={input.name} className="space-y-2">
+                                    <label className="text-sm font-bold text-gray-700 ml-1">{input.label}</label>
+                                    <div className="relative group">
+                                        <input
+                                            type={input.type}
+                                            name={input.name}
+                                            placeholder={input.placeholder}
+                                            className={`w-full pl-11 pr-4 py-2.5 mt-1 bg-gray-50/50 border rounded-[10px] focus:outline-none transition-all text-sm ${formik.touched[input.name] && formik.errors[input.name] ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
+                                                }`}
+                                            {...formik.getFieldProps(input.name)}
+                                        />
+                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color transition-colors">
+                                            {input.icon}
+                                        </div>
                                     </div>
+                                    {formik.touched[input.name] && formik.errors[input.name] && (
+                                        <p className="text-red-500 text-xs ml-1 font-medium">{formik.errors[input.name]}</p>
+                                    )}
                                 </div>
-                                {formik.touched.fullName && formik.errors.fullName && (
-                                    <p className="text-red-500 text-xs ml-1 font-medium">{formik.errors.fullName}</p>
-                                )}
-                            </div>
-
-                            {/* Email */}
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-700 ml-1">Email Address</label>
-                                <div className="relative group">
-                                    <input
-                                        type="email"
-                                        name="emailAddress"
-                                        placeholder="your@email.com"
-                                        className={`w-full pl-11 pr-4 py-3 bg-gray-50/50 border rounded-xl focus:outline-none transition-all text-sm ${formik.touched.emailAddress && formik.errors.emailAddress ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
-                                            }`}
-                                        {...formik.getFieldProps("emailAddress")}
-                                    />
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color transition-colors">
-                                        <Mail size={20} />
-                                    </div>
-                                </div>
-                                {formik.touched.emailAddress && formik.errors.emailAddress && (
-                                    <p className="text-red-500 text-xs ml-1 font-medium">{formik.errors.emailAddress}</p>
-                                )}
-                            </div>
+                            ))}
 
                             {/* Password Row */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-700 ml-1">Password</label>
-                                    <div className="relative">
-                                        <input
-                                            type={showPassword ? "text" : "password"}
-                                            name="password"
-                                            placeholder="••••••••"
-                                            className={`w-full pl-4 pr-11 py-3 bg-gray-50/50 border rounded-xl focus:outline-none transition-all text-sm ${formik.touched.password && formik.errors.password ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
-                                                }`}
-                                            {...formik.getFieldProps("password")}
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text_color transition-colors"
-                                        >
-                                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                                        </button>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-2 md:gap-x-6">
+                                {passwordInputs.map((input) => (
+                                    <div key={input.name} className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700 ml-1">{input.label}</label>
+                                        <div className="relative">
+                                            <input
+                                                type={input.name === "password" ? (showPassword ? "text" : "password") : "password"}
+                                                name={input.name}
+                                                placeholder={input.placeholder}
+                                                className={`w-full ${input.name === "password" ? "pl-4 pr-11" : "px-4"} mt-1 py-2.5 bg-gray-50/50 border rounded-[10px] focus:outline-none transition-all text-sm ${formik.touched[input.name] && formik.errors[input.name] ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
+                                                    }`}
+                                                {...formik.getFieldProps(input.name)}
+                                            />
+                                            {input.name === "password" && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text_color transition-colors"
+                                                >
+                                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                                </button>
+                                            )}
+                                        </div>
+                                        {formik.touched[input.name] && formik.errors[input.name] && (
+                                            <p className="text-red-500 text-xs ml-1 font-medium">{formik.errors[input.name]}</p>
+                                        )}
                                     </div>
-                                    {formik.touched.password && formik.errors.password && (
-                                        <p className="text-red-500 text-xs ml-1 font-medium">{formik.errors.password}</p>
-                                    )}
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-700 ml-1">Confirm</label>
-                                    <input
-                                        type="password"
-                                        name="confirmPassword"
-                                        placeholder="••••••••"
-                                        className={`w-full px-4 py-3 bg-gray-50/50 border rounded-xl focus:outline-none transition-all text-sm ${formik.touched.confirmPassword && formik.errors.confirmPassword ? "border-red-300 bg-red-50/10" : "border-gray-100 focus:border-blue-300 focus:bg-white"
-                                            }`}
-                                        {...formik.getFieldProps("confirmPassword")}
-                                    />
-                                    {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-                                        <p className="text-red-500 text-xs ml-1 font-medium">{formik.errors.confirmPassword}</p>
-                                    )}
-                                </div>
+                                ))}
                             </div>
 
                             {/* Agree Terms */}
@@ -165,7 +174,7 @@ export default function SignupForm() {
                                     {...formik.getFieldProps("agreeTerms")}
                                 />
                                 <label htmlFor="agreeTerms" className="text-sm text-gray-500 font-medium cursor-pointer">
-                                    I agree to the <Link href="#" className="text_color hover:underline">Terms of Service</Link> and <Link href="#" className="text_color hover:underline">Privacy Policy</Link>.
+                                    I agree to the <Link href="/terms-and-conditions" className="text_color hover:underline">Terms of Service</Link> and <Link href="/privacy-policy" className="text_color hover:underline">Privacy Policy</Link>.
                                 </label>
                             </div>
                             {formik.touched.agreeTerms && formik.errors.agreeTerms && (
@@ -179,7 +188,7 @@ export default function SignupForm() {
                         <button
                             type="submit"
                             disabled={formik.isSubmitting}
-                            className="w-full flex items-center justify-center gap-2 bg_color text-white py-4 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
+                            className="w-full flex items-center justify-center gap-2 bg_color text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
                         >
                             Create Account <ArrowRight size={20} />
                         </button>

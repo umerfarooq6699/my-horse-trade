@@ -1,11 +1,7 @@
-"use client";
-
-import { useState } from "react";
 import { UploadCloud, X, Camera } from "lucide-react";
 
-const initialPhotos = [];
-
-export default function PhotoGallerySection({ photos, setPhotos }) {
+export default function PhotoGallerySection({ formik }) {
+    const photos = formik.values.images;
 
     const handleUpload = (e) => {
         const files = Array.from(e.target.files);
@@ -17,30 +13,28 @@ export default function PhotoGallerySection({ photos, setPhotos }) {
             isCover: photos.length === 0 && index === 0
         }));
 
-        setPhotos(prev => [...prev, ...newPhotos]);
+        formik.setFieldValue("images", [...photos, ...newPhotos]);
     };
 
     const removePhoto = (id) => {
-        setPhotos(prev => {
-            const filtered = prev.filter(p => p.id !== id);
-            // If we removed the cover photo, set a new one if photos still exist
-            if (filtered.length > 0 && !filtered.some(p => p.isCover)) {
-                filtered[0].isCover = true;
-            }
-            return filtered;
-        });
+        const filtered = photos.filter(p => p.id !== id);
+        // If we removed the cover photo, set a new one if photos still exist
+        if (filtered.length > 0 && !filtered.some(p => p.isCover)) {
+            filtered[0].isCover = true;
+        }
+        formik.setFieldValue("images", filtered);
     };
 
     return (
         <section className="bg-white rounded-[10px] sm:rounded-[20px] p-4 md:p-8 border border-gray-100 shadow-sm md:mb-8">
-            <div className="flex items-center justify-between mb-6 md:mb-8 ">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text_color">
                         <Camera size={20} className="text_color" />
                     </div>
-                    <h2 className="text-[20px] md:text-[24px] font-[600] text-[#1e293b]">Photo Gallery</h2>
+                    <h2 className="text-[20px] md:text-[24px] font-[600] text-[#1e293b] whitespace-nowrap">Photo Gallery</h2>
                 </div>
-                <div className="bg-[#f8faff] px-4 py-1.5 rounded-lg border border-gray-100">
+                <div className="w-fit bg-[#f8faff] px-4 py-1.5 rounded-lg border border-gray-100">
                     <span className="text-[12px] font-bold text-gray-400">
                         {photos.length}/10 Uploaded
                     </span>
@@ -49,13 +43,13 @@ export default function PhotoGallerySection({ photos, setPhotos }) {
 
             <div className="flex flex-col gap-6">
                 {/* Upload Area */}
-                <div className=" relative bg-[#f8faff] border-2 border-dashed border-blue-100/50 rounded-[10px] md:rounded-[20px] p-4 md:p-8 flex flex-col items-center justify-center gap-5 hover:bg-blue-50/50 transition-all cursor-pointer group">
+                <div className="relative bg-[#f8faff] border-2 border-dashed border-blue-100/50 rounded-[10px] md:rounded-[20px] p-3 md:p-8 flex flex-col items-center justify-center gap-5 hover:bg-blue-50/50 transition-all cursor-pointer group">
                     <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                         <UploadCloud size={32} className="text_color" />
                     </div>
                     <div className="text-center">
-                        <p className="text-[16px] md:text-[19px] font-[550] text-[#1e293b] mb-1">Click to upload or drag photos here</p>
-                        <p className="mobile_para">JPG, PNG or WEBP (Max 15MB)</p>
+                        <p className="text-[14px] md:text-[19px] font-[550] text-[#1e293b] mb-1">Click to upload or drag photos here</p>
+                        <p className="text-[12px] md:text-[14px] text-gray-400 mb-1">JPG, PNG or WEBP (Max 15MB)</p>
                     </div>
                     <input
                         type="file"
@@ -76,6 +70,7 @@ export default function PhotoGallerySection({ photos, setPhotos }) {
                                 {/* Overlay */}
                                 <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-end p-1.5">
                                     <button
+                                        type="button"
                                         onClick={() => removePhoto(photo.id)}
                                         className="p-1 bg-white/90 backdrop-blur-sm rounded-lg text-red-500 hover:bg-white hover:scale-110 transition-all shadow-sm"
                                     >

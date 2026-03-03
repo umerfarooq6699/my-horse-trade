@@ -1,10 +1,9 @@
-"use client";
-
 import { useState } from "react";
 import { Video, CheckCircle2, Youtube, UploadCloud, X } from "lucide-react";
 
-export default function VideoEvidenceSection({ videoData, setVideoData }) {
+export default function VideoEvidenceSection({ formik }) {
     const [activeTab, setActiveTab] = useState("upload"); // "upload" or "link"
+    const videoData = formik.values.video_evidence;
 
     const handleVideoUpload = (e) => {
         const files = Array.from(e.target.files);
@@ -16,17 +15,17 @@ export default function VideoEvidenceSection({ videoData, setVideoData }) {
             size: (file.size / (1024 * 1024)).toFixed(1) + " MB"
         }));
 
-        setVideoData(prev => ({
-            ...prev,
-            uploads: [...prev.uploads, ...newVideos]
-        }));
+        formik.setFieldValue("video_evidence", {
+            ...videoData,
+            uploads: [...videoData.uploads, ...newVideos]
+        });
     };
 
     const removeVideo = (id) => {
-        setVideoData(prev => ({
-            ...prev,
-            uploads: prev.uploads.filter(v => v.id !== id)
-        }));
+        formik.setFieldValue("video_evidence", {
+            ...videoData,
+            uploads: videoData.uploads.filter(v => v.id !== id)
+        });
     };
 
     return (
@@ -42,6 +41,7 @@ export default function VideoEvidenceSection({ videoData, setVideoData }) {
                 {/* Tabs */}
                 <div className="flex border-b border-gray-100 mb-2">
                     <button
+                        type="button"
                         onClick={() => setActiveTab("upload")}
                         className={`pb-4 px-4 text-[12px] font-bold uppercase tracking-wider transition-all relative ${activeTab === 'upload' ? 'text_color' : 'text-gray-400 hover:text-gray-600'
                             }`}
@@ -50,6 +50,7 @@ export default function VideoEvidenceSection({ videoData, setVideoData }) {
                         {activeTab === 'upload' && <div className="absolute bottom-[-1px] left-0 w-full h-0.5 bg_color"></div>}
                     </button>
                     <button
+                        type="button"
                         onClick={() => setActiveTab("link")}
                         className={`pb-4 px-4 text-[12px] font-bold uppercase tracking-wider transition-all relative ${activeTab === 'link' ? 'text_color' : 'text-gray-400 hover:text-gray-600'
                             }`}
@@ -79,6 +80,7 @@ export default function VideoEvidenceSection({ videoData, setVideoData }) {
                                             <CheckCircle2 size={18} strokeWidth={3} />
                                         </div>
                                         <button
+                                            type="button"
                                             onClick={() => removeVideo(video.id)}
                                             className="p-1 px-1.5 text-gray-300 hover:text-red-500 transition-colors"
                                         >
@@ -101,11 +103,12 @@ export default function VideoEvidenceSection({ videoData, setVideoData }) {
                                     <UploadCloud size={28} className="text_color" />
                                 </div>
                                 <div className="text-center">
-                                    <p className="text-[16px] md:text-[20px] font-[600] text-[#1e293b] mb-1">
+                                    <p className="text-[14px] md:text-[19px] font-[550] text-[#1e293b] mb-1">
                                         {videoData.uploads.length === 0 ? "Click to upload or drag videos here" : "Add another video"}
                                     </p>
-                                    <p className="text-[12px] md:text-[13px] font-medium text-gray-400 uppercase tracking-tight">MP4, MOV or WEBM (Max 50MB)</p>
+                                    <p className="text-[12px] md:text-[14px] text-gray-400 mb-1">MP4, MOV or WEBM (Max 50MB)</p>
                                 </div>
+
                             </div>
                         </>
                     ) : (
@@ -115,15 +118,20 @@ export default function VideoEvidenceSection({ videoData, setVideoData }) {
                                 <div className="relative">
                                     <input
                                         type="text"
+                                        name="video_evidence.link"
                                         placeholder="Paste YouTube or Vimeo link here"
                                         value={videoData.link}
-                                        onChange={(e) => setVideoData({ ...videoData, link: e.target.value })}
-                                        className="w-full bg-gray-50/50 border border-gray-100 rounded-[5px] md:rounded-2xl px-12 py-2 md:py-3.5 text-[12px] font-medium text-[#1e293b] focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        className={`w-full bg-gray-50/50 border rounded-[5px] md:rounded-2xl px-12 py-2 md:py-3.5 text-[12px] font-medium text-[#1e293b] focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all ${formik.touched.video_evidence?.link && formik.errors.video_evidence?.link ? 'border-red-500' : 'border-gray-100'}`}
                                     />
                                     <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400">
                                         <Youtube size={18} />
                                     </div>
                                 </div>
+                                {formik.touched.video_evidence?.link && formik.errors.video_evidence?.link && (
+                                    <p className="text-[10px] md:text-[11px] font-medium text-red-500 ml-1">{formik.errors.video_evidence.link}</p>
+                                )}
                             </div>
                         </div>
                     )}

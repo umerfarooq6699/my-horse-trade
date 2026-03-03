@@ -1,8 +1,8 @@
-"use client";
-
 import { FileText, Plus, Trash2, Lock } from "lucide-react";
 
-export default function DocumentsSection({ documents, setDocuments }) {
+export default function DocumentsSection({ formik }) {
+    const documents = formik.values.document;
+
     const handleDocumentUpload = (e) => {
         const files = Array.from(e.target.files);
         if (files.length === 0) return;
@@ -13,11 +13,11 @@ export default function DocumentsSection({ documents, setDocuments }) {
             status: "Private"
         }));
 
-        setDocuments(prev => [...prev, ...newDocs]);
+        formik.setFieldValue("document", [...documents, ...newDocs]);
     };
 
     const removeDocument = (id) => {
-        setDocuments(prev => prev.filter(doc => doc.id !== id));
+        formik.setFieldValue("document", documents.filter(doc => doc.id !== id));
     };
 
     return (
@@ -51,6 +51,7 @@ export default function DocumentsSection({ documents, setDocuments }) {
                                     {doc.status}
                                 </span>
                                 <button
+                                    type="button"
                                     onClick={() => removeDocument(doc.id)}
                                     className="p-2 text-gray-300 hover:text-red-500 transition-colors"
                                 >
@@ -68,7 +69,7 @@ export default function DocumentsSection({ documents, setDocuments }) {
                         onChange={handleDocumentUpload}
                         multiple
                     />
-                    <button className="w-fit cursor-pointer flex items-center gap-2 bg-gray-300 hover:bg-gray-200 border border-gray-100 px-5 py-3 rounded-2xl text_color text-[11px] font-bold uppercase tracking-wider mt-2 transition-all">
+                    <button type="button" className="w-fit cursor-pointer flex items-center gap-2 bg-gray-300 hover:bg-gray-200 border border-gray-100 px-5 py-3 rounded-[9px] text_color text-[11px] font-bold uppercase tracking-wider mt-2 transition-all">
                         <Plus size={16} strokeWidth={3} />
                         Upload Document
                     </button>

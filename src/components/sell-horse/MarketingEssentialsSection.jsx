@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Star } from "lucide-react";
 
 const tags = [
@@ -8,15 +7,13 @@ const tags = [
     "Vet Checked", "Imported"
 ];
 
-export default function MarketingEssentialsSection() {
-    const [selectedTags, setSelectedTags] = useState(["Video Available"]);
-
+export default function MarketingEssentialsSection({ formik }) {
     const toggleTag = (tag) => {
-        if (selectedTags.includes(tag)) {
-            setSelectedTags(selectedTags.filter(t => t !== tag));
-        } else {
-            setSelectedTags([...selectedTags, tag]);
-        }
+        const currentTags = formik.values.promotional_tags;
+        const newTags = currentTags.includes(tag)
+            ? currentTags.filter(t => t !== tag)
+            : [...currentTags, tag];
+        formik.setFieldValue("promotional_tags", newTags);
     };
 
     return (
@@ -34,9 +31,16 @@ export default function MarketingEssentialsSection() {
                     <label className="text-[12px] md:text-[14px] font-bold text-[#1e293b] ml-1">Listing Headline</label>
                     <input
                         type="text"
+                        name="listing_headline"
+                        value={formik.values.listing_headline}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         placeholder="e.g. Grand Prix Potential with Exceptional Lineage!"
-                        className="w-full bg-gray-50/50 border border-gray-100 rounded-[5px] md:rounded-2xl px-4 py-2 md:py-3.5 text-[12px] font-medium text-[#1e293b] placeholder:font-light placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all"
+                        className={`w-full bg-gray-50/50 border rounded-[5px] md:rounded-2xl px-4 py-2 md:py-3.5 text-[12px] font-medium text-[#1e293b] placeholder:font-light placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all ${formik.touched.listing_headline && formik.errors.listing_headline ? 'border-red-500' : 'border-gray-100'}`}
                     />
+                    {formik.touched.listing_headline && formik.errors.listing_headline && (
+                        <p className="text-[10px] md:text-[11px] font-medium text-red-500 ml-1">{formik.errors.listing_headline}</p>
+                    )}
                     <p className="text-[10px] md:text-[11px] font-medium text-gray-500 ml-1">A short, catchy phrase that appears on the search card.</p>
                 </div>
 
@@ -47,8 +51,9 @@ export default function MarketingEssentialsSection() {
                         {tags.map((tag) => (
                             <button
                                 key={tag}
+                                type="button"
                                 onClick={() => toggleTag(tag)}
-                                className={`px-5 py-2.5 rounded-full text-[12px] font-bold transition-all border ${selectedTags.includes(tag)
+                                className={`px-5 py-2.5 rounded-full text-[12px] font-bold transition-all border ${formik.values.promotional_tags.includes(tag)
                                     ? 'bg-blue-50/50 border_color text_color'
                                     : 'bg-white border-gray-100 text-gray-600 hover:border-gray-200 hover:text-[#1e293b]'
                                     }`}

@@ -6,6 +6,8 @@ import marketplace1 from "@/assets/images/marketplace1.png";
 import marketplace2 from "@/assets/images/marketplace2.png";
 import marketplace3 from "@/assets/images/marketplace3.png";
 import marketplace4 from "@/assets/images/marketplace4.png";
+import { useState } from "react";
+import TradeDetailsModal from "./TradeDetailsModal";
 
 const transactions = [
     {
@@ -51,6 +53,14 @@ const transactions = [
 ];
 
 export default function TradeHistoryTable() {
+    const [selectedTrade, setSelectedTrade] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = (trade) => {
+        setSelectedTrade(trade);
+        setIsModalOpen(true);
+    };
+
     return (
         <div className="bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden">
             {/* Table */}
@@ -106,7 +116,10 @@ export default function TradeHistoryTable() {
                                     </span>
                                 </td>
                                 <td className="py-3 text-center px-4 md:px-6">
-                                    <button className="p-2 bg-gray-50 rounded-xl text-gray-600 hover:text_color hover:bg-blue-50 transition-all">
+                                    <button
+                                        onClick={() => handleOpenModal(t)}
+                                        className="p-2 bg-gray-50 rounded-xl text-gray-600 hover:text_color hover:bg-blue-50 transition-all cursor-pointer"
+                                    >
                                         <Eye size={16} />
                                     </button>
                                 </td>
@@ -139,6 +152,13 @@ export default function TradeHistoryTable() {
                     </button>
                 </div>
             </div>
+
+            {/* Details Modal */}
+            <TradeDetailsModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                transaction={selectedTrade}
+            />
         </div>
     );
 }

@@ -45,13 +45,13 @@ export default function RecentTransactions() {
                 </button>
             </div>
 
-            <div className="flex-1 overflow-hidden">
-                <table className="w-full text-left">
+            <div className="flex-1 overflow-x-auto">
+                <table className="w-full text-left min-w-[500px]">
                     <thead>
                         <tr className="text-[10px] md:text-[11px] uppercase font-black text-gray-400 tracking-[0.15em] md:tracking-[0.2em] border-b border-gray-50">
                             <th className="pb-4 md:pb-6 text-gray-500 px-1 md:px-2">Horse</th>
-                            <th className="pb-4 md:pb-6 text-gray-500 text-center hidden sm:table-cell">Date</th>
-                            <th className="pb-4 md:pb-6 text-gray-500 text-center hidden md:table-cell">Status</th>
+                            <th className="pb-4 md:pb-6 text-gray-500 px-2">Date</th>
+                            <th className="pb-4 md:pb-6 text-gray-500 px-2">Status</th>
                             <th className="pb-4 md:pb-6 text-gray-500 text-right px-1 md:px-2">Amount</th>
                         </tr>
                     </thead>
@@ -64,29 +64,20 @@ export default function RecentTransactions() {
                                             <Image src={t.image} alt={t.horse} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <div className="text-xs md:text-sm lg:text-[15px] font-black text-gray-900 mb-0.5 tracking-tight truncate">{t.horse}</div>
-                                            <div className="text-[9px] md:text-[10px] lg:text-[11px] font-extrabold text-gray-400 uppercase tracking-wider truncate">{t.entity}</div>
-                                            {/* Show date on mobile below horse name */}
-                                            <div className="text-[9px] font-bold text-gray-500 mt-1 sm:hidden">{t.date}</div>
+                                            <div className="text-xs md:text-sm lg:text-[15px] font-[700] text-gray-900 mb-0.5 tracking-tight truncate">{t.horse}</div>
+                                            <div className="text-[9px] md:text-[10px] lg:text-[11px] font-[600] text-gray-400 uppercase tracking-wider truncate">{t.entity}</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="py-2 md:py-2 text-center text-xs md:text-[13px] font-bold text-gray-500 hidden sm:table-cell">{t.date}</td>
-                                <td className="py-2 md:py-2 text-center hidden md:table-cell">
+                                <td className="py-2 md:py-2 px-2 text-xs md:text-[13px] font-[600] text-gray-500">{t.date}</td>
+                                <td className="py-2 md:py-2 px-2">
                                     <span className={`px-3 md:px-4 lg:px-5 py-1.5 md:py-2 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest ${t.status === 'Completed' ? 'bg-blue-50 text_color' : 'bg-orange-50 text-orange-600'
                                         }`}>
                                         {t.status}
                                     </span>
                                 </td>
                                 <td className="py-4 md:py-6 text-right px-1 md:px-2">
-                                    <div className="flex flex-col items-end gap-1">
-                                        <span className="text-sm md:text-[15px] font-black text-gray-900 tracking-tighter whitespace-nowrap">{t.amount}</span>
-                                        {/* Show status on mobile below amount */}
-                                        <span className={`md:hidden px-2 py-1 rounded-full text-[8px] font-black uppercase tracking-wider ${t.status === 'Completed' ? 'bg-blue-50 text_color' : 'bg-orange-50 text-orange-600'
-                                            }`}>
-                                            {t.status}
-                                        </span>
-                                    </div>
+                                    <span className="text-sm md:text-[15px] font-[700] text-gray-900 tracking-tighter whitespace-nowrap">{t.amount}</span>
                                 </td>
                             </tr>
                         ))}
@@ -95,7 +86,7 @@ export default function RecentTransactions() {
             </div>
 
             <div className="pt-6 md:pt-8 lg:pt-5 text-center mt-auto border-t border-gray-50/50">
-                <button className="text-[10px] md:text-xs font-black text_color hover:opacity-80 uppercase tracking-[0.15em] md:tracking-[0.2em]">View Full History</button>
+                <button className="text-[10px] md:text-xs font-black text_color hover:opacity-80 uppercase tracking-[0.15em] md:tracking-[0.2em] cursor-pointer">View Full History</button>
             </div>
         </div>
     );

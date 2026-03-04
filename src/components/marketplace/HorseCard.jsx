@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import { Heart, MapPin, Ruler, Calendar, ChevronRight } from "lucide-react";
 import Link from "next/link";
 

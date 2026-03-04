@@ -4,7 +4,7 @@ import Sidebar from "@/components/profile/Sidebar";
 import FavoritesHeader from "@/components/profile/favorites/FavoritesHeader";
 import FavoritesStats from "@/components/profile/favorites/FavoritesStats";
 import FavoritesControls from "@/components/profile/favorites/FavoritesControls";
-import FavoriteHorseCard from "@/components/profile/favorites/FavoriteHorseCard";
+import HorseCard from "@/components/marketplace/HorseCard";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import marketplace1 from "@/assets/images/marketplace1.png";
@@ -25,7 +25,7 @@ const savedHorses = [
         discipline: "Dressage",
         skillLevel: "Advanced",
         location: "Kentucky, USA",
-        image: marketplace1
+        image: marketplace1.src
     },
     {
         id: 2,
@@ -37,7 +37,7 @@ const savedHorses = [
         discipline: "Endurance",
         skillLevel: "Intermediate",
         location: "Dubai, UAE",
-        image: marketplace2
+        image: marketplace2.src
     },
     {
         id: 3,
@@ -49,7 +49,7 @@ const savedHorses = [
         discipline: "Show Jumping",
         skillLevel: "Advanced",
         location: "Florida, USA",
-        image: marketplace3,
+        image: marketplace3.src,
         badge: "Hot Deal"
     },
     {
@@ -62,7 +62,7 @@ const savedHorses = [
         discipline: "Western",
         skillLevel: "Beginner",
         location: "Texas, USA",
-        image: marketplace4
+        image: marketplace4.src
     },
     {
         id: 5,
@@ -74,7 +74,7 @@ const savedHorses = [
         discipline: "Barrel Racing",
         skillLevel: "Intermediate",
         location: "Oklahoma, USA",
-        image: marketplace5
+        image: marketplace5.src
     },
     {
         id: 6,
@@ -86,7 +86,7 @@ const savedHorses = [
         discipline: "Trail Riding",
         skillLevel: "Beginner",
         location: "California, USA",
-        image: marketplace6
+        image: marketplace6.src
     }
 ];
 
@@ -117,7 +117,7 @@ export default function FavoritesPage() {
                     {/* Horse Cards Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
                         {savedHorses.map(horse => (
-                            <FavoriteHorseCard key={horse.id} horse={horse} />
+                            <HorseCard key={horse.id} horse={horse} />
                         ))}
                     </div>
                 </div>

@@ -17,7 +17,7 @@ export default function ProfilePage() {
             <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
             <main className="lg:pl-64 flex flex-col min-h-screen transition-all duration-300">
-                <div className="flex-1 px-4 py-6 md:px-8 lg:px-12 lg:py-10 pt-4 lg:pt-8 space-y-8 lg:space-y-12">
+                <div className="flex-1 px-4 py-6 md:px-8 lg:px-12 lg:py-10 pt-4 lg:pt-8 space-y-8 lg:space-y-6">
                     {/* Mobile Menu Toggle & Header */}
                     <div className="lg:hidden flex items-center justify-between bg-white px-3 py-2 md:px-6 md:py-4 rounded-2xl border border-gray-200 shadow-sm mb-4">
                         <h1 className="text-[19px] font-[600]">Profile Dashboard</h1>
@@ -30,7 +30,7 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Welcome Section */}
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between bg-white px-3 py-4 md:px-4 md:py-5 lg:px-3 lg:py-4 rounded-[32px] md:rounded-[28px] border border-gray-100 shadow-sm relative overflow-hidden group gap-3">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between bg-white px-3 py-4 md:px-4 md:py-5 lg:px-5 lg:py-4 rounded-[10px] md:rounded-[20px] border border-gray-100 shadow-sm relative overflow-hidden group gap-3">
                         <div className="relative z-10">
                             <h2 className="text-2xl md:text-4xl lg:text-2xl font-[500] text-gray-900 md:mb-1">Welcome back, <span className="text_color">Alex</span></h2>
                             <p className="mobile_para">Here&apos;s what&apos;s happening in your stable today.</p>

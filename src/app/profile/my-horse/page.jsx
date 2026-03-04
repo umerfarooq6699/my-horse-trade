@@ -22,8 +22,8 @@ const mockHorses = [
         status: "Active",
         views: "1.2k",
         favorites: 45,
-        timeAgo: "3d ago",
-        image: marketplace1
+        createdAt: new Date("2024-03-01"),
+        image: marketplace1.src
     },
     {
         id: 2,
@@ -35,8 +35,8 @@ const mockHorses = [
         status: "Active",
         views: "850",
         favorites: 22,
-        timeAgo: "1w ago",
-        image: marketplace2
+        createdAt: new Date("2024-02-15"),
+        image: marketplace2.src
     },
     {
         id: 3,
@@ -45,16 +45,67 @@ const mockHorses = [
         breed: "Friesian",
         age: 4,
         gender: "Mare",
-        status: "Pending",
-        views: "2.5k",
-        favorites: 156,
-        timeAgo: "2w ago",
-        image: marketplace3
+        status: "Draft",
+        views: "0",
+        favorites: 0,
+        createdAt: new Date("2024-03-04"),
+        image: marketplace3.src
+    },
+    {
+        id: 4,
+        name: "Silver Bullet",
+        price: 15000,
+        breed: "Thoroughbred",
+        age: 6,
+        gender: "Stallion",
+        status: "Sold",
+        views: "3.5k",
+        favorites: 89,
+        createdAt: new Date("2024-01-20"),
+        image: marketplace1.src
+    },
+    {
+        id: 5,
+        name: "Golden Joy",
+        price: 18000,
+        breed: "Palomino",
+        age: 8,
+        gender: "Mare",
+        status: "Active",
+        views: "1.8k",
+        favorites: 67,
+        createdAt: new Date("2024-02-28"),
+        image: marketplace2.src
     }
 ];
 
 export default function MyHorsePage() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState("Active Listings");
+    const [sortBy, setSortBy] = useState("Newest First");
+
+    // Filtering Logic
+    const filteredHorses = mockHorses.filter(horse => {
+        if (activeTab === "Active Listings") return horse.status === "Active" || horse.status === "Pending";
+        if (activeTab === "Drafts") return horse.status === "Draft";
+        if (activeTab === "Sold History") return horse.status === "Sold";
+        return true;
+    });
+
+    // Sorting Logic
+    const sortedHorses = [...filteredHorses].sort((a, b) => {
+        if (sortBy === "Newest First") return b.createdAt - a.createdAt;
+        if (sortBy === "Price: Low to High") return a.price - b.price;
+        if (sortBy === "Price: High to Low") return b.price - a.price;
+        return 0;
+    });
+
+    // Tab Counts
+    const counts = {
+        active: mockHorses.filter(h => h.status === "Active" || h.status === "Pending").length,
+        drafts: mockHorses.filter(h => h.status === "Draft").length,
+        sold: mockHorses.filter(h => h.status === "Sold").length
+    };
 
     return (
         <div className="bg-[#F8FAFC] min-h-screen">
@@ -75,10 +126,16 @@ export default function MyHorsePage() {
 
                     <MyHorseHeader />
                     <MyHorseStats />
-                    <ListingTabs />
+                    <ListingTabs
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                        sortBy={sortBy}
+                        setSortBy={setSortBy}
+                        counts={counts}
+                    />
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
-                        {mockHorses.map(horse => (
+                        {sortedHorses.map(horse => (
                             <MyHorseCard key={horse.id} horse={horse} />
                         ))}
                     </div>

@@ -1,65 +1,100 @@
 "use client";
 
-import { Eye, Heart, Pencil } from "lucide-react";
-import Image from "next/image";
+import { Heart, MapPin, Ruler, Calendar, ChevronRight, Pencil } from "lucide-react";
+import Link from "next/link";
 
 export default function MyHorseCard({ horse }) {
-    const { name, price, breed, age, gender, status, views, favorites, timeAgo, image } = horse;
+    const {
+        id,
+        name,
+        breed,
+        age,
+        height,
+        location,
+        price,
+        image,
+        tag,
+        isPremium,
+        isVerified,
+        isNew,
+        category // Adding category as a fallback for breed/discipline
+    } = horse;
 
     return (
-        <div className="bg-white rounded-[32px] overflow-hidden border border-gray-100 group hover:shadow-2xl hover:shadow-gray-200 transition-all duration-500">
-            {/* Image Section */}
-            <div className="relative h-64 overflow-hidden">
-                <Image
+        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden group hover:shadow-xl hover:shadow-gray-100 transition-all duration-300 flex flex-col h-full">
+            {/* Image Container */}
+            <div className="relative h-[160px] md:h-[210px] overflow-hidden">
+                <img
                     src={image}
                     alt={name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
 
                 {/* Badges */}
-                <div className="absolute top-5 left-5 flex gap-2">
-                    <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg backdrop-blur-md ${status === 'Active' ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'
-                        }`}>
-                        <div className="w-2 h-2 rounded-full bg-white opacity-40 animate-pulse"></div>
-                        {status}
-                    </span>
+                <div className="absolute top-4 left-4 flex gap-2">
+                    {isPremium && (
+                        <span className="px-3 py-1 bg_color text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+                            Premium
+                        </span>
+                    )}
+                    {isVerified && (
+                        <span className="px-3 py-1 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+                            Verified
+                        </span>
+                    )}
+                    {isNew && (
+                        <span className="px-3 py-1 bg-blue-50 text_color text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+                            New
+                        </span>
+                    )}
+                    {tag && !isPremium && !isVerified && !isNew && (
+                        <span className="px-3 py-1 bg-[#FF6B00] text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+                            {tag}
+                        </span>
+                    )}
                 </div>
 
-                <div className="absolute top-5 right-5">
-                    <span className="bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-[10px] font-black text-gray-900 border border-white shadow-lg uppercase tracking-widest">
-                        {timeAgo}
-                    </span>
+                {/* Favorite Button */}
+                <div className="absolute top-4 right-4 flex gap-2">
+                    <button className="p-2 bg-white/80 backdrop-blur-sm rounded-full text-gray-400 hover:text-red-500 hover:bg-white transition-all shadow-sm">
+                        <Heart size={18} />
+                    </button>
                 </div>
             </div>
 
-            {/* Content Section */}
-            <div className="p-2 md:p-3">
-                <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-[600] text-gray-900 text-xl group-hover:text_color transition-colors tracking-tight">
-                        {name}
-                    </h3>
-                    <span className="text_color font-black text-xl tracking-tighter">${price.toLocaleString()}</span>
+            {/* Content Container */}
+            <div className="p-2 sm:p-3 flex flex-col flex-1">
+                <div className="mb-2 sm:mb-4">
+                    <h3 className="mobile_heading lg_leading">{name}</h3>
+                    <p className="mobile_para">{breed || category || "Horse"}</p>
                 </div>
-                <p className="text-gray-400 text-[13px] font-bold mb-2 md:mb-4">
-                    {breed} • {age} Years • {gender}
-                </p>
 
-                {/* Footer / Stats */}
-                <div className="flex items-center justify-between border-t border-gray-50/50">
-                    <div className="flex items-center gap-6 text-gray-300">
-                        <div className="flex items-center gap-2 group/stat cursor-default">
-                            <Eye size={18} className="text-gray-600 transition-colors" />
-                            <span className="text-xs font-black text-gray-500">{views}</span>
-                        </div>
-                        <div className="flex items-center gap-2 group/stat cursor-default">
-                            <Heart size={16} className="text-gray-600 transition-colors" />
-                            <span className="text-xs font-black text-gray-500">{favorites}</span>
-                        </div>
+                <div className="grid grid-cols-2 gap-y-2 sm:gap-y-1 gap-x-2 mb-2 sm:mb-0">
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <Calendar size={16} className="text_color" />
+                        <span className="mobile_para">{age || "N/A"} Years</span>
                     </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <Ruler size={16} className="text_color" />
+                        <span className="mobile_para">{height || "15.0"} hh</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600 col-span-2">
+                        <MapPin size={16} className="text_color" />
+                        <span className="mobile_para">{location || "Location N/A"}</span>
+                    </div>
+                </div>
 
-                    <button className="p-3 bg-gray-50/50 text-gray-400 hover:text_color hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border_color">
-                        <Pencil className="text-green-500 cursor-pointer" size={18} />
-                    </button>
+                <div className="mt-auto sm:pt-4 border-t border-gray-50 flex items-center justify-between">
+                    <div>
+                        <p className="mobile_para">Price</p>
+                        <p className="mobile_heading lg_leading">${price ? price.toLocaleString() : "Contact"}</p>
+                    </div>
+                    <Link
+                        href="/sell-horse"
+                        className="p-2.5 bg-gray-50 text-green-500 hover:bg-green-50 rounded-xl transition-all cursor-pointer"
+                    >
+                        <Pencil size={20} />
+                    </Link>
                 </div>
             </div>
         </div>

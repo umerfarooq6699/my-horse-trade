@@ -96,7 +96,7 @@ export default function PersonalInformation() {
             </div>
 
             {/* Personal Information Section */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6">
+            <div className="bg-white rounded-2xl border border-gray-100 px-3 py-5 md:px-6 md:py-6">
                 <div className="flex items-center justify-between mb-6">
                     <h3 className="text-base font-semibold text-gray-900">Personal Information</h3>
                     <button className="text-sm font-medium text_color hover:underline">
@@ -104,9 +104,9 @@ export default function PersonalInformation() {
                     </button>
                 </div>
 
-                <div className="space-y-5">
+                <div className="space-y-2 md:space-y-5">
                     {/* First Name & Last Name */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5">
                         <div>
                             <label className="block text-sm font-medium text-gray-900 mb-2">
                                 First Name

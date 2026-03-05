@@ -5,7 +5,10 @@ import {
     Eye, CheckCircle, XCircle, Pencil, Trash2,
     ChevronRight, ChevronDown, AlertTriangle, Calendar, X
 } from "lucide-react";
+import { useState } from "react";
+import ListingDetailsModal from "@/components/admin/listings/ListingDetailsModal";
 import Link from "next/link";
+import { mockHorses } from "@/components/marketplace/HorseGrid";
 
 const stats = [
     { label: "Total Listings", value: "1,240", trend: "+12%", type: "listings" },
@@ -13,70 +16,12 @@ const stats = [
     { label: "Active Auctions", value: "45", trend: "+2%", type: "auctions" },
 ];
 
-const listings = [
-    {
-        id: "#8821",
-        horse: "Thunder Spirit",
-        breed: "Stallion",
-        type: "Auction",
-        price: "$5,200",
-        seller: "John Doe",
-        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=John",
-        status: "Active",
-        date: "Oct 24, 2023",
-        image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=400&q=80"
-    },
-    {
-        id: "#8822",
-        horse: "Snow Queen",
-        breed: "Mare",
-        type: "Fixed Price",
-        price: "$12,500",
-        seller: "Sarah Miller",
-        sellerAvatar: "https://avatar.iran.liara.run/public/girl?username=Sarah",
-        status: "Pending Review",
-        date: "Oct 24, 2023",
-        image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=400&q=80"
-    },
-    {
-        id: "#8815",
-        horse: "Midnight Star",
-        breed: "Gelding",
-        type: "Fixed Price",
-        price: "$8,000",
-        seller: "Robert James",
-        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Robert",
-        status: "Sold",
-        date: "Oct 20, 2023",
-        image: "https://images.unsplash.com/photo-1598974357801-cbca100e65d3?w=400&q=80"
-    },
-    {
-        id: "#8810",
-        horse: "Rusty",
-        breed: "Pony",
-        type: "Auction",
-        price: "--",
-        seller: "Unknown User",
-        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Unknown",
-        status: "Rejected",
-        date: "Oct 18, 2023",
-        image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=400&q=80"
-    },
-    {
-        id: "#8805",
-        horse: "Spotty",
-        breed: "Appaloosa",
-        type: "Auction",
-        price: "$1,100",
-        seller: "Mike K.",
-        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Mike",
-        status: "Active",
-        date: "Oct 15, 2023",
-        image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=80"
-    },
-];
+const listings = mockHorses;
 
 export default function ListingManagement() {
+    const [selectedListing, setSelectedListing] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <div className="space-y-5 sm:space-y-8 pb-10">
             {/* Page Header */}
@@ -189,10 +134,10 @@ export default function ListingManagement() {
                                     <td className="py-5 pl-4 sm:pl-8">
                                         <div className="flex items-center gap-4">
                                             <div className="w-16 h-12 rounded-xl overflow-hidden flex-shrink-0 border border-[#F1F5F9]">
-                                                <img src={item.image} alt={item.horse} className="w-full h-full object-cover" />
+                                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                                             </div>
                                             <div>
-                                                <h4 className="text-sm font-bold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">{item.horse}</h4>
+                                                <h4 className="text-sm font-bold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">{item.name}</h4>
                                                 <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">ID: {item.id} • {item.breed}</p>
                                             </div>
                                         </div>
@@ -206,7 +151,7 @@ export default function ListingManagement() {
                                     <td className="py-5 px-4 sm:px-8">
                                         <div className="space-y-1">
                                             <span className="px-2 py-0.5 rounded-lg bg-[#F5F3FF] text-[#7C3AED] text-[10px] font-bold">{item.type}</span>
-                                            <p className="text-sm font-black text-[#1E293B]">{item.type === "Auction" ? `Bid: ${item.price}` : item.price}</p>
+                                            <p className="text-sm font-black text-[#1E293B]">{item.type === "Auction" ? `Bid: $${item.price.toLocaleString()}` : `$${item.price.toLocaleString()}`}</p>
                                         </div>
                                     </td>
                                     <td className="py-5 px-4 sm:px-8">
@@ -228,24 +173,15 @@ export default function ListingManagement() {
                                     </td>
                                     <td className="py-5 text-right pr-4 sm:pr-8">
                                         <div className="flex items-center justify-end gap-2">
-                                            {item.status === "Pending Review" ? (
-                                                <>
-                                                    <button className="flex items-center gap-1.5 px-4 py-2 bg-[#F0FDF4] text-[#22C55E] rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[#22C55E] hover:text-white transition-all shadow-sm">
-                                                        <CheckCircle className="w-3.5 h-3.5" />
-                                                        Approve
-                                                    </button>
-                                                    <button className="flex items-center gap-1.5 px-4 py-2 bg-[#FEF2F2] text-[#EF4444] rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[#EF4444] hover:text-white transition-all shadow-sm">
-                                                        <XCircle className="w-3.5 h-3.5" />
-                                                        Reject
-                                                    </button>
-                                                </>
-                                            ) : (
-                                                <div className="flex items-center gap-1">
-                                                    <button className="p-2 text-[#94A3B8] hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-all cursor-pointer"><Eye className="w-5 h-5" /></button>
-                                                    <button className="p-2 text-[#22C55E] hover:bg-green-50 rounded-lg transition-all cursor-pointer"><Pencil className="w-5 h-5" /></button>
-                                                    <button className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer"><Trash2 className="w-5 h-5" /></button>
-                                                </div>
-                                            )}
+                                            <button
+                                                onClick={() => { setSelectedListing(item); setIsModalOpen(true); }}
+                                                className="p-2 text-[#94A3B8] hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-all cursor-pointer"
+                                            >
+                                                <Eye className="w-5 h-5" />
+                                            </button>
+                                            <button className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer">
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -269,6 +205,11 @@ export default function ListingManagement() {
                     </div>
                 </div>
             </div>
+            <ListingDetailsModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                listing={selectedListing}
+            />
         </div>
     );
 }

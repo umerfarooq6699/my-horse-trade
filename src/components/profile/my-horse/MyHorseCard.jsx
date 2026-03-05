@@ -17,6 +17,8 @@ export default function MyHorseCard({ horse }) {
         isPremium,
         isVerified,
         isNew,
+        status,
+        rejectionReason,
         category // Adding category as a fallback for breed/discipline
     } = horse;
 
@@ -60,6 +62,13 @@ export default function MyHorseCard({ horse }) {
                         <Heart size={18} />
                     </button>
                 </div>
+
+                {/* Rejected Overlay Status */}
+                {status === "Rejected" && (
+                    <div className="absolute inset-x-0 bottom-0 bg-red-500/90 backdrop-blur py-1 px-3 text-center">
+                        <span className="text-[10px] font-black text-white uppercase tracking-widest">Listing Rejected</span>
+                    </div>
+                )}
             </div>
 
             {/* Content Container */}
@@ -76,13 +85,20 @@ export default function MyHorseCard({ horse }) {
                     </div>
                     <div className="flex items-center gap-2 text-gray-600">
                         <Ruler size={16} className="text_color" />
-                        <span className="mobile_para">{height || "15.0"} hh</span>
+                        <span className="mobile_para">{height || "15.0 hh"}</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-600 col-span-2">
                         <MapPin size={16} className="text_color" />
                         <span className="mobile_para">{location || "Location N/A"}</span>
                     </div>
                 </div>
+
+                {status === "Rejected" && rejectionReason && (
+                    <div className="mt-3 p-3 bg-red-50 border border-red-100 rounded-xl">
+                        <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-1 leading-none">Reason for Rejection:</p>
+                        <p className="text-[11px] text-red-600 font-medium leading-tight">{rejectionReason}</p>
+                    </div>
+                )}
 
                 <div className="mt-auto sm:pt-4 border-t border-gray-50 flex items-center justify-between">
                     <div>

@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { Heart, MapPin, Ruler, Calendar, Pencil } from "lucide-react";
 import marketplace1 from "@/assets/images/marketplace1.png";
 import marketplace2 from "@/assets/images/marketplace2.png";
 import marketplace3 from "@/assets/images/marketplace3.png";
@@ -60,11 +62,12 @@ export default function ActiveListings() {
                     <div key={horse.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden group hover:shadow-xl hover:shadow-gray-100 transition-all duration-300 flex flex-col h-full">
                         {/* Image Container */}
                         <div className="relative h-[160px] md:h-[210px] overflow-hidden">
-                            <Image
-                                src={horse.image}
+                            <img
+                                src={horse.image.src || horse.image}
                                 alt={horse.name}
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
+
                             {/* Badges */}
                             <div className="absolute top-4 left-4 flex gap-2">
                                 <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm ${horse.status === 'Active' ? 'bg-green-500 text-white' : 'bg-[#FF6B00] text-white'
@@ -75,37 +78,48 @@ export default function ActiveListings() {
                                     {horse.timeAgo}
                                 </span>
                             </div>
+
+                            {/* Favorite Button */}
+                            <button className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-sm rounded-full text-gray-400 hover:text-red-500 hover:bg-white transition-all shadow-sm">
+                                <Heart size={18} />
+                            </button>
                         </div>
 
-                        {/* Content */}
+                        {/* Content Container */}
                         <div className="p-2 sm:p-3 flex flex-col flex-1">
                             <div className="mb-2 sm:mb-4">
                                 <h3 className="mobile_heading lg_leading">{horse.name}</h3>
-                                <p className="mobile_para">{horse.breed}</p>
+                                <p className="mobile_para">{horse.breed || "Horse"}</p>
                             </div>
 
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="flex items-center gap-1.5 text-gray-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
-                                    <span className="text-[11px] font-bold">{horse.views}</span>
+                            <div className="grid grid-cols-2 gap-y-2 sm:gap-y-1 gap-x-2 mb-2 sm:mb-0">
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <Calendar size={16} className="text_color" />
+                                    <span className="mobile_para underline decoration-blue-100 decoration-2 underline-offset-4">{horse.age || "5"} Years</span>
                                 </div>
-                                <div className="flex items-center gap-1.5 text-gray-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>
-                                    <span className="text-[11px] font-bold">{horse.favorites}</span>
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <Ruler size={16} className="text_color" />
+                                    <span className="mobile_para underline decoration-blue-100 decoration-2 underline-offset-4">{horse.height || "15.0"} hh</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-gray-600 col-span-2">
+                                    <MapPin size={16} className="text_color" />
+                                    <span className="mobile_para underline decoration-blue-100 decoration-2 underline-offset-4">{horse.location || "Louisville, KY"}</span>
                                 </div>
                             </div>
 
                             <div className="mt-auto sm:pt-4 border-t border-gray-50 flex items-center justify-between">
                                 <div>
-                                    <p className="mobile_para uppercase text-[10px] tracking-wider">Price</p>
+                                    <p className="mobile_para !text-[10px] uppercase tracking-wider">Price</p>
                                     <p className="mobile_heading lg_leading !text_color">{horse.price}</p>
                                 </div>
-                                <button className="flex items-center gap-1.5 px-5 py-2.5 bg-gray-50 text-gray-600 text-[11px] font-black uppercase tracking-wider rounded-xl hover:bg-blue-50 hover:text_color transition-all active:scale-[0.98] border border-transparent hover:border-blue-100">
+                                <Link
+                                    href="/sell-horse"
+                                    className="flex items-center gap-1.5 px-5 py-2.5 bg-gray-50 text-gray-600 text-[11px] font-black uppercase tracking-wider rounded-xl hover:bg-blue-50 hover:text_color transition-all active:scale-[0.98] border border-transparent hover:border-blue-100 cursor-pointer"
+                                >
                                     Edit Listing
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" /><path d="m15 5 4 4" /></svg>
-                                </button>
+                                    <Pencil size={14} className="text-green-500" strokeWidth={3} />
+                                </Link>
                             </div>
-
                         </div>
                     </div>
                 ))}

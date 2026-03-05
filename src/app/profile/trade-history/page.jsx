@@ -5,11 +5,13 @@ import TradeHistoryHeader from "@/components/profile/trade-history/TradeHistoryH
 import TradeHistoryStats from "@/components/profile/trade-history/TradeHistoryStats";
 import TradeHistoryFilters from "@/components/profile/trade-history/TradeHistoryFilters";
 import TradeHistoryTable from "@/components/profile/trade-history/TradeHistoryTable";
+import DisputeModal from "@/components/profile/trade-history/DisputeModal";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 
 export default function TradeHistoryPage() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isDisputeModalOpen, setIsDisputeModalOpen] = useState(false);
 
     return (
         <div className="bg-[#F8FAFC] min-h-screen">
@@ -28,12 +30,17 @@ export default function TradeHistoryPage() {
                         </button>
                     </div>
 
-                    <TradeHistoryHeader />
+                    <TradeHistoryHeader onOpenDispute={() => setIsDisputeModalOpen(true)} />
                     <TradeHistoryStats />
                     <TradeHistoryFilters />
                     <TradeHistoryTable />
                 </div>
             </main>
+
+            <DisputeModal
+                isOpen={isDisputeModalOpen}
+                onClose={() => setIsDisputeModalOpen(false)}
+            />
         </div>
     );
 }

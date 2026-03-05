@@ -8,7 +8,7 @@ import image4 from "../../assets/images/marketplace4.png"
 import image5 from "../../assets/images/marketplace5.png"
 import image6 from "../../assets/images/marketplace6.png"
 
-const mockHorses = [
+export const mockHorses = [
     {
         id: 1,
         name: "Midnight Star",
@@ -19,6 +19,11 @@ const mockHorses = [
         price: 45000,
         image: image1.src,
         isPremium: true,
+        seller: "Alex Rider",
+        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Alex",
+        type: "Fixed Price",
+        status: "Active",
+        date: "Oct 24, 2023"
     },
     {
         id: 2,
@@ -30,6 +35,11 @@ const mockHorses = [
         price: 125000,
         image: image2.src,
         isVerified: true,
+        seller: "Sarah Miller",
+        sellerAvatar: "https://avatar.iran.liara.run/public/girl?username=Sarah",
+        type: "Auction",
+        status: "Pending Review",
+        date: "Oct 24, 2023"
     },
     {
         id: 3,
@@ -40,6 +50,11 @@ const mockHorses = [
         location: "Berlin, Germany",
         price: 62000,
         image: image3.src,
+        seller: "John Doe",
+        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=John",
+        type: "Fixed Price",
+        status: "Sold",
+        date: "Oct 20, 2023"
     },
     {
         id: 4,
@@ -51,6 +66,12 @@ const mockHorses = [
         price: 85000,
         image: image4.src,
         isPremium: true,
+        seller: "Robert James",
+        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Robert",
+        type: "Fixed Price",
+        status: "Rejected",
+        date: "Oct 18, 2023",
+        rejectionReason: "Image quality is too low and missing health certificates."
     },
     {
         id: 5,
@@ -61,6 +82,11 @@ const mockHorses = [
         location: "Ocala, FL, USA",
         price: 38500,
         image: image5.src,
+        seller: "Mike K.",
+        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Mike",
+        type: "Auction",
+        status: "Active",
+        date: "Oct 15, 2023"
     },
     {
         id: 6,
@@ -72,7 +98,12 @@ const mockHorses = [
         price: 55000,
         image: image6.src,
         isNew: true,
-    },
+        seller: "Unknown User",
+        sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Unknown",
+        type: "Fixed Price",
+        status: "Active",
+        date: "Oct 12, 2023"
+    }
 ];
 
 export default function HorseGrid({ viewMode }) {

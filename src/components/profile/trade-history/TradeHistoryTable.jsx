@@ -52,7 +52,7 @@ const transactions = [
     },
 ];
 
-export default function TradeHistoryTable() {
+export default function TradeHistoryTable({ onOpenDispute }) {
     const [selectedTrade, setSelectedTrade] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -87,6 +87,7 @@ export default function TradeHistoryTable() {
                                         </div>
                                         <div className="min-w-0 flex-1">
                                             <div className="text-sm font-[600] text-gray-900 mb-0.5 tracking-tight truncate">{t.horse}</div>
+                                            <div className="text-[11px] font-[500] text-gray-400 mb-1">#TR-{2134 + t.id}</div>
                                             <div className="text-[10px] font-[500] text-gray-500 sm:hidden">{t.date}</div>
                                         </div>
                                     </div>
@@ -116,12 +117,21 @@ export default function TradeHistoryTable() {
                                     </span>
                                 </td>
                                 <td className="py-3 text-center px-4 md:px-6">
-                                    <button
-                                        onClick={() => handleOpenModal(t)}
-                                        className="p-2 bg-gray-50 rounded-xl text-gray-600 hover:text_color hover:bg-blue-50 transition-all cursor-pointer"
-                                    >
-                                        <Eye size={16} />
-                                    </button>
+                                    <div className="flex items-center justify-center gap-2">
+                                        <button
+                                            onClick={() => handleOpenModal(t)}
+                                            className="p-2 bg-gray-50 rounded-xl text-gray-600 hover:text_color hover:bg-blue-50 transition-all cursor-pointer"
+                                            title="View Details"
+                                        >
+                                            <Eye size={16} />
+                                        </button>
+                                        <button
+                                            onClick={() => onOpenDispute(t)}
+                                            className="px-3 py-2 bg-blue-50 text_color rounded-xl text-[11px] font-bold uppercase tracking-wider hover:bg-blue-100 transition-all cursor-pointer whitespace-nowrap"
+                                        >
+                                            + dispute
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

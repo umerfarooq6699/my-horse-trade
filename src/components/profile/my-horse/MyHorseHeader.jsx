@@ -7,7 +7,7 @@ export default function MyHorseHeader() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-3">
             <div>
                 <h1 className="text-4xl font-[600] text-gray-900 tracking-tight mb-2">My Horse</h1>
-                <p className="text-gray-500 font-[500]">Manage your listings, drafts, and sales performance.</p>
+                <p className="mobile_para">Manage your listings, drafts, and sales performance.</p>
             </div>
             <div className="flex items-center gap-4">
                 <button className="flex items-center gap-2 px-6 py-3 text-sm font-[600] text-gray-600 bg-white border border-gray-100 rounded-xl hover:bg-gray-50 transition-all shadow-sm">

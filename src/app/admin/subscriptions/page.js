@@ -1,6 +1,8 @@
 "use client";
 
 import { Search, ChevronRight, Plus, Users, DollarSign, RefreshCw, BarChart3, TrendingUp, TrendingDown, Calendar, Filter, CheckCircle2, Clock, MoreVertical } from "lucide-react";
+import { useState } from "react";
+import AddSubscriptionModal from "@/components/admin/subscriptions/AddSubscriptionModal";
 
 const subscriptions = [
     {
@@ -56,8 +58,15 @@ const subscriptions = [
 ];
 
 export default function SubscriptionManagement() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <div className="space-y-6 sm:space-y-8 pb-10">
+            {/* Modal */}
+            <AddSubscriptionModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
             {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
@@ -75,7 +84,10 @@ export default function SubscriptionManagement() {
                     </p>
                 </div>
                 <div>
-                    <button className="flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100"
+                    >
                         <Plus className="w-4 h-4" />
                         Add New Subscription
                     </button>

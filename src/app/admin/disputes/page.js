@@ -1,6 +1,8 @@
 "use client";
 
 import { Search, ChevronRight, Plus, Download, Filter, MoreVertical, LayoutGrid, Clock, AlertCircle, FileText, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import DisputeDetailsModal from "@/components/admin/disputes/DisputeDetailsModal";
 
 const disputes = [
     {
@@ -38,8 +40,16 @@ const disputes = [
 ];
 
 export default function DisputeCenter() {
+    const [selectedDispute, setSelectedDispute] = useState(null);
+
     return (
         <div className="space-y-6 sm:space-y-8 pb-10">
+            {/* Modal */}
+            <DisputeDetailsModal
+                isOpen={!!selectedDispute}
+                onClose={() => setSelectedDispute(null)}
+                dispute={selectedDispute}
+            />
             {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-1">
                 <div>
@@ -125,7 +135,12 @@ export default function DisputeCenter() {
                             {disputes.map((item, i) => (
                                 <tr key={i} className="group hover:bg-gray-50/50 transition-all">
                                     <td className="px-6 py-5 pl-8">
-                                        <p className="text-sm font-bold text-[#2563EB]">{item.id}</p>
+                                        <button
+                                            onClick={() => setSelectedDispute(item)}
+                                            className="text-sm font-bold text-[#2563EB] hover:underline cursor-pointer"
+                                        >
+                                            {item.id}
+                                        </button>
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-3">

@@ -12,6 +12,18 @@ import { Menu } from "lucide-react";
 export default function TradeHistoryPage() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isDisputeModalOpen, setIsDisputeModalOpen] = useState(false);
+    const [disputeData, setDisputeData] = useState(null);
+
+    const handleOpenDispute = (transaction) => {
+        setDisputeData({
+            id: transaction.id,
+            horseName: transaction.horse,
+            horseId: `#H-${1050 + transaction.id}`,
+            transactionId: `#TR-${2134 + transaction.id}`,
+            counterparty: transaction.counterparty
+        });
+        setIsDisputeModalOpen(true);
+    };
 
     return (
         <div className="bg-[#F8FAFC] min-h-screen">
@@ -30,16 +42,17 @@ export default function TradeHistoryPage() {
                         </button>
                     </div>
 
-                    <TradeHistoryHeader onOpenDispute={() => setIsDisputeModalOpen(true)} />
+                    <TradeHistoryHeader />
                     <TradeHistoryStats />
                     <TradeHistoryFilters />
-                    <TradeHistoryTable />
+                    <TradeHistoryTable onOpenDispute={handleOpenDispute} />
                 </div>
             </main>
 
             <DisputeModal
                 isOpen={isDisputeModalOpen}
                 onClose={() => setIsDisputeModalOpen(false)}
+                initialData={disputeData}
             />
         </div>
     );

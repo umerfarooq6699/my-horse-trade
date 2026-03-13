@@ -1,13 +1,16 @@
 "use client";
 
-import { Search, Filter, FileDown, MoreVertical, CreditCard, ChevronRight, TrendingUp, Lock, AlertCircle, Calendar, Download, Plus } from "lucide-react";
+import { Search, Filter, FileDown, MoreVertical, CreditCard, ChevronRight, TrendingUp, Lock, AlertCircle, Calendar, Download, Plus, Eye, Trash2, X } from "lucide-react";
+import { useState } from "react";
+import TransactionDetailsModal from "@/components/admin/transactions/TransactionDetailsModal";
+
 
 const transactions = [
     {
         id: "#TRX-9921",
         date: "Oct 24, 2023",
         horse: { name: "Thunderbolt", breed: "Thoroughbred", image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=100&h=100&fit=crop" },
-        parties: { buyer: "Jane", seller: "Mark", buyerAvatar: "https://avatar.iran.liara.run/public/girl?username=Jane", sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Mark" },
+        parties: { buyer: "JA", seller: "MA", buyerName: "Jane", sellerName: "Mark", buyerAvatar: "https://i.pravatar.cc/150?u=jane", sellerAvatar: "https://i.pravatar.cc/150?u=mark" },
         amount: "$15,000.00",
         escrowStatus: "Funds Secured",
         deliveryStatus: "In Transit"
@@ -16,7 +19,7 @@ const transactions = [
         id: "#TRX-9920",
         date: "Oct 23, 2023",
         horse: { name: "Mist Walker", breed: "Arabian", image: "https://images.unsplash.com/photo-1534073737927-85f1df9605d2?w=100&h=100&fit=crop" },
-        parties: { buyer: "Robert", seller: "Emily", buyerAvatar: "https://avatar.iran.liara.run/public/boy?username=Robert", sellerAvatar: "https://avatar.iran.liara.run/public/girl?username=Emily" },
+        parties: { buyer: "RO", seller: "EM", buyerName: "Robert", sellerName: "Emily", buyerAvatar: "https://i.pravatar.cc/150?u=robert", sellerAvatar: "https://i.pravatar.cc/150?u=emily" },
         amount: "$8,500.00",
         escrowStatus: "Disputed",
         deliveryStatus: "Delayed"
@@ -25,7 +28,7 @@ const transactions = [
         id: "#TRX-9918",
         date: "Oct 22, 2023",
         horse: { name: "Midnight Star", breed: "Friesian", image: "https://images.unsplash.com/photo-1598974357801-cbca100e65d3?w=100&h=100&fit=crop" },
-        parties: { buyer: "David", seller: "Sarah", buyerAvatar: "https://avatar.iran.liara.run/public/boy?username=David", sellerAvatar: "https://avatar.iran.liara.run/public/girl?username=Sarah" },
+        parties: { buyer: "DA", seller: "SA", buyerName: "David", sellerName: "Sarah", buyerAvatar: "https://i.pravatar.cc/150?u=david", sellerAvatar: "https://i.pravatar.cc/150?u=sarah" },
         amount: "$22,000.00",
         escrowStatus: "Pending Release",
         deliveryStatus: "Delivered"
@@ -34,7 +37,7 @@ const transactions = [
         id: "#TRX-9915",
         date: "Oct 20, 2023",
         horse: { name: "Rusty", breed: "Quarter Horse", image: "https://images.unsplash.com/photo-1551150441-3f3828204ef0?w=100&h=100&fit=crop" },
-        parties: { buyer: "Michael", seller: "Tom", buyerAvatar: "https://avatar.iran.liara.run/public/boy?username=Michael", sellerAvatar: "https://avatar.iran.liara.run/public/boy?username=Tom" },
+        parties: { buyer: "MI", seller: "TO", buyerName: "Michael", sellerName: "Tom", buyerAvatar: "https://i.pravatar.cc/150?u=michael", sellerAvatar: "https://i.pravatar.cc/150?u=tom" },
         amount: "$5,000.00",
         escrowStatus: "Released",
         deliveryStatus: "Complete"
@@ -43,7 +46,7 @@ const transactions = [
         id: "#TRX-9930",
         date: "Today, 10:30 AM",
         horse: { name: "Gold Rush", breed: "Palomino", image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=100&h=100&fit=crop" },
-        parties: { buyer: "Liam", seller: "Anna", buyerAvatar: "https://avatar.iran.liara.run/public/boy?username=Liam", sellerAvatar: "https://avatar.iran.liara.run/public/girl?username=Anna" },
+        parties: { buyer: "LI", seller: "AN", buyerName: "Liam", sellerName: "Anna", buyerAvatar: "https://i.pravatar.cc/150?u=liam", sellerAvatar: "https://i.pravatar.cc/150?u=anna" },
         amount: "$12,750.00",
         escrowStatus: "Awaiting Deposit",
         deliveryStatus: "Not Started"
@@ -51,6 +54,14 @@ const transactions = [
 ];
 
 export default function TransactionManagement() {
+    const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleViewDetails = (transaction) => {
+        setSelectedTransaction(transaction);
+        setIsModalOpen(true);
+    };
+
     return (
         <div className="space-y-6 sm:space-y-8 pb-10">
             {/* Page Header */}
@@ -70,14 +81,7 @@ export default function TransactionManagement() {
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E2E8F0] rounded-xl text-sm font-bold text-[#1E293B] hover:bg-gray-50 transition-all shadow-sm">
-                        <Download className="w-4 h-4" />
-                        Export CSV
-                    </button>
-                    <button className="flex items-center gap-2 px-4 py-2.5 bg-[#2563EB] text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
-                        <Plus className="w-4 h-4" />
-                        Create Adjustment
-                    </button>
+                    {/* Buttons removed as requested */}
                 </div>
             </div>
 
@@ -161,16 +165,17 @@ export default function TransactionManagement() {
                             <tr className="border-b border-[#F8FAFC]">
                                 <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">ID / DATE</th>
                                 <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">HORSE</th>
-                                <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">PARTIES (BUYER {"->"} SELLER)</th>
+                                <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">PARTIES</th>
                                 <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">AMOUNT</th>
                                 <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">ESCROW STATUS</th>
                                 <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">DELIVERY</th>
+                                <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest text-right">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-[#F8FAFC]">
                             {transactions.map((item, i) => (
                                 <tr key={i} className="group hover:bg-gray-50/50 transition-all">
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4 whitespace-nowrap">
                                         <p className="font-bold text-[#2563EB] mb-0.5">{item.id}</p>
                                         <p className="text-[11px] text-[#94A3B8] font-medium">{item.date}</p>
                                     </td>
@@ -186,16 +191,9 @@ export default function TransactionManagement() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="flex items-center gap-2">
-                                            <div className="flex items-center gap-2 bg-gray-50 pr-3 rounded-full overflow-hidden">
-                                                <img src={item.parties.buyerAvatar} className="w-6 h-6 rounded-full" />
-                                                <span className="text-[11px] font-bold text-[#1E293B]">{item.parties.buyer}</span>
-                                            </div>
-                                            <ChevronRight className="w-3 h-3 text-[#94A3B8]" />
-                                            <div className="flex items-center gap-2 bg-gray-50 pr-3 rounded-full overflow-hidden">
-                                                <img src={item.parties.sellerAvatar} className="w-6 h-6 rounded-full" />
-                                                <span className="text-[11px] font-bold text-[#1E293B]">{item.parties.seller}</span>
-                                            </div>
+                                        <div className="flex items-center -space-x-1.5">
+                                            <div className="w-8 h-8 rounded-full bg-[#E0F2FE] text-[#0284C7] text-[10px] font-bold flex items-center justify-center border-2 border-white uppercase">{item.parties.buyer}</div>
+                                            <div className="w-8 h-8 rounded-full bg-[#EDE9FE] text-[#7C3AED] text-[10px] font-bold flex items-center justify-center border-2 border-white uppercase">{item.parties.seller}</div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 font-black text-[#1E293B]">
@@ -224,6 +222,23 @@ export default function TransactionManagement() {
                                             <span className="text-[#64748B] font-bold">{item.deliveryStatus}</span>
                                         </div>
                                     </td>
+                                    <td className="px-6 py-4 text-right">
+                                        <div className="flex items-center justify-end gap-2">
+                                            <button
+                                                onClick={() => handleViewDetails(item)}
+                                                className="p-2 text-[#94A3B8] hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-all cursor-pointer"
+                                                title="View Details"
+                                            >
+                                                <Eye className="w-5 h-5" />
+                                            </button>
+                                            <button
+                                                className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                                                title="Delete"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -239,6 +254,13 @@ export default function TransactionManagement() {
                     </div>
                 </div>
             </div>
+
+            {/* Transaction Details Modal */}
+            <TransactionDetailsModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                transaction={selectedTransaction}
+            />
         </div>
     );
 }

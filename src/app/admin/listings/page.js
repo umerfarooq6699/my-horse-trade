@@ -41,10 +41,13 @@ export default function ListingManagement() {
                     </p>
                 </div>
                 <div className="flex">
-                    <button className="flex items-center gap-2 px-4 sm:px-6 py-3 bg-[#2563EB] text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 w-fit cursor-pointer">
+                    <Link 
+                        href="/sell-horse"
+                        className="flex items-center gap-2 px-4 sm:px-6 py-3 bg-[#2563EB] text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 w-fit cursor-pointer"
+                    >
                         <Plus className="w-4 h-4" />
                         Add New Listing
-                    </button>
+                    </Link>
                 </div>
             </div>
 

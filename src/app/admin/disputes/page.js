@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, ChevronRight, Plus, Download, Filter, MoreVertical, LayoutGrid, Clock, AlertCircle, FileText, CheckCircle2 } from "lucide-react";
+import { Search, ChevronRight, Filter, MoreVertical, LayoutGrid, Clock, AlertCircle, FileText, CheckCircle2, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 import DisputeDetailsModal from "@/components/admin/disputes/DisputeDetailsModal";
 
@@ -8,7 +8,10 @@ const disputes = [
     {
         id: "#DIS-9921",
         horse: { name: "Thunderbolt", price: "$12,500", image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=200" },
-        parties: { buyer: "JD", seller: "SS" },
+        parties: { 
+            buyer: "JD", buyerName: "John Doe", buyerId: "USR-8823",
+            seller: "SS", sellerName: "Sara Jenkins", sellerId: "USR-8827"
+        },
         type: "Medical",
         status: "Evidence Review",
         created: "2 hrs ago"
@@ -16,7 +19,10 @@ const disputes = [
     {
         id: "#DIS-9920",
         horse: { name: "Stardust", price: "$8,000", image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=200" },
-        parties: { buyer: "MK", seller: "AL" },
+        parties: { 
+            buyer: "MK", buyerName: "Michael Ross", buyerId: "USR-8824",
+            seller: "AL", sellerName: "Alex Morgan", sellerId: "USR-8821"
+        },
         type: "Delivery",
         status: "Action Required",
         created: "1 day ago"
@@ -24,7 +30,10 @@ const disputes = [
     {
         id: "#DIS-9884",
         horse: { name: "Midnight Runner", price: "$22,000", image: "https://images.unsplash.com/photo-1598974357801-cbca100e65d3?auto=format&fit=crop&q=80&w=200" },
-        parties: { buyer: "TR", seller: "BM" },
+        parties: { 
+            buyer: "TR", buyerName: "Tom Richards", buyerId: "USR-8850",
+            seller: "BM", sellerName: " Beth Miller", sellerId: "USR-8851"
+        },
         type: "Payment",
         status: "Pending Buyer",
         created: "3 days ago"
@@ -32,7 +41,10 @@ const disputes = [
     {
         id: "#DIS-9842",
         horse: { name: "Silver Arrow", price: "$45,000", image: "https://images.unsplash.com/photo-1551150441-3f3828204ef0?auto=format&fit=crop&q=80&w=200" },
-        parties: { buyer: "PL", seller: "ZK" },
+        parties: { 
+            buyer: "PL", buyerName: "Paul Logan", buyerId: "USR-8860",
+            seller: "ZK", sellerName: "Zane King", sellerId: "USR-8861"
+        },
         type: "Condition",
         status: "Closed",
         created: "1 week ago"
@@ -66,19 +78,8 @@ export default function DisputeCenter() {
                         Manage and resolve transaction conflicts efficiently.
                     </p>
                 </div>
-                <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E2E8F0] rounded-xl text-sm font-bold text-[#64748B] hover:text-[#1E293B] transition-all">
-                        <Download className="w-4 h-4" />
-                        Export Report
-                    </button>
-                    <button className="flex items-center gap-2 px-6 py-2.5 bg-[#2563EB] text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
-                        <Plus className="w-4 h-4" />
-                        Create Ticket
-                    </button>
-                </div>
             </div>
 
-            {/* Main Content Container */}
             <div className="bg-white rounded-[32px] border border-[#F1F5F9] shadow-sm overflow-hidden">
                 {/* Tabs and Search Bar */}
                 <div className="px-6 border-b border-[#F8FAFC]">
@@ -128,19 +129,15 @@ export default function DisputeCenter() {
                                 <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">Parties</th>
                                 <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">Type</th>
                                 <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">Status</th>
-                                <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest text-right pr-8">Created</th>
+                                <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest">Created</th>
+                                <th className="px-6 py-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest text-right pr-8">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-[#F8FAFC]">
                             {disputes.map((item, i) => (
                                 <tr key={i} className="group hover:bg-gray-50/50 transition-all">
-                                    <td className="px-6 py-5 pl-8">
-                                        <button
-                                            onClick={() => setSelectedDispute(item)}
-                                            className="text-sm font-bold text-[#2563EB] hover:underline cursor-pointer"
-                                        >
-                                            {item.id}
-                                        </button>
+                                    <td className="px-6 py-5 pl-8 text-sm font-bold text-[#1E293B]">
+                                        {item.id}
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-3">
@@ -164,20 +161,33 @@ export default function DisputeCenter() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${item.status === "Evidence Review" ? "bg-[#FFFBEB] text-[#D97706]" :
-                                                item.status === "Action Required" ? "bg-[#FEF2F2] text-[#EF4444]" :
-                                                    item.status === "Pending Buyer" ? "bg-[#EFF6FF] text-[#2563EB]" :
-                                                        "bg-[#F8FAFC] text-[#64748B]"
+                                            item.status === "Action Required" ? "bg-[#FEF2F2] text-[#EF4444]" :
+                                                item.status === "Pending Buyer" ? "bg-[#EFF6FF] text-[#2563EB]" :
+                                                    "bg-[#F8FAFC] text-[#64748B]"
                                             }`}>
                                             <div className={`w-1.5 h-1.5 rounded-full ${item.status === "Evidence Review" ? "bg-[#D97706]" :
-                                                    item.status === "Action Required" ? "bg-[#EF4444]" :
-                                                        item.status === "Pending Buyer" ? "bg-[#2563EB]" :
-                                                            "bg-[#94A3B8]"
+                                                item.status === "Action Required" ? "bg-[#EF4444]" :
+                                                    item.status === "Pending Buyer" ? "bg-[#2563EB]" :
+                                                        "bg-[#94A3B8]"
                                                 }`} />
                                             {item.status}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-5 text-right pr-8">
+                                    <td className="px-6 py-5">
                                         <span className="text-xs text-[#94A3B8] font-medium">{item.created}</span>
+                                    </td>
+                                    <td className="px-6 py-5 text-right pr-8">
+                                        <div className="flex items-center justify-end gap-1">
+                                            <button 
+                                                onClick={() => setSelectedDispute(item)}
+                                                className="p-2 text-gray-400 hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-all cursor-pointer"
+                                            >
+                                                <Eye className="w-5 h-5" />
+                                            </button>
+                                            <button className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer">
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

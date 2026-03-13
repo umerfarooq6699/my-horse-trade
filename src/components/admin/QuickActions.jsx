@@ -10,11 +10,11 @@ export function QuickActions() {
     ];
 
     return (
-        <div className="bg-white p-4 sm:p-8 rounded-[32px] border border-[#F1F5F9] shadow-sm">
-            <h3 className="text-base font-black text-[#1E293B] mb-6">Quick Actions</h3>
-            <div className="space-y-4">
+        <div className="bg-white p-3 md:p-8 rounded-[32px] border border-[#F1F5F9] shadow-sm">
+            <h3 className="text-base font-black text-[#1E293B] md:mb-6">Quick Actions</h3>
+            <div className="space-y-0">
                 {actions.map((action, i) => (
-                    <button key={i} className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-gray-50 transition-all group">
+                    <button key={i} className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 transition-all group">
                         <div className="flex items-center gap-4">
                             <div className={`p-3 rounded-xl ${action.bg}`}>{action.icon}</div>
                             <div className="text-left">

@@ -1,14 +1,15 @@
 "use client";
 
-import { Search, ChevronRight, Plus, Users, DollarSign, RefreshCw, BarChart3, TrendingUp, TrendingDown, Calendar, Filter, CheckCircle2, Clock, MoreVertical } from "lucide-react";
+import { Search, ChevronRight, Plus, Users, DollarSign, RefreshCw, BarChart3, TrendingUp, TrendingDown, Calendar, Filter, CheckCircle2, Clock, MoreVertical, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 import AddSubscriptionModal from "@/components/admin/subscriptions/AddSubscriptionModal";
+import SubscriptionDetailsModal from "@/components/admin/subscriptions/SubscriptionDetailsModal";
 
 const subscriptions = [
     {
         user: "Sarah Jenkins",
         id: "#8823",
-        avatar: "https://avatar.iran.liara.run/public/girl?username=Sarah",
+        avatar: "https://i.pravatar.cc/150?u=sarah",
         tier: "Platinum",
         status: "Active",
         startDate: "Oct 12, 2023",
@@ -18,7 +19,7 @@ const subscriptions = [
     {
         user: "Michael Ross",
         id: "#8824",
-        avatar: "https://avatar.iran.liara.run/public/boy?username=Michael",
+        avatar: "https://i.pravatar.cc/150?u=michael",
         tier: "Premium",
         status: "Expired",
         startDate: "Sep 01, 2023",
@@ -28,7 +29,7 @@ const subscriptions = [
     {
         user: "David Kim",
         id: "#8825",
-        avatar: "https://avatar.iran.liara.run/public/boy?username=David",
+        avatar: "https://i.pravatar.cc/150?u=david",
         tier: "Free",
         status: "Active",
         startDate: "Jan 15, 2024",
@@ -38,7 +39,7 @@ const subscriptions = [
     {
         user: "Emily Watson",
         id: "#8826",
-        avatar: "https://avatar.iran.liara.run/public/girl?username=Emily",
+        avatar: "https://i.pravatar.cc/150?u=emily",
         tier: "Premium",
         status: "Canceled",
         startDate: "Mar 22, 2023",
@@ -48,7 +49,7 @@ const subscriptions = [
     {
         user: "John Doe",
         id: "#8827",
-        avatar: "https://avatar.iran.liara.run/public/boy?username=John",
+        avatar: "https://i.pravatar.cc/150?u=john",
         tier: "Platinum",
         status: "Active",
         startDate: "Dec 05, 2023",
@@ -59,6 +60,14 @@ const subscriptions = [
 
 export default function SubscriptionManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedSubscription, setSelectedSubscription] = useState(null);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+    const handleViewDetails = (subscription) => {
+        setSelectedSubscription(subscription);
+        setIsViewModalOpen(true);
+    };
+
 
     return (
         <div className="space-y-6 sm:space-y-8 pb-10">
@@ -256,9 +265,21 @@ export default function SubscriptionManagement() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-5 text-right pr-8">
-                                        <button className="p-2 text-[#CBD5E1] hover:text-[#1E293B] rounded-lg transition-all">
-                                            <MoreVertical className="w-5 h-5" />
-                                        </button>
+                                        <div className="flex items-center justify-end gap-2">
+                                            <button 
+                                                onClick={() => handleViewDetails(item)}
+                                                className="p-2 text-[#94A3B8] hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-all cursor-pointer"
+                                                title="View Details"
+                                            >
+                                                <Eye className="w-5 h-5" />
+                                            </button>
+                                            <button 
+                                                className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                                                title="Delete"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -285,6 +306,13 @@ export default function SubscriptionManagement() {
                     </div>
                 </div>
             </div>
+
+            {/* View Details Modal */}
+            <SubscriptionDetailsModal
+                isOpen={isViewModalOpen}
+                onClose={() => setIsViewModalOpen(false)}
+                subscription={selectedSubscription}
+            />
         </div>
     );
 }

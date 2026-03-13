@@ -29,7 +29,6 @@ const mainItems = [
 ];
 
 const contentItems = [
-    { name: "Pages", href: "/admin/content/pages", icon: <Layout className="w-5 h-5" /> },
     {
         name: "Legal Docs",
         href: "/admin/legal",
@@ -41,11 +40,9 @@ const contentItems = [
             { name: "Cookie Policy", href: "/admin/legal/cookie-policy" }
         ]
     },
-    { name: "Forum Categories", href: "/admin/content/forums", icon: <MessageSquare className="w-5 h-5" /> },
 ];
 
 const systemItems = [
-    { name: "Settings", href: "/admin/settings", icon: <Settings className="w-5 h-5" /> },
     { name: "Logout", href: "#", icon: <LogOut className="w-5 h-5" /> },
 ];
 

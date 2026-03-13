@@ -4,8 +4,8 @@ import { TrendingUp } from "lucide-react";
 
 export default function TransactionChart() {
     return (
-        <div className="bg-white p-8 rounded-[32px] border border-[#F1F5F9] shadow-sm flex-1">
-            <div className="sm:flex items-start justify-between mb-8">
+        <div className="bg-white p-3 md:p-6 lg:pb-2 rounded-[32px] border border-[#F1F5F9] shadow-sm">
+            <div className="sm:flex items-start justify-between">
                 <div>
                     <h3 className="text-[20px] text-nowrap font-[700] text-[#1E293B] mb-1">Transaction Volume</h3>
                     <p className="text-[13px] text-gray-500 uppercase tracking-tight">Last 30 Days</p>
@@ -20,9 +20,9 @@ export default function TransactionChart() {
                 </div>
             </div>
 
-            <div className="relative h-64 w-full">
+            <div className="relative h-28 md:h-64 lg:h-52 w-full">
                 {/* SVG Chart Placeholder */}
-                <svg viewBox="0 0 800 240" className="w-full h-full">
+                <svg viewBox="0 80 800 120" className="w-full h-full">
                     <defs>
                         <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stopColor="#2563EB" stopOpacity="0.1" />
@@ -58,7 +58,7 @@ export default function TransactionChart() {
                 </svg>
             </div>
 
-            <div className="flex items-center justify-between mt-6 px-2">
+            <div className="flex items-center justify-between mt-6 lg:mt-2 px-2">
                 {["WEEK 1", "WEEK 2", "WEEK 3", "WEEK 4"].map((week, i) => (
                     <span key={i} className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[0.1em]">{week}</span>
                 ))}

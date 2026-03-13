@@ -30,24 +30,21 @@ export default function MeetInnovators() {
     ];
 
     return (
-        <section className="bg-white py-20 px-6">
+        <section className="bg-white mobile_spaces lg_spaces">
             <div className="container-width mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                     <div>
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] mb-4">Meet the Innovators</h2>
+                        <h2 className="text-2xl md:text-4xl font-[700] text-[#0F172A] mb-4">Meet the Innovators</h2>
                         <p className="text-gray-500 max-w-xl">
                             A diverse team of equestrians, engineers, and visionaries working together.
                         </p>
                     </div>
-                    <Link href="#" className="flex items-center gap-2 text_color font-bold text-sm hover:gap-3 transition-all">
-                        View All Members <ArrowRight size={16} />
-                    </Link>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {team.map((member, index) => (
                         <div key={index} className="bg-white rounded-2xl overflow-hidden border border-gray-100 group shadow-sm hover:shadow-xl transition-all duration-300">
-                            <div className="relative h-72 overflow-hidden">
+                            <div className="relative h-56 md:h-72 overflow-hidden">
                                 <img
                                     src={member.image}
                                     alt={member.name}

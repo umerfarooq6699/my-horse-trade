@@ -3,26 +3,25 @@ import { Play } from "lucide-react";
 
 export default function AboutHero() {
     return (
-        <section className="bg-white py-16 md:py-24">
-            <div className="container-width mx-auto px-4 md:px-16 flex flex-col md:flex-row items-center gap-12">
+        <section className="bg-white py-6 md:py-12">
+            <div className="container-width mx-auto px-4 md:px-16 flex flex-col md:flex-row items-center gap-6 md:gap-12">
                 {/* Left Content */}
-                <div className="flex-1 space-y-6">
+                <div className="flex-1 space-y-3 md:space-y-5">
                     <span className="inline-block text_color font-bold tracking-widest text-xs uppercase">
                         « THE NEXT GEN PLATFORM
                     </span>
-                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-[#0F172A] leading-[1.1]">
-                        Redefining the <br />
-                        Equestrian Market
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-[600] md:font-[700] text-[#0F172A] leading-[1]">
+                        Redefining the Equestrian Market
                     </h1>
                     <p className="text-gray-500 text-base sm:text-lg leading-relaxed max-w-lg">
                         Bringing old world traditions to new world technology. We are building a dynamic ecosystem, grounded by trust, to connect the buying and selling equestrians marketplace.
                     </p>
-                    <div className="flex items-center gap-4 pt-4">
-                        <button className="bg_color text-white px-8 py-3.5 rounded-lg font-semibold hover:opacity-90 transition shadow-lg shadow-blue-200">
+                    <div className="flex items-center gap-2 sm:gap-4 pt-4 overflow-x-hidden">
+                        <button className="bg_color text-white px-3.5 sm:px-8 py-3.5 rounded-lg font-semibold whitespace-nowrap cursor-pointer hover:opacity-90 transition shadow-lg shadow-blue-200 text-sm sm:text-base">
                             Our Story ↗
                         </button>
-                        <button className="flex items-center gap-2 border border-blue-200 text_color px-8 py-3.5 rounded-lg font-semibold hover:bg-blue-50 transition">
-                            <div className="w-6 h-6 rounded-full border border-blue-200 flex items-center justify-center">
+                        <button className="flex items-center gap-2 border border-blue-200 text_color px-3.5 sm:px-8 py-3.5 rounded-lg font-semibold whitespace-nowrap cursor-pointer hover:bg-blue-50 transition text-sm sm:text-base">
+                            <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-blue-200 flex items-center justify-center shrink-0">
                                 <Play size={10} fill="currentColor" />
                             </div>
                             Watch Video
@@ -37,7 +36,7 @@ export default function AboutHero() {
                         <img
                             src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?q=80&w=2071&auto=format&fit=crop"
                             alt="White Horse"
-                            className="w-full h-auto object-cover min-h-[400px]"
+                            className="w-full h-auto object-cover min-h-[280px]"
                         />
 
                         {/* Glassmorphism Card */}

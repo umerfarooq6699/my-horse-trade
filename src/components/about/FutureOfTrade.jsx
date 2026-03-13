@@ -23,19 +23,19 @@ export default function FutureOfTrade() {
     ];
 
     return (
-        <section className="bg-white py-20 px-6">
-            <div className="container-width mx-auto text-center mb-16 px-4">
+        <section className="bg-white mobile_spaces lg_spaces">
+            <div className="container-width mx-auto text-center mb-6 sm:mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-4">The Future of Trade</h2>
                 <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed">
                     Experience the proud advantages of the high-end trade platform, built for the modern equestrian who values precision and peace of mind.
                 </p>
             </div>
 
-            <div className="container-width mx-auto px-4 md:px-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="container-width mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                 {features.map((feature, index) => (
                     <div
                         key={index}
-                        className="p-8 rounded-2xl border border-gray-100 bg-white hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
+                        className="p-4 md:p-8 rounded-2xl border border-gray-100 bg-white hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
                     >
                         <div className={`w-14 h-14 rounded-xl ${feature.bgColor} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                             {feature.icon}

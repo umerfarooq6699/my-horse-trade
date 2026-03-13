@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Filter, Plus, FileDown, MoreVertical, Edit2, ChevronRight, Eye, UserPlus, Hourglass, Ban, Users } from "lucide-react";
+import { Search, Filter, FileDown, MoreVertical, Edit2, ChevronRight, Eye, UserPlus, Hourglass, Ban, Users } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import UserDetailsModal from "@/components/admin/users/UserDetailsModal";
@@ -47,15 +47,7 @@ export default function UsersManagement() {
                         Manage user access, view details, and update statuses.
                     </p>
                 </div>
-                <div className="flex">
-                    <Link
-                        href="/admin/users/add"
-                        className="flex items-center gap-2 px-4 sm:px-6 py-3 bg-[#2563EB] text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 w-fit"
-                    >
-                        <Plus className="w-4 h-4" />
-                        Add New User
-                    </Link>
-                </div>
+
             </div>
 
             {/* Stats Overview */}

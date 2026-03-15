@@ -2,12 +2,50 @@
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { User, Mail, Eye, EyeOff, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { User as UserIcon, Mail, Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, resetSignupState } from "@/redux/slices/authSlice";
+import { APP_ROUTES } from "@/utils/urls";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function SignupForm() {
     const [showPassword, setShowPassword] = useState(false);
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const { signupData, isAuthenticated } = useSelector((state) => state.auth);
+    const { loading, error, success } = signupData;
+
+    console.log("Signup State:", signupData);
+
+    useEffect(() => {
+        if (success) {
+            toast.success(typeof success === "string" ? success : "Account created successfully!", {
+                position: "top-center",
+                toastId: "signup-success"
+            });
+            dispatch(resetSignupState());
+            
+            setTimeout(() => {
+                router.push(APP_ROUTES.LOGIN);
+            }, 2000);
+        }
+
+        if (error) {
+            const errorMessage = typeof error === 'object' ? Object.values(error).flat().join(', ') : error;
+            toast.error(errorMessage || "Signup failed!", {
+                position: "top-center",
+                toastId: "signup-error"
+            });
+            dispatch(resetSignupState());
+        }
+
+        return () => {
+            dispatch(resetSignupState());
+        };
+    }, [success, error, router, dispatch]);
 
     const formik = useFormik({
         initialValues: {
@@ -29,10 +67,17 @@ export default function SignupForm() {
             agreeTerms: Yup.boolean().oneOf([true], "You must agree to the terms")
         }),
         onSubmit: (values) => {
-            console.log("Signup submitted:", values);
-            alert("Account created successfully (simulation)");
+            const signupPayload = {
+                name: values.fullName,
+                email: values.emailAddress,
+                password: values.password,
+                user_type: "USER" // Default user type
+            };
+            dispatch(registerUser(signupPayload));
         }
     });
+
+    console.log("Signup Formik Values:", formik.values);
 
     const inputs = [
         {
@@ -40,7 +85,7 @@ export default function SignupForm() {
             label: "Full Name",
             placeholder: "Enter your full name",
             type: "text",
-            icon: <User size={20} />
+            icon: <UserIcon size={20} />
         },
         {
             name: "emailAddress",
@@ -174,7 +219,7 @@ export default function SignupForm() {
                                     {...formik.getFieldProps("agreeTerms")}
                                 />
                                 <label htmlFor="agreeTerms" className="text-sm text-gray-500 font-medium cursor-pointer">
-                                    I agree to the <Link href="/terms-and-conditions" className="text_color hover:underline">Terms of Service</Link> and <Link href="/privacy-policy" className="text_color hover:underline">Privacy Policy</Link>.
+                                    I agree to the <Link href={APP_ROUTES.HOME} className="text_color hover:underline">Terms of Service</Link> and <Link href={APP_ROUTES.HOME} className="text_color hover:underline">Privacy Policy</Link>.
                                 </label>
                             </div>
                             {formik.touched.agreeTerms && formik.errors.agreeTerms && (
@@ -187,14 +232,23 @@ export default function SignupForm() {
                     <div className="p-5 sm:p-6 lg:p-8 pt-4 bg-white border-t border-gray-100 mt-auto">
                         <button
                             type="submit"
-                            disabled={formik.isSubmitting}
-                            className="w-full flex items-center justify-center gap-2 bg_color text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
+                            disabled={formik.isSubmitting || loading}
+                            className={`w-full flex items-center justify-center gap-2 bg_color text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98] ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
-                            Create Account <ArrowRight size={20} />
+                            {loading ? (
+                                <>
+                                    <Loader2 className="animate-spin" size={20} />
+                                    Creating Account...
+                                </>
+                            ) : (
+                                <>
+                                    Create Account <ArrowRight size={20} />
+                                </>
+                            )}
                         </button>
 
                         <p className="text-center text-sm text-gray-500 font-medium mt-4">
-                            Already have an account? <Link href="/login" className="text_color font-bold hover:underline">Sign In</Link>
+                            Already have an account? <Link href={APP_ROUTES.LOGIN} className="text_color font-bold hover:underline">Sign In</Link>
                         </p>
                     </div>
                 </form>

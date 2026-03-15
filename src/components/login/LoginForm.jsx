@@ -2,35 +2,73 @@
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Mail, Eye, EyeOff, User } from "lucide-react";
-import { useState } from "react";
+import { Mail, Eye, EyeOff, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, resetLoginState } from "@/redux/slices/authSlice";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { APP_ROUTES } from "@/utils/urls";
 
 export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const { login, isAuthenticated } = useSelector((state) => state.auth);
+    const { loading, error, success } = login;
+
+    useEffect(() => {
+        if (success) {
+            toast.success("Login successful!", {
+                position: "top-center",
+                toastId: "login-success"
+            });
+            dispatch(resetLoginState());
+            
+            setTimeout(() => {
+                router.push(APP_ROUTES.HOME);
+            }, 2000);
+        }
+
+        if (error) {
+            const errorMessage = typeof error === 'object' ? Object.values(error).flat().join(', ') : error;
+            toast.error(errorMessage || "Login failed!", {
+                position: "top-center",
+                toastId: "login-error"
+            });
+            dispatch(resetLoginState());
+        }
+
+        return () => {
+            dispatch(resetLoginState());
+        };
+    }, [success, error, router, dispatch]);
 
     const formik = useFormik({
         initialValues: {
-            identifier: "",
+            email: "",
             password: "",
             rememberMe: false
         },
         validationSchema: Yup.object({
-            identifier: Yup.string().required("Email or Username is required"),
+            email: Yup.string().email("Invalid email").required("Email is required"),
             password: Yup.string().required("Password is required")
         }),
         onSubmit: (values) => {
-            console.log("Login submitted:", values);
-            alert("Login successful (simulation)");
+            dispatch(loginUser({
+                email: values.email,
+                password: values.password
+            }));
         }
     });
 
     const inputs = [
         {
-            name: "identifier",
-            label: "Email or Username",
-            placeholder: "Enter email or username",
-            type: "text",
+            name: "email",
+            label: "Email Address",
+            placeholder: "Enter your email",
+            type: "email",
             icon: <Mail size={18} />
         },
         {
@@ -107,15 +145,22 @@ export default function LoginForm() {
                 <div className="pt-2">
                     <button
                         type="submit"
-                        disabled={formik.isSubmitting}
-                        className="w-full flex items-center justify-center gap-2 bg_color text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
+                        disabled={formik.isSubmitting || loading}
+                        className={`w-full flex items-center justify-center gap-2 bg_color text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98] ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
-                        Log In
+                        {loading ? (
+                            <>
+                                <Loader2 className="animate-spin" size={20} />
+                                Logging in...
+                            </>
+                        ) : (
+                            "Log In"
+                        )}
                     </button>
                 </div>
 
                 <p className="text-center text-sm text-gray-500 font-medium pt-4">
-                    New to MyHorseTrade? <Link href="/signup" className="text_color font-bold hover:underline">Create an account</Link>
+                    New to MyHorseTrade? <Link href={APP_ROUTES.SIGNUP} className="text_color font-bold hover:underline">Create an account</Link>
                 </p>
             </form>
         </div>

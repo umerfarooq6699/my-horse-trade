@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export default function SubscriptionCTA() {
     return (
-        <section className="bg-white py-10 px-4 sm:px-6">
+        <section className="bg-white sm:px-6">
             <div className="w-full md:w-[85%] lg:w-[70%] mx-auto">
-                <div className="relative bg-[#0D59E2] rounded-3xl sm:rounded-[32px] overflow-hidden p-8 sm:p-12 md:py-16 text-center shadow-2xl">
+                <div className="relative bg-[#0D59E2] rounded-3xl sm:rounded-[32px] overflow-hidden py-8 sm:p-12 md:py-16 text-center shadow-2xl">
                     {/* Subtle gradient effect */}
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
 

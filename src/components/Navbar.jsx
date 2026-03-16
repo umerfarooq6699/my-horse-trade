@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    // Mock authentication state
-    const isLoggedIn = false;
+    const { isAuthenticated: isLoggedIn, user } = useSelector((state) => state.auth);
+    const pathname = usePathname();
 
     // Links for Guest
     const guestLinks = [
@@ -22,12 +24,11 @@ export default function Navbar() {
     const authLinks = [
         { name: "Home", href: "/" },
         { name: "About", href: "/about" },
-        { name: "Marketplace", href: "/marketplace" },
         { name: "Subscription", href: "/subscriptions" },
         { name: "Buy Horses", href: "/marketplace" },
         { name: "Sell Horse", href: "/sell-horse" },
-        { name: "Auctions", href: "/marketplace" },
-        { name: "Community", href: "/marketplace" },
+        { name: "Profile", href: "/profile" },
+        { name: "Contact Us", href: "/contact" },
     ];
 
     const currentLinks = isLoggedIn ? authLinks : guestLinks;
@@ -45,34 +46,28 @@ export default function Navbar() {
                     </span>
                 </Link>
 
-                {/* Desktop Links */}
                 <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-                    {currentLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className={`text-[13px] font-bold transition-colors ${link.name === 'Home' || (isLoggedIn && link.name === 'Marketplace') ? 'text_color' : 'text-gray-400 hover:text_color'
-                                }`}
-                        >
-                            {link.name}
-                        </Link>
-                    ))}
+                    {currentLinks.map((link) => {
+                        const isActive = pathname === link.href;
+                        return (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className={`text-[13px] font-bold transition-all ${isActive
+                                    ? 'text_color'
+                                    : 'text-gray-400 hover:text_color'
+                                    }`}
+                            >
+                                {link.name}
+                            </Link>
+                        );
+                    })}
                 </div>
 
                 {/* Right Actions */}
                 <div className="hidden lg:flex items-center gap-4 xl:gap-8">
                     {isLoggedIn ? (
                         <div className="flex items-center gap-6">
-                            {/* Full Search Bar */}
-                            <div className="relative group">
-                                <input
-                                    type="text"
-                                    placeholder="Search..."
-                                    className="bg-gray-50/50 border border-gray-100 rounded-2xl px-12 py-3 text-[13px] font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring_color focus:ring-opacity-20 transition-all w-56 xl:w-80"
-                                />
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
-                            </div>
-
                             {/* Icons Collection */}
                             <div className="flex items-center gap-4">
                                 <button className="relative p-3 bg-gray-50/50 rounded-2xl text-gray-400 hover:text_color transition-all">
@@ -94,10 +89,6 @@ export default function Navbar() {
                         </div>
                     ) : (
                         <div className="flex items-center gap-4 xl:gap-6">
-                            {/* Search Icon Only */}
-                            <button className="p-2 text-gray-400 hover:text_color transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
-                            </button>
                             {/* Login Button with Icon */}
                             <Link href="/signup" className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-gray-700 bg-white border border_color rounded-xl hover:bg-theme-50 transition-all">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="10" r="3" /><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" /></svg>
@@ -126,24 +117,64 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Menu */}
-            <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out bg-white border-t border-gray-100 ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+            <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out bg-white border-t border-gray-100 ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
                 <div className="p-6 flex flex-col gap-5">
-                    <Link href="/" onClick={() => setIsOpen(false)} className="text-gray-900 font-bold uppercase tracking-wider text-sm flex justify-between items-center group">
-                        Home <span className="w-1.5 h-1.5 rounded-full bg_color opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    </Link>
-                    <Link href="/about" onClick={() => setIsOpen(false)} className="text-gray-500 font-bold uppercase tracking-wider text-sm hover:text_color transition-colors">About</Link>
-                    <Link href="/marketplace" onClick={() => setIsOpen(false)} className="text-gray-500 font-bold uppercase tracking-wider text-sm hover:text_color transition-colors">Marketplace</Link>
-                    <Link href="/subscriptions" onClick={() => setIsOpen(false)} className="text-gray-500 font-bold uppercase tracking-wider text-sm hover:text_color transition-colors">Subscriptions</Link>
-                    <Link href="/profile" onClick={() => setIsOpen(false)} className="text-gray-500 font-bold uppercase tracking-wider text-sm hover:text_color transition-colors">Profile</Link>
-                    <Link href="/contact" onClick={() => setIsOpen(false)} className="text-gray-500 font-bold uppercase tracking-wider text-sm hover:text_color transition-colors">Contact Us</Link>
+                    {currentLinks.map((link) => {
+                        const isActive = pathname === link.href;
+                        return (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                onClick={() => setIsOpen(false)}
+                                className={`font-bold uppercase tracking-wider text-sm flex justify-between items-center group transition-all ${isActive
+                                    ? 'text_color'
+                                    : 'text-gray-500 hover:text_color'
+                                    }`}
+                            >
+                                {link.name}
+                                <span className={`w-1.5 h-1.5 rounded-full bg_color transition-opacity ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                                    }`}></span>
+                            </Link>
+                        );
+                    })}
 
                     <div className="flex flex-col gap-3 pt-4 border-t border-gray-50">
-                        <Link href="/signup" onClick={() => setIsOpen(false)} className="text-center py-4 text-gray-900 font-bold text-sm border border-gray-100 rounded-xl hover:bg-gray-50 transition-all">
-                            Signup
-                        </Link>
-                        <Link href="/login" onClick={() => setIsOpen(false)} className="text-center py-4 bg_color text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-100 transition-all active:scale-[0.98]">
-                            Login
-                        </Link>
+                        {isLoggedIn ? (
+                            <div className="flex items-center justify-between bg-gray-50/50 p-4 rounded-xl">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden">
+                                        <img
+                                            src={user?.avatar || "https://avatar.iran.liara.run/public/boy?username=Alex"}
+                                            alt={user?.user_name || "User"}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-bold text-gray-900">{user?.user_name || "Profile"}</span>
+                                        <span className="text-[10px] text-gray-500">{user?.email || "View Profile"}</span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <button className="relative p-2 bg-white rounded-lg text-gray-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5C2 7 4 5 6.5 5H18c2.2 0 4 1.8 4 4v8z" /><path d="m22 7-10 7L2 7" /></svg>
+                                        <span className="absolute -top-1 -right-1 w-4 h-4 bg_color rounded-full text-[8px] text-white flex items-center justify-center font-black">3</span>
+                                    </button>
+                                    <button className="relative p-2 bg-white rounded-lg text-gray-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
+                                        <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-red-500 rounded-full"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <Link href="/signup" onClick={() => setIsOpen(false)} className="text-center py-4 text-gray-900 font-bold text-sm border border-gray-100 rounded-xl hover:bg-gray-50 transition-all">
+                                    Signup
+                                </Link>
+                                <Link href="/login" onClick={() => setIsOpen(false)} className="text-center py-4 bg_color text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-100 transition-all active:scale-[0.98]">
+                                    Login
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

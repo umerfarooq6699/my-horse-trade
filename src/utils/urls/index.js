@@ -1,5 +1,5 @@
 // API Base URL
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://my-horse-trade-backend.vercel.app';
 
 // API Endpoints
 export const API_ENDPOINTS = {
@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
   VERIFY_OTP: `${API_BASE_URL}/verify-otp`,
   SEND_OTP: `${API_BASE_URL}/send-otp`,
   USER_PROFILE: `${API_BASE_URL}/user-profile`,
+  ALL_USERS: `${API_BASE_URL}/all-users`,
 };
 
 // Frontend Routes

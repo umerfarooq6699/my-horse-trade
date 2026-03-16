@@ -22,7 +22,7 @@ export default function FAQAccordion({ faqs }) {
                 >
                     <button
                         onClick={() => toggleAccordion(index)}
-                        className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+                        className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-left focus:outline-none"
                     >
                         <span className={`font-semibold text-base sm:text-lg ${openIndex === index ? "text_color" : "text-[#0F172A]"
                             }`}>
@@ -38,7 +38,7 @@ export default function FAQAccordion({ faqs }) {
                         className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                             }`}
                     >
-                        <div className="px-6 pb-6 text-gray-500 leading-relaxed">
+                        <div className="px-3 pb-6 text-gray-500 leading-relaxed">
                             {faq.answer}
                         </div>
                     </div>

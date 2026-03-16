@@ -1,10 +1,13 @@
 import { CheckCircle2, Circle } from "lucide-react";
 
-export default function PricingSection() {
+export default function PricingSection({ billingCycle }) {
+    const isYearly = billingCycle === "yearly";
+
     const plans = [
         {
             name: "Free",
             price: "0",
+            yearlyPrice: "0",
             description: "Perfect for hobbyists getting started.",
             features: [
                 { text: "3 Active Listings", included: true },
@@ -18,6 +21,7 @@ export default function PricingSection() {
         {
             name: "Premium",
             price: "20",
+            yearlyPrice: "192", // 20 * 12 * 0.8
             description: "For serious sellers scaling up.",
             features: [
                 { text: "10 Active Listings", included: true },
@@ -33,6 +37,7 @@ export default function PricingSection() {
         {
             name: "Platinum",
             price: "50",
+            yearlyPrice: "480", // 50 * 12 * 0.8
             description: "Complete dominance for large stables.",
             features: [
                 { text: "Unlimited Listings", included: true },
@@ -46,12 +51,12 @@ export default function PricingSection() {
     ];
 
     return (
-        <section className="bg-white py-6 mb-4">
+        <section className="bg-white mb-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-18 max-w-7xl mx-auto px-0">
                 {plans.map((plan, index) => (
                     <div
                         key={index}
-                        className={`relative rounded-3xl p-6 sm:p-8 border-2 transition-all duration-300 flex flex-col h-full ${plan.highlighted
+                        className={`relative rounded-3xl p-3 sm:p-8 border-2 transition-all duration-300 flex flex-col h-full ${plan.highlighted
                             ? "border_color bg-white shadow-2xl lg:scale-105 z-10"
                             : "border-gray-50 bg-[#F9FAFB] hover:border-blue-100"
                             }`}
@@ -62,18 +67,22 @@ export default function PricingSection() {
                             </div>
                         )}
 
-                        <div className="mb-8">
-                            <h3 className={`text-xl font-bold mb-4 ${plan.highlighted ? "text_color" : "text-gray-900"}`}>
+                        <div className="mb-4 sm:mb-8">
+                            <h3 className={`text-xl font-bold mb-1 sm:mb-4 ${plan.highlighted ? "text_color" : "text-gray-900"}`}>
                                 {plan.name}
                             </h3>
                             <div className="flex items-baseline mb-2">
-                                <span className="text-4xl font-black text-gray-900">${plan.price}</span>
-                                <span className="text-gray-500 ml-1">/month</span>
+                                <span className="text-4xl font-black text-gray-900">
+                                    ${isYearly ? plan.yearlyPrice : plan.price}
+                                </span>
+                                <span className="text-gray-500 ml-1">
+                                    /{isYearly ? "year" : "month"}
+                                </span>
                             </div>
                             <p className="text-gray-500 text-sm leading-relaxed">{plan.description}</p>
                         </div>
 
-                        <div className="flex-grow space-y-5 mb-10">
+                        <div className="flex-grow space-y-2 sm:space-y-5 mb-6 sm:mb-10">
                             {plan.features.map((feature, fIndex) => (
                                 <div key={fIndex} className="flex items-center gap-3">
                                     {feature.included ? (
@@ -89,7 +98,7 @@ export default function PricingSection() {
                         </div>
 
                         <button
-                            className={`w-full py-4 rounded-xl font-bold transition-all ${plan.highlighted
+                            className={`w-full py-3 rounded-xl font-bold transition-all ${plan.highlighted
                                 ? "bg_color text-white hover:opacity-90 shadow-lg shadow-blue-200"
                                 : plan.name === "Platinum"
                                     ? "bg-[#0F172A] text-white hover:bg-gray-800"

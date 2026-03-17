@@ -1,7 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { API_ENDPOINTS } from '@/utils/urls';
+
+// Async thunk for fetching all users with pagination
+export const fetchAllUsers = createAsyncThunk(
+  'admin/fetchAllUsers',
+  async (page = 1, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_ENDPOINTS.ALL_USERS}?page=${page}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 
 const initialState = {
   users: [],
+  pagination: {
+    totalUsers: 0,
+    totalPages: 1,
+    currentPage: 1
+  },
   allListings: [],
   disputes: [],
   analytics: {
@@ -32,6 +52,26 @@ const adminSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAllUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload.users || [];
+        state.pagination = {
+          totalUsers: action.payload.totalUsers,
+          totalPages: action.payload.totalPages,
+          currentPage: action.payload.currentPage
+        };
+      })
+      .addCase(fetchAllUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

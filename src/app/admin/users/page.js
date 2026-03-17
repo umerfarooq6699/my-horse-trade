@@ -4,51 +4,35 @@ import { Search, Filter, FileDown, MoreVertical, Edit2, ChevronRight, Eye, UserP
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import UserDetailsModal from "@/components/admin/users/UserDetailsModal";
-import axios from "axios";
-import { API_ENDPOINTS } from "@/utils/urls";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllUsers } from "@/redux/slices/adminSlice";
 
 export default function UsersManagement() {
+    const dispatch = useDispatch();
+    const { users: userList, loading, error, pagination } = useSelector((state) => state.admin);
+    
     const [selectedUser, setSelectedUser] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [userList, setUserList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [pagination, setPagination] = useState({
-        totalUsers: 0,
-        totalPages: 1,
-        currentPage: 1
-    });
-
-    const fetchUsers = async (page = 1) => {
-        setLoading(true);
-        try {
-            const response = await axios.get(`${API_ENDPOINTS.ALL_USERS}?page=${page}`);
-            setUserList(response.data.users || []);
-            setPagination({
-                totalUsers: response.data.totalUsers,
-                totalPages: response.data.totalPages,
-                currentPage: response.data.currentPage
-            });
-            setError(null);
-        } catch (err) {
-            console.error("Error fetching users:", err);
-            setError("Failed to fetch users. Please try again later.");
-        } finally {
-            setLoading(false);
-        }
-    };
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+        dispatch(fetchAllUsers(1));
+    }, [dispatch]);
 
     const handleViewDetails = (user) => {
         setSelectedUser(user);
         setIsModalOpen(true);
     };
 
+    const handleRefresh = () => {
+        dispatch(fetchAllUsers(pagination.currentPage));
+    };
+
+    const handlePageChange = (page) => {
+        dispatch(fetchAllUsers(page));
+    };
+
     const stats = [
-        { label: "Total Users", value: pagination.totalUsers?.toLocaleString() || "0", icon: <Users size={18} className="text-[#2563EB]" />, iconBg: "bg-blue-50" },
+        { label: "Total Users", value: pagination?.totalUsers?.toLocaleString() || "0", icon: <Users size={18} className="text-[#2563EB]" />, iconBg: "bg-blue-50" },
         { label: "New Today", value: "+45", change: "12%", icon: <UserPlus size={18} className="text-[#22C55E]" />, iconBg: "bg-green-50" },
         { label: "Pending Approval", value: "12", sub: "Requires immediate attention", icon: <Hourglass size={18} className="text-[#F59E0B]" />, iconBg: "bg-orange-50", border: "border-l-4 border-l-[#F59E0B]" },
         { label: "Suspended", value: "89", sub: "Due to policy violations", icon: <Ban size={18} className="text-[#EF4444]" />, iconBg: "bg-red-50" },
@@ -76,7 +60,7 @@ export default function UsersManagement() {
                     <div className="flex items-center gap-4">
                         <h1 className="text-[24px] sm:text-[32px] font-[600] text-[#1E293B] tracking-tight mb-2">User Management</h1>
                         <button 
-                            onClick={() => fetchUsers(pagination.currentPage)}
+                            onClick={handleRefresh}
                             className={`p-2 rounded-full hover:bg-gray-100 transition-all ${loading ? 'animate-spin' : ''}`}
                             disabled={loading}
                         >
@@ -146,9 +130,9 @@ export default function UsersManagement() {
                     ) : error ? (
                         <div className="flex flex-col items-center justify-center h-64 gap-4 text-center px-4">
                             <Ban className="w-10 h-10 text-red-500" />
-                            <p className="text-[#EF4444] font-medium">{error}</p>
+                            <p className="text-[#EF4444] font-medium">{typeof error === 'string' ? error : "Failed to fetch users"}</p>
                             <button 
-                                onClick={() => fetchUsers(pagination.currentPage)}
+                                onClick={handleRefresh}
                                 className="px-4 py-2 bg-[#2563EB] text-white rounded-xl text-sm font-bold"
                             >
                                 Try Again
@@ -166,7 +150,7 @@ export default function UsersManagement() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[#F8FAFC]">
-                                {userList.length > 0 ? (
+                                {userList?.length > 0 ? (
                                     userList.map((user, i) => (
                                         <tr key={user._id || i} className="group hover:bg-gray-50/50 transition-all">
                                             <td className="py-5 pl-4 sm:pl-8">
@@ -223,21 +207,21 @@ export default function UsersManagement() {
                 {!loading && !error && (
                     <div className="p-4 sm:p-8 border-t border-[#F1F5F9] flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-xs font-bold text-[#94A3B8]">
-                            Showing {userList.length} of {pagination.totalUsers} users
+                            Showing {userList?.length || 0} of {pagination?.totalUsers || 0} users
                         </p>
                         <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto max-w-full">
                             <button 
-                                onClick={() => fetchUsers(pagination.currentPage - 1)}
+                                onClick={() => handlePageChange(pagination.currentPage - 1)}
                                 className="text-[11px] sm:text-xs font-bold text-[#94A3B8] hover:text-[#1E293B] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap" 
-                                disabled={pagination.currentPage === 1 || loading}
+                                disabled={pagination?.currentPage === 1 || loading}
                             >
                                 Previous
                             </button>
                             <div className="flex items-center gap-1 sm:gap-2">
-                                {[...Array(pagination.totalPages)].map((_, i) => (
+                                {[...Array(pagination?.totalPages || 0)].map((_, i) => (
                                     <button 
                                         key={i}
-                                        onClick={() => fetchUsers(i + 1)}
+                                        onClick={() => handlePageChange(i + 1)}
                                         className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${
                                             pagination.currentPage === i + 1 
                                             ? "bg-[#2563EB] text-white" 
@@ -249,9 +233,9 @@ export default function UsersManagement() {
                                 ))}
                             </div>
                             <button 
-                                onClick={() => fetchUsers(pagination.currentPage + 1)}
+                                onClick={() => handlePageChange(pagination.currentPage + 1)}
                                 className="text-[11px] sm:text-xs font-bold text-[#64748B] hover:text-[#1E293B] cursor-pointer disabled:cursor-not-allowed whitespace-nowrap disabled:opacity-50"
-                                disabled={pagination.currentPage === pagination.totalPages || loading}
+                                disabled={pagination?.currentPage === pagination?.totalPages || loading}
                             >
                                 Next
                             </button>

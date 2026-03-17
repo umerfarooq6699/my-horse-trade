@@ -1,14 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const { isAuthenticated: isLoggedIn, user } = useSelector((state) => state.auth);
     const pathname = usePathname();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return (
+            <nav className="w-full bg-white border-b border-gray-100 fixed top-0 left-0 z-[100]">
+                <div className="container-width mx-auto flex items-center justify-between h-20 px-6 lg:px-14">
+                    {/* Placeholder for SEO/Initial Load to avoid jumps if possible, 
+                        but usually we just return the basic structure */}
+                    <div className="flex items-center gap-2">
+                        <div className="bg_color p-1.5 rounded-lg shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M5 18a7 7 0 0 0 14 0c0-4.4-1.6-4.9-6-5.5C10 12 10 10 9 8c-1-2-1-3-2-3-1 0-1 2-2 3-1 1-1 2-1 3 0 4-1 6-2 7 0 0 1 0 2 0" /></svg>
+                        </div>
+                        <span className="text-xl font-black text-[#1e293b] tracking-tight">
+                            MyHorse<span className="text_color">Trade</span>
+                        </span>
+                    </div>
+                </div>
+            </nav>
+        );
+    }
 
     // Links for Guest
     const guestLinks = [

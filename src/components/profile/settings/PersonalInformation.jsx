@@ -1,14 +1,34 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserDetails } from "@/redux/slices/profileSlice";
 
 export default function PersonalInformation() {
+    const dispatch = useDispatch()
+    const data = useSelector((state) => state.profile.user)
+    console.log(data, "data uuuuuuuuu")
+
+    useEffect(() => {
+        dispatch(getUserDetails())
+    }, [dispatch])
+
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
         email: "",
         bio: ""
     });
+
+    useEffect(() => {
+        if (data) {
+            setFormData(prev => ({
+                ...prev,
+                firstName: data.user_name || "",
+                email: data.email || ""
+            }));
+        }
+    }, [data]);
 
     const [bioLength, setBioLength] = useState(0);
     const [profileImage, setProfileImage] = useState(null);
@@ -97,15 +117,12 @@ export default function PersonalInformation() {
 
             {/* Personal Information Section */}
             <div className="bg-white rounded-2xl border border-gray-100 px-3 py-5 md:px-6 md:py-6">
-                <div className="flex items-center justify-between mb-6">
+                <div className="mb-6">
                     <h3 className="text-base font-semibold text-gray-900">Personal Information</h3>
-                    <button className="text-sm font-medium text_color hover:underline">
-                        Edit
-                    </button>
                 </div>
 
                 <div className="space-y-2 md:space-y-5">
-                    {/* First Name & Last Name */}
+                    {/* First Name & Email Address */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5">
                         <div>
                             <label className="block text-sm font-medium text-gray-900 mb-2">
@@ -121,37 +138,23 @@ export default function PersonalInformation() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-900 mb-2">
-                                Last Name
+                                Email Address
                             </label>
-                            <input
-                                type="text"
-                                name="lastName"
-                                value={formData.lastName}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Email Address */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900 mb-2">
-                            Email Address
-                        </label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
-                                    <rect width="20" height="16" x="2" y="4" rx="2" />
-                                    <path d="m2 7 8.97 5.7a1.94 1.94 0 0 0 2.06 0L22 7" />
-                                </svg>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+                                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                                        <path d="m2 7 8.97 5.7a1.94 1.94 0 0 0 2.06 0L22 7" />
+                                    </svg>
+                                </div>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+                                />
                             </div>
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
-                            />
                         </div>
                     </div>
 

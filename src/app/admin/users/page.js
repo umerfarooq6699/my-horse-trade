@@ -1,34 +1,77 @@
 "use client";
 
-import { Search, Filter, FileDown, MoreVertical, Edit2, ChevronRight, Eye, UserPlus, Hourglass, Ban, Users, RefreshCcw } from "lucide-react";
+import { Search, Filter, FileDown, MoreVertical, Edit2, ChevronRight, Eye, Trash2, UserPlus, Hourglass, Ban, Users, RefreshCcw } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import UserDetailsModal from "@/components/admin/users/UserDetailsModal";
+import DeleteUserModal from "@/components/admin/users/DeleteUserModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllUsers } from "@/redux/slices/adminSlice";
 
 export default function UsersManagement() {
     const dispatch = useDispatch();
     const { users: userList, loading, error, pagination } = useSelector((state) => state.admin);
-    
+
     const [selectedUser, setSelectedUser] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [userToDelete, setUserToDelete] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [searchValue, setSearchValue] = useState("");
+    const searchTimer = useRef(null);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const filterRef = useRef(null);
+
     useEffect(() => {
-        dispatch(fetchAllUsers(1));
+        dispatch(fetchAllUsers({ page: 1, searchValue: "" }));
     }, [dispatch]);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (filterRef.current && !filterRef.current.contains(event.target)) {
+                setIsFilterOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    // Auto-navigate to previous page when current page becomes empty
+    useEffect(() => {
+        if (!loading && userList?.length === 0 && pagination?.currentPage > 1) {
+            dispatch(fetchAllUsers({ page: pagination.currentPage - 1, searchValue }));
+        }
+    }, [userList, loading]);
+
+    const handleSearch = (e) => {
+        const value = e.target.value;
+        setSearchValue(value);
+        // Debounce: wait 300ms after user stops typing before sending request
+        clearTimeout(searchTimer.current);
+        searchTimer.current = setTimeout(() => {
+            dispatch(fetchAllUsers({ page: 1, searchValue: value }));
+        }, 300);
+    };
 
     const handleViewDetails = (user) => {
         setSelectedUser(user);
         setIsModalOpen(true);
     };
 
+    const handleDeleteClick = (user) => {
+        setUserToDelete(user);
+        setIsDeleteModalOpen(true);
+    };
+
+
     const handleRefresh = () => {
-        dispatch(fetchAllUsers(pagination.currentPage));
+        dispatch(fetchAllUsers({ page: pagination.currentPage, searchValue }));
     };
 
     const handlePageChange = (page) => {
-        dispatch(fetchAllUsers(page));
+        dispatch(fetchAllUsers({ page, searchValue }));
     };
 
     const stats = [
@@ -59,7 +102,7 @@ export default function UsersManagement() {
                     </div>
                     <div className="flex items-center gap-4">
                         <h1 className="text-[24px] sm:text-[32px] font-[600] text-[#1E293B] tracking-tight mb-2">User Management</h1>
-                        <button 
+                        <button
                             onClick={handleRefresh}
                             className={`p-2 rounded-full hover:bg-gray-100 transition-all ${loading ? 'animate-spin' : ''}`}
                             disabled={loading}
@@ -107,16 +150,42 @@ export default function UsersManagement() {
                     <div className="relative max-w-md w-full">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
                         <input
+                            onChange={handleSearch}
                             type="text"
                             placeholder="Search by name or email..."
                             className="w-full pl-12 pr-6 py-2.5 bg-[#F8FAFC] border-none rounded-xl text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-[#2563EB]/10"
                         />
                     </div>
                     <div className="flex items-center gap-4">
-                        <button className="flex items-center gap-2 px-4 py-2.5 bg-[#F8FAFC] border-none rounded-xl text-sm font-bold text-[#64748B] hover:text-[#1E293B] transition-all">
-                            <Filter className="w-4 h-4" />
-                            Filters
-                        </button>
+                        <div className="relative" ref={filterRef}>
+                            <button 
+                                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                                    isFilterOpen 
+                                        ? "bg-white border border-[#CBD5E1] text-[#1E293B] shadow-sm" 
+                                        : "bg-[#F8FAFC] border border-transparent text-[#64748B] hover:text-[#1E293B]"
+                                }`}
+                            >
+                                <Filter className="w-4 h-4" />
+                                Filters
+                            </button>
+
+                            {isFilterOpen && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-[#F1F5F9] overflow-hidden z-20">
+                                    <div className="p-2 space-y-1">
+                                        <button className="w-full text-left px-3 py-2.5 text-sm font-medium text-[#64748B] hover:text-[#2563EB] hover:bg-blue-50/50 rounded-lg transition-colors">
+                                            Today
+                                        </button>
+                                        <button className="w-full text-left px-3 py-2.5 text-sm font-medium text-[#64748B] hover:text-[#2563EB] hover:bg-blue-50/50 rounded-lg transition-colors">
+                                            Last Week
+                                        </button>
+                                        <button className="w-full text-left px-3 py-2.5 text-sm font-medium text-[#64748B] hover:text-[#2563EB] hover:bg-blue-50/50 rounded-lg transition-colors">
+                                            Last Month
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -131,7 +200,7 @@ export default function UsersManagement() {
                         <div className="flex flex-col items-center justify-center h-64 gap-4 text-center px-4">
                             <Ban className="w-10 h-10 text-red-500" />
                             <p className="text-[#EF4444] font-medium">{typeof error === 'string' ? error : "Failed to fetch users"}</p>
-                            <button 
+                            <button
                                 onClick={handleRefresh}
                                 className="px-4 py-2 bg-[#2563EB] text-white rounded-xl text-sm font-bold"
                             >
@@ -189,6 +258,13 @@ export default function UsersManagement() {
                                                     >
                                                         <Eye className="w-4.5 h-4.5 text-blue-500" />
                                                     </button>
+                                                    <button
+                                                        onClick={() => handleDeleteClick(user)}
+                                                        className="cursor-pointer p-2 text-[#CBD5E1] hover:text-red-500 rounded-lg hover:bg-red-50 transition-all"
+                                                        title="Delete User"
+                                                    >
+                                                        <Trash2 className="w-4.5 h-4.5 text-red-500" />
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -210,29 +286,28 @@ export default function UsersManagement() {
                             Showing {userList?.length || 0} of {pagination?.totalUsers || 0} users
                         </p>
                         <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto max-w-full">
-                            <button 
+                            <button
                                 onClick={() => handlePageChange(pagination.currentPage - 1)}
-                                className="text-[11px] sm:text-xs font-bold text-[#94A3B8] hover:text-[#1E293B] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap" 
+                                className="text-[11px] sm:text-xs font-bold text-[#94A3B8] hover:text-[#1E293B] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap"
                                 disabled={pagination?.currentPage === 1 || loading}
                             >
                                 Previous
                             </button>
                             <div className="flex items-center gap-1 sm:gap-2">
                                 {[...Array(pagination?.totalPages || 0)].map((_, i) => (
-                                    <button 
+                                    <button
                                         key={i}
                                         onClick={() => handlePageChange(i + 1)}
-                                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${
-                                            pagination.currentPage === i + 1 
-                                            ? "bg-[#2563EB] text-white" 
+                                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${pagination.currentPage === i + 1
+                                            ? "bg-[#2563EB] text-white"
                                             : "hover:bg-white text-[#64748B] border border-transparent hover:border-[#E2E8F0]"
-                                        }`}
+                                            }`}
                                     >
                                         {i + 1}
                                     </button>
                                 ))}
                             </div>
-                            <button 
+                            <button
                                 onClick={() => handlePageChange(pagination.currentPage + 1)}
                                 className="text-[11px] sm:text-xs font-bold text-[#64748B] hover:text-[#1E293B] cursor-pointer disabled:cursor-not-allowed whitespace-nowrap disabled:opacity-50"
                                 disabled={pagination?.currentPage === pagination?.totalPages || loading}
@@ -244,11 +319,17 @@ export default function UsersManagement() {
                 )}
             </div>
 
-            {/* Modal */}
+            {/* Modals */}
             <UserDetailsModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 user={selectedUser}
+            />
+
+            <DeleteUserModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                user={userToDelete}
             />
         </div>
     );

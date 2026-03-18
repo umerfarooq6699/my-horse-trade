@@ -10,6 +10,9 @@ export const API_ENDPOINTS = {
   SEND_OTP: `${API_BASE_URL}/send-otp`,
   USER_PROFILE: `${API_BASE_URL}/user-profile`,
   ALL_USERS: `${API_BASE_URL}/all-users`,
+  DELETE_USER: `${API_BASE_URL}/delete-user`,
+  CHANGE_PASSWORD: `${API_BASE_URL}/change-password`,
+  GET_USER_DETAILS: `${API_BASE_URL}/my-details`,
 };
 
 // Frontend Routes

@@ -3,8 +3,9 @@
 import ProgressSidebar from "./ProgressSidebar";
 import LivePreviewCard from "./LivePreviewCard";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
-export default function SellHorseLayout({ children, currentStep = 1, nextLink = "#", backLink = "#", onSaveDraft }) {
+export default function SellHorseLayout({ children, currentStep = 1, nextLink = "#", backLink = "#", onSaveDraft, onNext, loading = false }) {
     return (
         <div className="bg-[#f8fafc] min-h-screen pt-8 md:pt-10 mb-8 md:pb-16">
             <div className="container-width mx-auto px-3 lg:px-14">
@@ -21,9 +22,17 @@ export default function SellHorseLayout({ children, currentStep = 1, nextLink = 
                             <div className="flex items-center gap-3 w-full sm:w-auto">
                                 <button
                                     onClick={onSaveDraft}
-                                    className=" flex-1 sm:flex-none px-4 sm:px-6 py-3 text-[13px] sm:text-[14px] font-bold text-white bg_color rounded-[10px] hover:opacity-90 transition-all border border-gray-100/50 whitespace-nowrap cursor-pointer"
+                                    disabled={loading}
+                                    className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 text-[13px] sm:text-[14px] font-bold text-white bg_color rounded-[10px] hover:opacity-90 transition-all border border-gray-100/50 whitespace-nowrap cursor-pointer flex items-center justify-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                                 >
-                                    Save as Draft
+                                    {loading ? (
+                                        <>
+                                            <Loader2 size={16} className="animate-spin" />
+                                            Saving...
+                                        </>
+                                    ) : (
+                                        "Save as Draft"
+                                    )}
                                 </button>
                                 <Link
                                     href={backLink}
@@ -40,9 +49,40 @@ export default function SellHorseLayout({ children, currentStep = 1, nextLink = 
                                     Back
                                 </Link>
                                 {currentStep === 4 ? (
-                                    <button className="cursor-pointer w-full sm:w-auto px-6 sm:px-10 py-4 text-[13px] sm:text-[14px] font-bold text-white bg-[#0fb478] rounded-2xl hover:opacity-90 transition-all shadow-lg shadow-green-100 flex items-center justify-center gap-2 group whitespace-nowrap">
-                                        Publish Listing
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg>
+                                    <button
+                                        onClick={onNext}
+                                        disabled={loading}
+                                        className={`cursor-pointer w-full sm:w-auto px-6 sm:px-10 py-3 text-[13px] sm:text-[14px] font-bold text-white bg-[#0fb478] rounded-[10px] hover:opacity-90 transition-all shadow-lg shadow-green-100 flex items-center justify-center gap-2 group whitespace-nowrap ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                    >
+                                        {loading ? (
+                                            <>
+                                                <Loader2 size={16} className="animate-spin" />
+                                                Publishing...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Publish Listing
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg>
+                                            </>
+                                        )}
+                                    </button>
+                                ) : onNext ? (
+                                    <button
+                                        onClick={onNext}
+                                        disabled={loading}
+                                        className={`w-full sm:w-auto px-6 sm:px-10 py-3 text-[13px] sm:text-[14px] font-bold text-white bg_color rounded-[10px] hover:opacity-90 transition-all shadow-lg shadow-blue-100 flex items-center justify-center gap-2 group whitespace-nowrap cursor-pointer ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                    >
+                                        {loading ? (
+                                            <>
+                                                <Loader2 size={16} className="animate-spin" />
+                                                Processing...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Next Step
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                            </>
+                                        )}
                                     </button>
                                 ) : (
                                     <Link
@@ -56,6 +96,7 @@ export default function SellHorseLayout({ children, currentStep = 1, nextLink = 
                             </div>
                         </div>
                     </div>
+
 
                     {/* Right Sidebar - Preview */}
                     <div className="hidden xl:block">

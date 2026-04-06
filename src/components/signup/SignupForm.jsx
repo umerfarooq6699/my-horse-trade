@@ -18,22 +18,24 @@ export default function SignupForm() {
     const { signupData, isAuthenticated } = useSelector((state) => state.auth);
     const { loading, error, success } = signupData;
 
-    console.log("Signup State:", signupData);
+    // console.log("Signup State:", signupData);
 
     useEffect(() => {
         if (success) {
+            console.log("Signup Success Data:", success);
             toast.success(typeof success === "string" ? success : "Account created successfully!", {
                 position: "top-center",
                 toastId: "signup-success"
             });
             dispatch(resetSignupState());
-            
+
             setTimeout(() => {
                 router.push(APP_ROUTES.LOGIN);
             }, 2000);
         }
 
         if (error) {
+            console.log("Signup Error Data:", error);
             const errorMessage = typeof error === 'object' ? Object.values(error).flat().join(', ') : error;
             toast.error(errorMessage || "Signup failed!", {
                 position: "top-center",
@@ -52,7 +54,7 @@ export default function SignupForm() {
             fullName: "",
             emailAddress: "",
             password: "",
-            confirmPassword: "",
+            confirm_password: "",
             agreeTerms: false
         },
         validationSchema: Yup.object({
@@ -61,23 +63,24 @@ export default function SignupForm() {
             password: Yup.string()
                 .min(8, "Password must be at least 8 characters")
                 .required("Password is required"),
-            confirmPassword: Yup.string()
+            confirm_password: Yup.string()
                 .oneOf([Yup.ref("password"), null], "Passwords must match")
                 .required("Confirm Password is required"),
             agreeTerms: Yup.boolean().oneOf([true], "You must agree to the terms")
         }),
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             const signupPayload = {
                 name: values.fullName,
                 email: values.emailAddress,
                 password: values.password,
+                confirm_password: values.confirm_password,
                 user_type: "USER" // Default user type
             };
-            dispatch(registerUser(signupPayload));
+            await dispatch(registerUser(signupPayload));
         }
     });
 
-    console.log("Signup Formik Values:", formik.values);
+    // console.log("Signup Formik Values:", formik.values);
 
     const inputs = [
         {
@@ -104,7 +107,7 @@ export default function SignupForm() {
             isPassword: true
         },
         {
-            name: "confirmPassword",
+            name: "confirm_password",
             label: "Confirm",
             placeholder: "••••••••",
             isPassword: true,

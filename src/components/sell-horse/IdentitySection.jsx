@@ -74,6 +74,22 @@ export default function IdentitySection({ formik }) {
                         <p className="text-[10px] md:text-[11px] font-medium text-red-500 ml-1">{formik.errors.gender}</p>
                     )}
                 </div>
+
+                <div className="md:col-span-2 flex flex-col gap-2">
+                    <label className="text-[12px] md:text-[14px] font-bold text-[#1e293b] ml-1">Location</label>
+                    <input
+                        type="text"
+                        name="location"
+                        value={formik.values.location}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Enter location (e.g. Pakistan)"
+                        className={`w-full bg-gray-50/50 border rounded-[5px] md:rounded-2xl px-4 py-2 md:py-3.5 text-[12px] font-medium text-[#1e293b] focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all ${formik.touched.location && formik.errors.location ? 'border-red-500' : 'border-gray-100'}`}
+                    />
+                    {formik.touched.location && formik.errors.location && (
+                        <p className="text-[10px] md:text-[11px] font-medium text-red-500 ml-1">{formik.errors.location}</p>
+                    )}
+                </div>
             </div>
         </section>
     );

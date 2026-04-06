@@ -2,12 +2,13 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails } from "@/redux/slices/profileSlice";
+import { getUserDetails, updateProfile } from "@/redux/slices/profileSlice";
 
 export default function PersonalInformation() {
     const dispatch = useDispatch()
     const data = useSelector((state) => state.profile.user)
-    console.log(data, "data uuuuuuuuu")
+    const loading = useSelector((state) => state.profile.loading)
+
 
     useEffect(() => {
         dispatch(getUserDetails())
@@ -15,18 +16,24 @@ export default function PersonalInformation() {
 
     const [formData, setFormData] = useState({
         firstName: "",
-        lastName: "",
         email: "",
         bio: ""
     });
+
+    const [imageFile, setImageFile] = useState(null);
+
 
     useEffect(() => {
         if (data) {
             setFormData(prev => ({
                 ...prev,
                 firstName: data.user_name || "",
-                email: data.email || ""
+                email: data.email || "",
+                bio: data.bio || ""
             }));
+            if (data.profile_image) {
+                setProfileImage(data.profile_image);
+            }
         }
     }, [data]);
 
@@ -53,6 +60,7 @@ export default function PersonalInformation() {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            setImageFile(file);
             const imageUrl = URL.createObjectURL(file);
             setProfileImage(imageUrl);
         }
@@ -63,6 +71,22 @@ export default function PersonalInformation() {
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }
+    };
+
+    const handleUpdateProfile = () => {
+        const payload = new FormData();
+        payload.append('user_name', formData.firstName);
+        payload.append('email', formData.email);
+        payload.append('bio', formData.bio || "");
+
+        if (imageFile) {
+            payload.append('profile_image', imageFile);
+        } else if (profileImage) {
+            payload.append('profile_image', profileImage);
+        }
+
+        console.log(Object.fromEntries(payload.entries()), "data");
+        dispatch(updateProfile(payload));
     };
 
     return (
@@ -175,6 +199,25 @@ export default function PersonalInformation() {
                             {bioLength}/{maxBioLength}
                         </p>
                     </div>
+                </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center pt-5 border-t border-gray-100">
+                <button className="px-4 md:px-6 py-3 text-sm font-bold text-red-500 bg-red-50 rounded-xl hover:bg-red-100 transition-colors w-full sm:w-auto">
+                    Deactivate Account
+                </button>
+                <div className="grid grid-cols-2 sm:flex items-center gap-2 md:gap-3 w-full sm:w-auto">
+                    <button className="px-2 md:px-6 py-3 text-[13px] md:text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+                        Discard
+                    </button>
+                    <button
+                        onClick={handleUpdateProfile}
+                        disabled={loading}
+                        className="px-2 md:px-6 py-3 text-[13px] md:text-sm font-bold text-white bg_color rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30 whitespace-nowrap disabled:opacity-50"
+                    >
+                        {loading ? "Saving..." : "Save Changes"}
+                    </button>
                 </div>
             </div>
         </div>

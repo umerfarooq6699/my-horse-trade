@@ -3,7 +3,8 @@ import { Video, CheckCircle2, Youtube, UploadCloud, X } from "lucide-react";
 
 export default function VideoEvidenceSection({ formik }) {
     const [activeTab, setActiveTab] = useState("upload"); // "upload" or "link"
-    const videoData = formik.values.video_evidence;
+    const uploadedVideos = formik.values.uploaded_video;
+    const youtubeLink = formik.values.youtube_link;
 
     const handleVideoUpload = (e) => {
         const files = Array.from(e.target.files);
@@ -11,21 +12,16 @@ export default function VideoEvidenceSection({ formik }) {
 
         const newVideos = files.map((file, index) => ({
             id: Date.now() + index,
+            file: file, // Store File object for upload
             name: file.name,
             size: (file.size / (1024 * 1024)).toFixed(1) + " MB"
         }));
 
-        formik.setFieldValue("video_evidence", {
-            ...videoData,
-            uploads: [...videoData.uploads, ...newVideos]
-        });
+        formik.setFieldValue("uploaded_video", [...uploadedVideos, ...newVideos]);
     };
 
     const removeVideo = (id) => {
-        formik.setFieldValue("video_evidence", {
-            ...videoData,
-            uploads: videoData.uploads.filter(v => v.id !== id)
-        });
+        formik.setFieldValue("uploaded_video", uploadedVideos.filter(v => v.id !== id));
     };
 
     return (
@@ -64,7 +60,7 @@ export default function VideoEvidenceSection({ formik }) {
                     {activeTab === "upload" ? (
                         <>
                             {/* Video Items */}
-                            {videoData.uploads.map((video) => (
+                            {uploadedVideos.map((video) => (
                                 <div key={video.id} className="p-4 bg-gray-50/50 border border-gray-100 rounded-2xl flex items-center justify-between group hover:border_color/20 transition-all">
                                     <div className="flex items-center gap-4">
                                         <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 shadow-sm group-hover:text_color transition-colors">
@@ -91,7 +87,7 @@ export default function VideoEvidenceSection({ formik }) {
                             ))}
 
                             {/* Add Another */}
-                            <div className={`relative bg-[#f8faff] border-2 border-dashed border-blue-100/50 rounded-[10px] md:rounded-[20px] p-6 md:p-10 flex flex-col items-center justify-center gap-4 hover:bg-blue-50/50 transition-all cursor-pointer group ${videoData.uploads.length === 0 ? 'md:col-span-2' : ''}`}>
+                            <div className={`relative bg-[#f8faff] border-2 border-dashed border-blue-100/50 rounded-[10px] md:rounded-[20px] p-6 md:p-10 flex flex-col items-center justify-center gap-4 hover:bg-blue-50/50 transition-all cursor-pointer group ${uploadedVideos.length === 0 ? 'md:col-span-2' : ''}`}>
                                 <input
                                     type="file"
                                     accept="video/*"
@@ -104,7 +100,7 @@ export default function VideoEvidenceSection({ formik }) {
                                 </div>
                                 <div className="text-center">
                                     <p className="text-[14px] md:text-[19px] font-[550] text-[#1e293b] mb-1">
-                                        {videoData.uploads.length === 0 ? "Click to upload or drag videos here" : "Add another video"}
+                                        {uploadedVideos.length === 0 ? "Click to upload or drag videos here" : "Add another video"}
                                     </p>
                                     <p className="text-[12px] md:text-[14px] text-gray-400 mb-1">MP4, MOV or WEBM (Max 50MB)</p>
                                 </div>
@@ -118,23 +114,24 @@ export default function VideoEvidenceSection({ formik }) {
                                 <div className="relative">
                                     <input
                                         type="text"
-                                        name="video_evidence.link"
+                                        name="youtube_link"
                                         placeholder="Paste YouTube or Vimeo link here"
-                                        value={videoData.link}
+                                        value={youtubeLink}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        className={`w-full bg-gray-50/50 border rounded-[5px] md:rounded-2xl px-12 py-2 md:py-3.5 text-[12px] font-medium text-[#1e293b] focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all ${formik.touched.video_evidence?.link && formik.errors.video_evidence?.link ? 'border-red-500' : 'border-gray-100'}`}
+                                        className={`w-full bg-gray-50/50 border rounded-[5px] md:rounded-2xl px-12 py-2 md:py-3.5 text-[12px] font-medium text-[#1e293b] focus:outline-none focus:ring-2 focus:ring_color/20 focus:border_color transition-all ${formik.touched.youtube_link && formik.errors.youtube_link ? 'border-red-500' : 'border-gray-100'}`}
                                     />
                                     <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400">
                                         <Youtube size={18} />
                                     </div>
                                 </div>
-                                {formik.touched.video_evidence?.link && formik.errors.video_evidence?.link && (
-                                    <p className="text-[10px] md:text-[11px] font-medium text-red-500 ml-1">{formik.errors.video_evidence.link}</p>
+                                {formik.touched.youtube_link && formik.errors.youtube_link && (
+                                    <p className="text-[10px] md:text-[11px] font-medium text-red-500 ml-1">{formik.errors.youtube_link}</p>
                                 )}
                             </div>
                         </div>
                     )}
+
                 </div>
             </div>
         </section>

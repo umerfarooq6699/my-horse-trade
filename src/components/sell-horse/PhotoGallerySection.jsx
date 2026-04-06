@@ -1,7 +1,7 @@
 import { UploadCloud, X, Camera } from "lucide-react";
 
 export default function PhotoGallerySection({ formik }) {
-    const photos = formik.values.images;
+    const photos = formik.values.photos;
 
     const handleUpload = (e) => {
         const files = Array.from(e.target.files);
@@ -9,11 +9,12 @@ export default function PhotoGallerySection({ formik }) {
 
         const newPhotos = files.slice(0, 10 - photos.length).map((file, index) => ({
             id: Date.now() + index,
-            url: URL.createObjectURL(file),
+            file: file, // actual File object for upload
+            url: URL.createObjectURL(file), // preview URL
             isCover: photos.length === 0 && index === 0
         }));
 
-        formik.setFieldValue("images", [...photos, ...newPhotos]);
+        formik.setFieldValue("photos", [...photos, ...newPhotos]);
     };
 
     const removePhoto = (id) => {
@@ -22,7 +23,7 @@ export default function PhotoGallerySection({ formik }) {
         if (filtered.length > 0 && !filtered.some(p => p.isCover)) {
             filtered[0].isCover = true;
         }
-        formik.setFieldValue("images", filtered);
+        formik.setFieldValue("photos", filtered);
     };
 
     return (

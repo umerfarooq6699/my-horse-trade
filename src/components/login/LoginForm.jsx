@@ -20,15 +20,11 @@ export default function LoginForm() {
 
     useEffect(() => {
         if (success) {
-            toast.success("Login successful!", {
-                position: "top-center",
-                toastId: "login-success"
-            });
             dispatch(resetLoginState());
             
             setTimeout(() => {
                 router.push(APP_ROUTES.HOME);
-            }, 2000);
+            }, 100);
         }
 
         if (error) {
@@ -55,8 +51,8 @@ export default function LoginForm() {
             email: Yup.string().email("Invalid email").required("Email is required"),
             password: Yup.string().required("Password is required")
         }),
-        onSubmit: (values) => {
-            dispatch(loginUser({
+        onSubmit: async (values) => {
+            await dispatch(loginUser({
                 email: values.email,
                 password: values.password
             }));

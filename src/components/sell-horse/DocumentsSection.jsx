@@ -9,6 +9,7 @@ export default function DocumentsSection({ formik }) {
 
         const newDocs = files.map((file, index) => ({
             id: Date.now() + index,
+            file: file, // Store File object for upload
             name: file.name,
             status: "Private"
         }));

@@ -2,10 +2,41 @@
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Mail, RotateCcw, ArrowRight } from "lucide-react";
+import { Mail, RotateCcw, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { sendOtp, resetForgotPasswordState } from "@/redux/slices/authSlice";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function ForgotPasswordPage() {
+    const dispatch = useDispatch();
+    const { forgotPassword } = useSelector((state) => state.auth);
+    const { loading, error, success } = forgotPassword;
+
+    useEffect(() => {
+        if (success) {
+            toast.success(typeof success === "string" ? success : "Reset link sent to your email!", {
+                position: "top-center",
+                toastId: "forgot-password-success"
+            });
+            dispatch(resetForgotPasswordState());
+        }
+
+        if (error) {
+            const errorMessage = typeof error === 'object' ? Object.values(error).flat().join(', ') : error;
+            toast.error(errorMessage || "Failed to send reset link!", {
+                position: "top-center",
+                toastId: "forgot-password-error"
+            });
+            dispatch(resetForgotPasswordState());
+        }
+
+        return () => {
+            dispatch(resetForgotPasswordState());
+        };
+    }, [success, error, dispatch]);
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -13,9 +44,8 @@ export default function ForgotPasswordPage() {
         validationSchema: Yup.object({
             email: Yup.string().email("Invalid email address").required("Email is required"),
         }),
-        onSubmit: (values) => {
-            console.log("Reset link requested for:", values.email);
-            alert("Reset link sent to your email (simulation)");
+        onSubmit: async (values) => {
+            await dispatch(sendOtp({ email: values.email }));
         }
     });
 
@@ -56,10 +86,17 @@ export default function ForgotPasswordPage() {
 
                         <button
                             type="submit"
-                            disabled={formik.isSubmitting}
-                            className="w-full bg_color text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98]"
+                            disabled={formik.isSubmitting || loading}
+                            className={`w-full flex items-center justify-center gap-2 bg_color text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98] ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
-                            Send Reset Link
+                            {loading ? (
+                                <>
+                                    <Loader2 className="animate-spin" size={20} />
+                                    Sending...
+                                </>
+                            ) : (
+                                "Send Reset Link"
+                            )}
                         </button>
                     </form>
 

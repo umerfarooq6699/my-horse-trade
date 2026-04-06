@@ -6,9 +6,10 @@ import { API_ENDPOINTS } from '@/utils/urls';
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (userData, { rejectWithValue }) => {
-    console.log(userData, "slice object")
+    // console.log(userData, "signup object")
     try {
       const response = await axios.post(API_ENDPOINTS.SIGNUP, userData);
+      console.log("Signup Response:", response);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -22,6 +23,22 @@ export const loginUser = createAsyncThunk(
   async (loginData, { rejectWithValue }) => {
     try {
       const response = await axios.post(API_ENDPOINTS.LOGIN, loginData);
+      console.log("Login Response:", response);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Async thunk for sending OTP
+export const sendOtp = createAsyncThunk(
+  'auth/sendOtp',
+  async (emailData, { rejectWithValue }) => {
+    console.log("working")
+    try {
+      const response = await axios.post(API_ENDPOINTS.SEND_OTP, emailData);
+      console.log("Send OTP Response:", response);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -39,6 +56,11 @@ const initialState = {
     success: false,
   },
   login: {
+    loading: false,
+    error: null,
+    success: false,
+  },
+  forgotPassword: {
     loading: false,
     error: null,
     success: false,
@@ -77,6 +99,9 @@ const authSlice = createSlice({
     },
     resetLoginState: (state) => {
       state.login = initialState.login;
+    },
+    resetForgotPasswordState: (state) => {
+      state.forgotPassword = initialState.forgotPassword;
     },
   },
   extraReducers: (builder) => {
@@ -118,9 +143,24 @@ const authSlice = createSlice({
         state.login.loading = false;
         state.login.error = action.payload;
         state.login.success = false;
+      })
+      // Send OTP
+      .addCase(sendOtp.pending, (state) => {
+        state.forgotPassword.loading = true;
+        state.forgotPassword.error = null;
+        state.forgotPassword.success = false;
+      })
+      .addCase(sendOtp.fulfilled, (state, action) => {
+        state.forgotPassword.loading = false;
+        state.forgotPassword.success = action.payload.message || true;
+      })
+      .addCase(sendOtp.rejected, (state, action) => {
+        state.forgotPassword.loading = false;
+        state.forgotPassword.error = action.payload;
+        state.forgotPassword.success = false;
       });
   },
 });
 
-export const { loginSuccess, logout, updateUser, resetSignupState, resetLoginState } = authSlice.actions;
+export const { loginSuccess, logout, updateUser, resetSignupState, resetLoginState, resetForgotPasswordState } = authSlice.actions;
 export default authSlice.reducer;

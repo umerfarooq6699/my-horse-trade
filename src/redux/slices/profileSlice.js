@@ -20,6 +20,26 @@ export const changePassword = createAsyncThunk(
   }
 );
 
+export const updateProfile = createAsyncThunk(
+  'profile/updateProfile',
+  async (profileData, { rejectWithValue, getState, dispatch }) => {
+    try {
+      console.log(profileData instanceof FormData ? Object.fromEntries(profileData.entries()) : profileData, "slice profile data")
+      const { auth } = getState();
+      const config = {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      };
+      const response = await axios.patch(API_ENDPOINTS.UPDATE_PROFILE, profileData, config);
+      // dispatch(getUserDetails());
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 export const getUserDetails = createAsyncThunk("profile/getUserDetails", async (payload, thunkAPI) => {
   try {
     const { auth } = thunkAPI.getState();
@@ -64,6 +84,20 @@ const profileSlice = createSlice({
         state.success = true;
       })
       .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updateProfile.fulfilled, (state) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

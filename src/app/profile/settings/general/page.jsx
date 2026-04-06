@@ -27,20 +27,7 @@ export default function GeneralSettingsPage() {
                         <div className="col-span-12 lg:col-span-9 space-y-4 md:space-y-8">
                             <PersonalInformation />
 
-                            {/* Action Buttons */}
-                            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center pt-5 border-t border-gray-100">
-                                <button className="px-4 md:px-6 py-3 text-sm font-bold text-red-500 bg-red-50 rounded-xl hover:bg-red-100 transition-colors w-full sm:w-auto">
-                                    Deactivate Account
-                                </button>
-                                <div className="grid grid-cols-2 sm:flex items-center gap-2 md:gap-3 w-full sm:w-auto">
-                                    <button className="px-2 md:px-6 py-3 text-[13px] md:text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
-                                        Discard
-                                    </button>
-                                    <button className="px-2 md:px-6 py-3 text-[13px] md:text-sm font-bold text-white bg_color rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30 whitespace-nowrap">
-                                        Save Changes
-                                    </button>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>

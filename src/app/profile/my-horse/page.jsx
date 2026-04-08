@@ -6,12 +6,14 @@ import MyHorseStats from "@/components/profile/my-horse/MyHorseStats";
 import ListingTabs from "@/components/profile/my-horse/ListingTabs";
 import MyHorseTable from "@/components/profile/my-horse/MyHorseTable";
 import ListingDetailsModal from "@/components/admin/listings/ListingDetailsModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { mockHorses as sharedMockHorses } from "@/components/marketplace/HorseGrid";
 import marketplace1 from "@/assets/images/marketplace1.png";
 import marketplace2 from "@/assets/images/marketplace2.png";
 import marketplace3 from "@/assets/images/marketplace3.png";
+import { useDispatch, useSelector } from "react-redux";
+import { userListings } from "@/redux/slices/profileSlice";
 
 const mockHorses = sharedMockHorses.map(h => ({
     ...h,
@@ -24,17 +26,49 @@ export default function MyHorsePage() {
     const [sortBy, setSortBy] = useState("Newest First");
     const [selectedHorse, setSelectedHorse] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const dispatch = useDispatch();
+    const { listings, loading } = useSelector((state) => state.profile);
+    const realHorses = listings?.results || [];
+    const stats = listings?.total_listing || { active_listings: 0, horses_sold: 0 };
+
+
+    useEffect(() => {
+        dispatch(userListings())
+    }, [])
 
     // Filtering Logic
-    const filteredHorses = mockHorses.filter(horse => {
-        if (activeTab === "Active Listings") return horse.status === "Active" || horse.status === "Pending Review" || horse.status === "Rejected";
-        if (activeTab === "Drafts") return horse.status === "Draft";
-        if (activeTab === "Sold History") return horse.status === "Sold";
+    console.log(realHorses, "raw realHorses before filtering");
+    const filteredHorses = realHorses.filter(horse => {
+        const s = horse.status?.toLowerCase() || '';
+        if (activeTab === "Active Listings") return ["approved", "pending", "rejected", "active"].includes(s);
+        if (activeTab === "Drafts") return s === "draft";
+        if (activeTab === "Sold History") return s === "sold";
         return true;
+    });
+    console.log(filteredHorses, `filteredHorses for tab ${activeTab}`);
+
+    // Mapping for display
+    const mappedHorses = filteredHorses.map(horse => {
+        const step1 = horse.listing_step1 || {};
+        const step2 = horse.listing_step2 || {};
+
+        return {
+            id: horse.id,
+            name: step1.name || "Unnamed Horse",
+            image: step2.photos?.[0] ? step2.photos[0] : marketplace1.src,
+            breed: step1.breed || "Horse",
+            gender: step1.gender || "Gender",
+            price: step1.price || 0,
+            age: step1.age || "N/A",
+            height: step1.height || "N/A",
+            status: horse.status?.charAt(0).toUpperCase() + horse.status?.slice(1),
+            date: new Date(horse.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            createdAt: new Date(horse.created_at)
+        };
     });
 
     // Sorting Logic
-    const sortedHorses = [...filteredHorses].sort((a, b) => {
+    const sortedHorses = [...mappedHorses].sort((a, b) => {
         if (sortBy === "Newest First") return b.createdAt - a.createdAt;
         if (sortBy === "Price: Low to High") return a.price - b.price;
         if (sortBy === "Price: High to Low") return b.price - a.price;
@@ -43,10 +77,11 @@ export default function MyHorsePage() {
 
     // Tab Counts
     const counts = {
-        active: mockHorses.filter(h => h.status === "Active").length,
-        drafts: mockHorses.filter(h => h.status === "Draft").length,
-        sold: mockHorses.filter(h => h.status === "Sold").length
+        active: realHorses.filter(h => ["approved", "pending", "rejected", "active"].includes(h.status?.toLowerCase())).length,
+        drafts: realHorses.filter(h => h.status?.toLowerCase() === "draft").length,
+        sold: realHorses.filter(h => h.status?.toLowerCase() === "sold").length
     };
+
 
     return (
         <div className="bg-[#F8FAFC] min-h-screen">
@@ -66,7 +101,7 @@ export default function MyHorsePage() {
                     </div>
 
                     <MyHorseHeader />
-                    <MyHorseStats />
+                    <MyHorseStats stats={counts} />
                     <ListingTabs
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
@@ -79,17 +114,21 @@ export default function MyHorsePage() {
                     <MyHorseTable
                         horses={sortedHorses}
                         onView={(horse) => {
+                            const originalHorse = realHorses.find(h => h.id === horse.id);
+                            const step1 = originalHorse?.listing_step1 || {};
+                            const step3 = originalHorse?.listing_step3 || {};
+
                             setSelectedHorse({
                                 id: horse.id,
                                 name: horse.name,
                                 breed: horse.breed,
                                 image: horse.image,
-                                age: horse.age,
-                                height: horse.height,
-                                location: horse.location,
-                                price: `$${horse.price?.toLocaleString()}`,
-                                status: horse.status === "Active" ? "Approved" : horse.status,
-                                rejectionReason: horse.rejectionReason
+                                age: step1.age || "N/A",
+                                height: step1.height || "N/A",
+                                location: step1.location || "N/A",
+                                price: `$${Number(horse.price).toLocaleString()}`,
+                                status: horse.status,
+                                rejectionReason: originalHorse?.rejection_reason || ""
                             });
                             setIsModalOpen(true);
                         }}

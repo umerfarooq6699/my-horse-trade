@@ -2,17 +2,18 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_ENDPOINTS } from '@/utils/urls';
 
-// Async thunk for fetching all users with pagination
+
 export const fetchAllUsers = createAsyncThunk(
   'admin/fetchAllUsers',
   async ({ page = 1, searchValue }, { getState, rejectWithValue }) => {
     try {
-      const { auth: { token } } = getState();
+      const { auth } = getState();
       const response = await axios.get(`${API_ENDPOINTS.ALL_USERS}?page=${page}&search=${searchValue}`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `token ${auth.token}`
         }
       });
+      // console.log(response, "all user data action")
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -22,10 +23,10 @@ export const fetchAllUsers = createAsyncThunk(
 
 export const deleteUser = createAsyncThunk("adminSlice/deleteUser", async (userId, { getState, rejectWithValue }) => {
   try {
-    const { auth: { token } } = getState();
+    const { auth } = getState();
     const response = await axios.delete(`${API_ENDPOINTS.DELETE_USER}/${userId}`, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `token ${auth.token}`
       }
     })
     return response.data;
@@ -82,7 +83,7 @@ const adminSlice = createSlice({
       })
       .addCase(fetchAllUsers.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload.users || [];
+        state.users = action.payload.results || [];
         state.pagination = {
           totalUsers: action.payload.totalUsers,
           totalPages: action.payload.totalPages,

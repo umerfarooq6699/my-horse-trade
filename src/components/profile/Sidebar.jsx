@@ -129,7 +129,7 @@ export default function Sidebar({ isOpen, onClose }) {
                         </button>
                     </div>
 
-                    <button 
+                    <button
                         onClick={handleLogout}
                         className="flex items-center justify-center gap-3 w-full py-2 text-gray-400 hover:text-red-500 transition-colors group"
                     >

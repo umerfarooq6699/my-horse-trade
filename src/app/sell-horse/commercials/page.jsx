@@ -7,7 +7,7 @@ import SellHorseLayout from "@/components/sell-horse/SellHorseLayout";
 import MarketingEssentialsSection from "@/components/sell-horse/MarketingEssentialsSection";
 import InclusionsTermsSection from "@/components/sell-horse/InclusionsTermsSection";
 import { useDispatch, useSelector } from "react-redux";
-import { horseListingStep4, resetHorseStep4 } from "@/redux/slices/horseSlice";
+import { horseListingStep4, resetHorseStep4, fetchSingleHorse } from "@/redux/slices/horseSlice";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -28,10 +28,17 @@ function CommercialsPageContent() {
     const searchParams = useSearchParams();
     const horseIdFromUrl = searchParams.get("horse_id");
 
-    const { horseStep4, horseStep1 } = useSelector((state) => state.horse);
+    const { horseStep4, horseStep1, currentListing, loadingCurrentListing } = useSelector((state) => state.horse);
     const { loading, error, success } = horseStep4;
     const horseIdFromState = horseStep1.horseId;
     const effectiveHorseId = horseIdFromUrl || horseIdFromState;
+
+    // Fetch horse data if editing and not already loaded
+    useEffect(() => {
+        if (horseIdFromUrl && (!currentListing || currentListing.id !== parseInt(horseIdFromUrl))) {
+            dispatch(fetchSingleHorse(horseIdFromUrl));
+        }
+    }, [horseIdFromUrl, currentListing, dispatch]);
 
     useEffect(() => {
         if (success) {
@@ -41,7 +48,7 @@ function CommercialsPageContent() {
             });
             dispatch(resetHorseStep4());
             // Redirect to profile or a dashboard where they can see their listings
-            router.push("/profile");
+            router.push("/profile/my-horse");
         }
 
         if (error) {
@@ -68,8 +75,7 @@ function CommercialsPageContent() {
         },
         validationSchema: CommercialsSchema,
         onSubmit: async (values) => {
-            console.log("Commercials Data:", values);
-            const payload = {
+                        const payload = {
                 horse_id: effectiveHorseId,
                 ...values
             };
@@ -77,12 +83,33 @@ function CommercialsPageContent() {
         },
     });
 
+    // Pre-fill form values when currentListing is fetched
+    useEffect(() => {
+        if (currentListing) {
+            const data = currentListing.listing_step4 || currentListing;
+                        formik.setValues({
+                headline: data.headline || data.title || data.name || "",
+                promotional_tags: Array.isArray(data.promotional_tags) ? data.promotional_tags : [],
+                inclusions: Array.isArray(data.inclusions) ? data.inclusions : [],
+                inclusions_and_terms: Array.isArray(data.inclusions_and_terms) ? data.inclusions_and_terms : [],
+                disclaimers: data.disclaimers || ""
+            });
+        }
+    }, [currentListing]);
+
     const handlePublish = async () => {
-        console.log("Publish button clicked");
-        console.log("Current Formik Errors:", formik.errors);
-        console.log("Current Formik Values:", formik.values);
-        await formik.submitForm();
+                                await formik.submitForm();
     };
+
+    if (loadingCurrentListing) {
+        return (
+            <SellHorseLayout currentStep={4} loading={true}>
+                <div className="flex items-center justify-center min-h-[400px]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1E293B]"></div>
+                </div>
+            </SellHorseLayout>
+        );
+    }
 
     return (
         <SellHorseLayout

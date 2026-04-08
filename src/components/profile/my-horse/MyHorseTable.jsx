@@ -6,6 +6,7 @@ import { Eye, Trash2, Pencil, AlertCircle, CheckCircle, Clock, X } from "lucide-
 import React, { useState } from "react";
 
 export default function MyHorseTable({ horses, onView }) {
+    console.log(horses, "horses bbbbbbbbbbbbbbbbbb")
     const [rejectionMessage, setRejectionMessage] = useState(null);
 
     if (!horses || horses.length === 0) {
@@ -21,12 +22,13 @@ export default function MyHorseTable({ horses, onView }) {
             <div className="overflow-x-auto">
                 <table className="w-full text-left">
                     <thead>
-                        <tr className="text-[11px] uppercase font-black text-gray-400 tracking-[0.2em] border-b border-gray-50">
+                        <tr className="text-[12px] uppercase font-black text-gray-600 tracking-[0.2em] border-b border-gray-50">
                             <th className="pb-5 pt-6 px-6">Horse</th>
-                            <th className="pb-5 pt-6 text-center">Category</th>
+                            <th className="pb-5 pt-6 text-center">Gender</th>
+                            <th className="pb-5 pt-6 text-center">Breed</th>
                             <th className="pb-5 pt-6 text-center">Price</th>
-                            <th className="pb-5 pt-6 text-center">Status</th>
-                            <th className="pb-5 pt-6 text-center">Date Posted</th>
+                            <th className="pb-5 pt-6 text-center">Age</th>
+                            <th className="pb-5 pt-6 text-center">Height</th>
                             <th className="pb-5 pt-6 text-right px-6">Action</th>
                         </tr>
                     </thead>
@@ -44,41 +46,25 @@ export default function MyHorseTable({ horses, onView }) {
                                                 />
                                             </div>
                                             <div>
-                                                <div className="text-[15px] font-bold text-[#1E293B] mb-0.5 tracking-tight">{horse.name}</div>
-                                                <div className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">ID: {horse.id}</div>
+                                                <div className="text-[16px] font-bold text-[#1E293B] mb-0.5 tracking-tight">{horse.name}</div>
+                                                <div className="text-[12px] font-bold text-gray-400 uppercase tracking-widest">ID: {horse.id}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="py-4 text-center">
-                                        <span className="px-3 py-1.5 bg-blue-50 text_color rounded-full text-[10px] font-black uppercase tracking-wider">
-                                            {horse.breed || "Horse"}
-                                        </span>
-                                    </td>
-                                    <td className="py-4 text-center text-[14px] font-bold text-[#1E293B] tracking-tight">
-                                        ${horse.price?.toLocaleString()}
+                                        <span className="text-[13px] font-semibold text-slate-700 capitalize tracking-tight">{horse.gender}</span>
                                     </td>
                                     <td className="py-4 text-center">
-                                        {horse.status === "Active" && (
-                                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-600 rounded-full text-[10px] font-black uppercase tracking-wider">
-                                                <CheckCircle size={12} />
-                                                APPROVED
-                                            </span>
-                                        )}
-                                        {horse.status === "Pending Review" && (
-                                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-wider">
-                                                <Clock size={12} />
-                                                PENDING
-                                            </span>
-                                        )}
-                                        {horse.status === "Rejected" && (
-                                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 rounded-full text-[10px] font-black uppercase tracking-wider">
-                                                <AlertCircle size={12} />
-                                                REJECTED
-                                            </span>
-                                        )}
+                                        <span className="text-[13px] font-semibold text-slate-700 capitalize tracking-tight">{horse.breed}</span>
                                     </td>
-                                    <td className="py-4 text-center text-[13px] font-bold text-gray-500">
-                                        {horse.date}
+                                    <td className="py-4 text-center text-[16px] font-bold text-[#1E293B] tracking-tight">
+                                        ${new Intl.NumberFormat('en-US').format(horse.price)}
+                                    </td>
+                                    <td className="py-4 text-center text-[13px] font-semibold text-slate-700 tracking-tight">
+                                        {horse.age} Years
+                                    </td>
+                                    <td className="py-4 text-center text-[13px] font-semibold text-slate-700 tracking-tight">
+                                        {horse.height} hh
                                     </td>
                                     <td className="py-4 text-right px-6">
                                         <div className="flex items-center justify-end gap-2">
@@ -93,20 +79,20 @@ export default function MyHorseTable({ horses, onView }) {
                                             )}
                                             <button
                                                 onClick={() => onView(horse)}
-                                                className="p-2.5 bg-gray-50 text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-xl transition-all cursor-pointer"
+                                                className="p-2.5 bg-gray-50 text-gray-500 hover:text_color hover:bg-gray-100 rounded-2xl transition-all cursor-pointer"
                                                 title="View Details"
                                             >
-                                                <Eye size={18} />
+                                                <Eye size={20} className="stroke-[2.5]" />
                                             </button>
                                             <Link
-                                                href="/sell-horse"
-                                                className="p-2.5 bg-gray-50 text-green-500 hover:bg-green-100 rounded-xl transition-all cursor-pointer"
+                                                href={`/sell-horse?horse_id=${horse.id}`}
+                                                className="p-2.5 bg-gray-50 text-[#0fb478] hover:bg-green-50 rounded-2xl transition-all cursor-pointer"
                                                 title="Edit"
                                             >
-                                                <Pencil size={18} />
+                                                <Pencil size={20} className="stroke-[2.5]" />
                                             </Link>
-                                            <button className="p-2.5 bg-gray-50 text-red-500 hover:bg-red-100 rounded-xl transition-all cursor-pointer" title="Delete">
-                                                <Trash2 size={18} />
+                                            <button className="p-2.5 bg-gray-50 text-red-500 hover:bg-red-50 rounded-2xl transition-all cursor-pointer" title="Delete">
+                                                <Trash2 size={20} className="stroke-[2.5]" />
                                             </button>
                                         </div>
                                     </td>

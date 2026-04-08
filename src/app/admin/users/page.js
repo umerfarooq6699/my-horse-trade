@@ -22,6 +22,8 @@ export default function UsersManagement() {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const filterRef = useRef(null);
 
+    console.log(userList, "all user data in table")
+
     useEffect(() => {
         dispatch(fetchAllUsers({ page: 1, searchValue: "" }));
     }, [dispatch]);
@@ -158,13 +160,12 @@ export default function UsersManagement() {
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="relative" ref={filterRef}>
-                            <button 
+                            <button
                                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                                    isFilterOpen 
-                                        ? "bg-white border border-[#CBD5E1] text-[#1E293B] shadow-sm" 
+                                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${isFilterOpen
+                                        ? "bg-white border border-[#CBD5E1] text-[#1E293B] shadow-sm"
                                         : "bg-[#F8FAFC] border border-transparent text-[#64748B] hover:text-[#1E293B]"
-                                }`}
+                                    }`}
                             >
                                 <Filter className="w-4 h-4" />
                                 Filters
@@ -192,10 +193,47 @@ export default function UsersManagement() {
                 {/* Table Content */}
                 <div className="overflow-x-auto min-h-[400px]">
                     {loading ? (
-                        <div className="flex flex-col items-center justify-center h-64 gap-4">
-                            <RefreshCcw className="w-10 h-10 text-[#2563EB] animate-spin" />
-                            <p className="text-[#64748B] font-medium">Fetching users...</p>
-                        </div>
+                        <table className="w-full text-left border-collapse min-w-[800px]">
+                            <thead>
+                                <tr className="border-b border-[#F8FAFC]">
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest pl-4 sm:pl-8">User</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Role</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Status</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Joined Date</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest text-right pr-4 sm:pr-8">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[#F8FAFC]">
+                                {[...Array(6)].map((_, i) => (
+                                    <tr key={i} className="animate-pulse">
+                                        <td className="py-5 pl-4 sm:pl-8">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-gray-100 flex-shrink-0" />
+                                                <div className="flex flex-col gap-2">
+                                                    <div className="h-4 w-24 bg-gray-100 rounded-md" />
+                                                    <div className="h-3 w-32 bg-gray-50 rounded-md" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="py-5 px-4 sm:px-8">
+                                            <div className="h-4 w-16 bg-gray-100 rounded-md" />
+                                        </td>
+                                        <td className="py-5 px-4 sm:px-8">
+                                            <div className="h-7 w-20 bg-gray-100 rounded-full" />
+                                        </td>
+                                        <td className="py-5 px-4 sm:px-8">
+                                            <div className="h-4 w-24 bg-gray-100 rounded-md" />
+                                        </td>
+                                        <td className="py-5 text-right pr-4 sm:pr-8">
+                                            <div className="flex justify-end gap-2">
+                                                <div className="w-8 h-8 bg-gray-100 rounded-lg" />
+                                                <div className="w-8 h-8 bg-gray-100 rounded-lg" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     ) : error ? (
                         <div className="flex flex-col items-center justify-center h-64 gap-4 text-center px-4">
                             <Ban className="w-10 h-10 text-red-500" />

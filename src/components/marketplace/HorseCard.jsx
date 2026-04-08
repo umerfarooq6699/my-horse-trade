@@ -1,9 +1,8 @@
 "use client";
 
-"use client";
-
 import { Heart, MapPin, Ruler, Calendar, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { API_BASE_URL } from "@/utils/urls";
 
 export default function HorseCard({ horse }) {
     const {
@@ -15,6 +14,7 @@ export default function HorseCard({ horse }) {
         location,
         price,
         image,
+        photos,
         tag,
         isPremium,
         isVerified,
@@ -22,12 +22,25 @@ export default function HorseCard({ horse }) {
         category // Adding category as a fallback for breed/discipline
     } = horse;
 
+    // Select the primary image: first from photos array, or fallback to 'image' field
+    const primaryImage = (Array.isArray(photos) && photos.length > 0) ? photos[0] : image;
+
+    // Helper to ensure URL is absolute
+    const getAbsoluteUrl = (url) => {
+        if (!url) return "";
+        if (url.startsWith("http")) return url;
+        const baseUrl = API_BASE_URL || "http://localhost:8000";
+        return `${baseUrl}${url.startsWith("/") ? "" : "/"}${url}`;
+    };
+
+    const displayImage = getAbsoluteUrl(primaryImage);
+
     return (
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden group hover:shadow-xl hover:shadow-gray-100 transition-all duration-300 flex flex-col h-full">
             {/* Image Container */}
             <div className="relative h-[160px] md:h-[210px] overflow-hidden">
                 <img
-                    src={image}
+                    src={displayImage}
                     alt={name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />

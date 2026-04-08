@@ -8,14 +8,14 @@ export default function PersonalInformation() {
     const dispatch = useDispatch()
     const data = useSelector((state) => state.profile.user)
     const loading = useSelector((state) => state.profile.loading)
-
+        
 
     useEffect(() => {
         dispatch(getUserDetails())
     }, [dispatch])
 
     const [formData, setFormData] = useState({
-        firstName: "",
+        name: "",
         email: "",
         bio: ""
     });
@@ -27,12 +27,12 @@ export default function PersonalInformation() {
         if (data) {
             setFormData(prev => ({
                 ...prev,
-                firstName: data.user_name || "",
+                name: data.name || "",
                 email: data.email || "",
                 bio: data.bio || ""
             }));
-            if (data.profile_image) {
-                setProfileImage(data.profile_image);
+            if (data.profile_photo) {
+                setProfileImage(data.profile_photo);
             }
         }
     }, [data]);
@@ -75,18 +75,17 @@ export default function PersonalInformation() {
 
     const handleUpdateProfile = () => {
         const payload = new FormData();
-        payload.append('user_name', formData.firstName);
+        payload.append('user_name', formData.name);
         payload.append('email', formData.email);
         payload.append('bio', formData.bio || "");
 
         if (imageFile) {
-            payload.append('profile_image', imageFile);
+            payload.append('profile_photo', imageFile);
         } else if (profileImage) {
-            payload.append('profile_image', profileImage);
+            payload.append('profile_photo', profileImage);
         }
 
-        console.log(Object.fromEntries(payload.entries()), "data");
-        dispatch(updateProfile(payload));
+                dispatch(updateProfile(payload));
     };
 
     return (
@@ -154,8 +153,8 @@ export default function PersonalInformation() {
                             </label>
                             <input
                                 type="text"
-                                name="firstName"
-                                value={formData.firstName}
+                                name="name"
+                                value={formData.name}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
                             />

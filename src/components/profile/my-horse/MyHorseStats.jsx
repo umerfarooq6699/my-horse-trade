@@ -2,37 +2,37 @@
 
 import { CheckCircle2, Eye, Tag, TrendingUp } from "lucide-react";
 
-const stats = [
-    {
-        label: "Listings Active",
-        value: "3",
-        trend: "+1 this week",
-        icon: <CheckCircle2 size={20} />,
-        iconBg: "bg-green-50",
-        iconColor: "text-green-500",
-    },
-    {
-        label: "Total Views",
-        value: "124",
-        trend: "+12% vs last month",
-        icon: <Eye size={20} />,
-        iconBg: "bg-blue-50",
-        iconColor: "text_color",
-    },
-    {
-        label: "Horses Sold",
-        value: "1",
-        trend: "Last sold 2 weeks ago",
-        icon: <Tag size={20} />,
-        iconBg: "bg-orange-50",
-        iconColor: "text-orange-500",
-    },
-];
+export default function MyHorseStats({ stats }) {
+    const statCards = [
+        {
+            label: "Total Listings",
+            value: stats?.active + stats?.drafts + stats?.sold || 0,
+            trend: "All",
+            icon: <TrendingUp size={20} />,
+            iconBg: "bg-blue-50",
+            iconColor: "text_color",
+        },
+        {
+            label: "Horses Sold",
+            value: stats?.sold || 0,
+            trend: "History",
+            icon: <Tag size={20} />,
+            iconBg: "bg-orange-50",
+            iconColor: "text-orange-500",
+        },
+        {
+            label: "Active Now",
+            value: stats?.active || 0,
+            trend: "Live",
+            icon: <CheckCircle2 size={20} />,
+            iconBg: "bg-green-50",
+            iconColor: "text-green-500",
+        },
+    ];
 
-export default function MyHorseStats() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-3">
-            {stats.map((stat, index) => (
+            {statCards.map((stat, index) => (
                 <div key={index} className="bg-white p-3 rounded-[30px] border border-gray-100 shadow-sm relative overflow-hidden group">
                     <div className="flex items-start justify-between mb-4">
                         <div className={`p-3 rounded-2xl ${stat.iconBg} ${stat.iconColor}`}>

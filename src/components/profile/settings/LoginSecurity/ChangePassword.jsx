@@ -19,12 +19,12 @@ export default function ChangePassword() {
 
     const formik = useFormik({
         initialValues: {
-            old_password: "",
+            current_password: "",
             new_password: "",
             confirm_password: "",
         },
         validationSchema: Yup.object({
-            old_password: Yup.string()
+            current_password: Yup.string()
                 .required("Current Password is required"),
             new_password: Yup.string()
                 .min(6, "Password must be at least 6 characters")
@@ -34,9 +34,9 @@ export default function ChangePassword() {
                 .required("Confirm Password is required"),
         }),
         onSubmit: (values, { resetForm }) => {
-            dispatch(changePassword({ 
-                old_password: values.old_password, 
-                new_password: values.new_password 
+            dispatch(changePassword({
+                current_password: values.current_password,
+                new_password: values.new_password
             })).unwrap().then(() => {
                 resetForm();
             }).catch(() => {
@@ -54,7 +54,7 @@ export default function ChangePassword() {
                     Password updated successfully!
                 </div>
             )}
-            
+
             {error && (
                 <div className="mb-4 p-3 bg-red-50 text-red-600 border border-red-200 rounded-lg text-sm font-medium">
                     {typeof error === "string" ? error : error?.message || "Failed to update password"}
@@ -68,15 +68,14 @@ export default function ChangePassword() {
                     </label>
                     <input
                         type="password"
-                        name="old_password"
+                        name="current_password"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.old_password}
-                        className={`w-full px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#F8FAFC] ${
-                            formik.touched.old_password && formik.errors.old_password 
-                                ? "border-red-500 focus:border-red-500" 
-                                : "border-gray-100 focus:border-transparent"
-                        }`}
+                        value={formik.values.current_password}
+                        className={`w-full px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#F8FAFC] ${formik.touched.current_password && formik.errors.current_password
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-gray-100 focus:border-transparent"
+                            }`}
                     />
                     {formik.touched.old_password && formik.errors.old_password && (
                         <p className="text-red-500 text-xs mt-1 ml-1">{formik.errors.old_password}</p>
@@ -94,11 +93,10 @@ export default function ChangePassword() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.new_password}
-                            className={`w-full px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#F8FAFC] ${
-                                formik.touched.new_password && formik.errors.new_password 
-                                    ? "border-red-500 focus:border-red-500" 
-                                    : "border-gray-100 focus:border-transparent"
-                            }`}
+                            className={`w-full px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#F8FAFC] ${formik.touched.new_password && formik.errors.new_password
+                                ? "border-red-500 focus:border-red-500"
+                                : "border-gray-100 focus:border-transparent"
+                                }`}
                         />
                         {formik.touched.new_password && formik.errors.new_password && (
                             <p className="text-red-500 text-xs mt-1 ml-1">{formik.errors.new_password}</p>
@@ -114,11 +112,10 @@ export default function ChangePassword() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.confirm_password}
-                            className={`w-full px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#F8FAFC] ${
-                                formik.touched.confirm_password && formik.errors.confirm_password 
-                                    ? "border-red-500 focus:border-red-500" 
-                                    : "border-gray-100 focus:border-transparent"
-                            }`}
+                            className={`w-full px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#F8FAFC] ${formik.touched.confirm_password && formik.errors.confirm_password
+                                ? "border-red-500 focus:border-red-500"
+                                : "border-gray-100 focus:border-transparent"
+                                }`}
                         />
                         {formik.touched.confirm_password && formik.errors.confirm_password && (
                             <p className="text-red-500 text-xs mt-1 ml-1">{formik.errors.confirm_password}</p>
@@ -128,12 +125,11 @@ export default function ChangePassword() {
 
                 <div className="flex flex-col md:flex-row items-center justify-between pt-4 gap-4">
                     <div className="flex items-center gap-6 w-full md:w-auto justify-end">
-                        <button 
+                        <button
                             type="submit"
                             disabled={loading}
-                            className={`bg_color text-white px-8 py-3 rounded-lg text-sm font-bold transition-opacity shadow-sm ${
-                                loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
-                            }`}
+                            className={`bg_color text-white px-8 py-3 rounded-lg text-sm font-bold transition-opacity shadow-sm ${loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
+                                }`}
                         >
                             {loading ? "Updating..." : "Update Password"}
                         </button>

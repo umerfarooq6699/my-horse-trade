@@ -106,11 +106,42 @@ export const mockHorses = [
     }
 ];
 
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMarketplaceHorses } from "@/redux/slices/horseSlice";
+
 export default function HorseGrid({ viewMode }) {
+    const dispatch = useDispatch();
+    const { data: marketplaceHorses, loading, error } = useSelector((state) => state.horse.marketplace);
+
+    useEffect(() => {
+        dispatch(fetchMarketplaceHorses());
+    }, [dispatch]);
+
+    // Use fetched horses or fallback to mock if empty during development, or show loading
+    const horsesToDisplay = marketplaceHorses && marketplaceHorses.length > 0
+        ? marketplaceHorses.map(horse => ({
+            ...horse,
+            // Map the API fields to the fields expected by HorseCard
+            image: horse.image || image1.src, // Fallback if API lacks image
+            category: horse.breed,
+            tag: horse.status === "draft" ? "Draft" : "",
+            isNew: true, // Let's mark fresh ones as new
+        }))
+        : mockHorses;
+
+    if (loading) {
+        return <div className="text-center py-10">Loading horses...</div>;
+    }
+
+    if (error) {
+        return <div className="text-center py-10 text-red-500">Error loading horses: {error}</div>;
+    }
+
     return (
         <div>
             <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-                {mockHorses.map((horse) => (
+                {horsesToDisplay.map((horse) => (
                     <HorseCard key={horse.id} horse={horse} />
                 ))}
             </div>

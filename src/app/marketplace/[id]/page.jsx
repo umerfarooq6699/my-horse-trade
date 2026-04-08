@@ -1,36 +1,87 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "next/navigation";
+import { fetchSingleHorse, clearCurrentListing } from "@/redux/slices/horseSlice";
+import { API_BASE_URL } from "@/utils/urls";
+
 import ImageGallery from "@/components/marketplace/detail/ImageGallery";
 import HorseMainInfo from "@/components/marketplace/detail/HorseMainInfo";
 import SpecsRibbon from "@/components/marketplace/detail/SpecsRibbon";
 import PerformanceSidebar from "@/components/marketplace/detail/PerformanceSidebar";
 import PedigreeSection from "@/components/marketplace/detail/PedigreeSection";
-import image1 from "@/assets/images/marketplace1.png"
-import image2 from "@/assets/images/marketplace2.png"
-import image3 from "@/assets/images/marketplace3.png"
-import image4 from "@/assets/images/marketplace4.png"
 
-export default function HorseDetailPage({ params }) {
+export default function HorseDetailPage() {
+    const { id } = useParams();
+    const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState("Overview");
 
-    // Mock data based on the screenshot
+    const { currentListing, loadingCurrentListing, errorCurrentListing } = useSelector((state) => state.horse);
+
+    useEffect(() => {
+        if (id) {
+            dispatch(fetchSingleHorse(id));
+        }
+        return () => {
+            dispatch(clearCurrentListing());
+        };
+    }, [id, dispatch]);
+
+    // Helper to ensure URL is absolute
+    const getAbsoluteUrl = (url) => {
+        if (!url) return "";
+        if (url.startsWith("http")) return url;
+        const baseUrl = API_BASE_URL || "http://localhost:8000";
+        return `${baseUrl}${url.startsWith("/") ? "" : "/"}${url}`;
+    };
+
+    if (loadingCurrentListing) {
+        return (
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-600"></div>
+                    <p className="text-gray-500 font-medium">Loading horse profile...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (errorCurrentListing) {
+        return (
+            <div className="min-h-screen bg-white flex items-center justify-center p-4">
+                <div className="text-center max-w-md">
+                    <div className="bg-red-50 text-red-600 p-6 rounded-[32px] mb-6">
+                        <h2 className="text-2xl font-bold mb-2">Profile Not Found</h2>
+                        <p className="text-sm">{typeof errorCurrentListing === 'string' ? errorCurrentListing : "Failed to load horse details."}</p>
+                    </div>
+                    <Link href="/marketplace" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:underline">
+                        Back to Marketplace <ChevronRight size={16} />
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    if (!currentListing) return null;
+
+    // Map API data to the format expected by the UI components
     const horse = {
-        name: "Nebula Strider V",
-        price: 125000,
-        breed: "KWPN",
-        height: 17.2,
-        foaled: "2018 (6yo)",
-        gender: "Stallion",
-        tags: ["PREMIUM", "FEATURED"],
-        images: [
-            image1,
-            image2,
-            image3,
-            image4,
-        ]
+        name: currentListing.name || currentListing.horse_name || "Untitled Horse",
+        price: currentListing.price || 0,
+        breed: currentListing.breed || "Horse",
+        height: currentListing.height || 16.2,
+        foaled: currentListing.age ? `${currentListing.age} Years` : (currentListing.foaled || "N/A"),
+        gender: currentListing.gender || "Gelding",
+        tags: currentListing.tags || (currentListing.discipline ? [currentListing.discipline] : ["FEATURED"]),
+        // Map images: ensure all URLs are absolute
+        images: (Array.isArray(currentListing.photos) && currentListing.photos.length > 0 
+                ? currentListing.photos 
+                : (currentListing.image ? [currentListing.image] : [])).map(url => getAbsoluteUrl(url)),
+        description: currentListing.description || currentListing.listing_step3?.description || "No description available for this horse.",
+        location: currentListing.location || "N/A"
     };
 
     return (
@@ -46,7 +97,7 @@ export default function HorseDetailPage({ params }) {
                             <SpecsRibbon horse={horse} />
 
                             {/* Tabs */}
-                            <div className="border-b border-gray-100 flex gap-12 mb-10">
+                            <div className="border-b border-gray-100 flex gap-6 sm:gap-12 mb-10 overflow-x-auto whitespace-nowrap scrollbar-hide">
                                 {["Overview", "Pedigree", "Health Records", "Training Logs"].map((tab) => (
                                     <button
                                         key={tab}
@@ -63,10 +114,9 @@ export default function HorseDetailPage({ params }) {
                             <div className="prose prose-blue max-w-none">
                                 {activeTab === "Overview" && (
                                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                                        <h2 className="text-xl sm:text-2xl font-[600] text-gray-900 mb-4 sm:mb-6 font-display tracking-tight">About Nebula Strider V</h2>
+                                        <h2 className="text-xl sm:text-2xl font-[600] text-gray-900 mb-4 sm:mb-6 font-display tracking-tight">About {horse.name}</h2>
                                         <div className="text-gray-500 leading-relaxed space-y-4 text-justify md:font-medium">
-                                            <p>Nebula Strider V is a top-tier prospect for international show jumping. With a calm temperament and explosive power off the ground, he represents the future of the sport. Currently training at 1.40m with scope for more. His lateral work is exceptional, and he demonstrates a rare intelligence in the ring, often correcting stride distance autonomously.</p>
-                                            <p>Originally imported from the Netherlands, he has been under the saddle of Olympic-level trainers for the past 18 months. He is fully sound, requires no maintenance, and travels exceptionally well. Perfect for an ambitious Young Rider or professional looking to add a Grand Prix prospect to their string.</p>
+                                            <p>{horse.description}</p>
                                         </div>
                                     </div>
                                 )}
@@ -75,7 +125,7 @@ export default function HorseDetailPage({ params }) {
                                         <PedigreeSection />
                                     </div>
                                 )}
-                                {/* Other tabs can be implemented similarly */}
+                                {/* Other tabs */}
                                 {(activeTab === "Health Records" || activeTab === "Training Logs") && (
                                     <div className="p-12 bg-gray-50 rounded-[32px] border border-dashed border-gray-200 text-center animate-in fade-in slide-in-from-bottom-2 duration-300">
                                         <p className="text-gray-400 font-bold">Additional records are available upon request from the seller.</p>
@@ -94,31 +144,6 @@ export default function HorseDetailPage({ params }) {
                     </div>
                 </div>
 
-                {/* Related Horses Section */}
-                <div className="mt-16 sm:mt-24">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8 sm:mb-10">
-                        <h2 className="text-2xl sm:text-3xl font-[600] text-gray-900 tracking-tight">More from this Lineage</h2>
-                        <Link href="/marketplace" className="text-sm font-bold text-blue-600 hover:underline flex items-center gap-1">
-                            View All <ChevronRight size={16} />
-                        </Link>
-                    </div>
-                    {/* Placeholder for related horses grid - Reuse HorseCard if possible */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {horse.images.map((e, i) => (
-                            <div key={i} className="bg-white border border-gray-100 rounded-3xl overflow-hidden group hover:shadow-2xl hover:shadow-gray-100 transition-all p-2">
-                                <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-gray-100 mb-4 relative">
-                                    <img src={e.src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Related Horse" />
-                                    <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-                                        <div className="bg-white/80 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-black text-gray-900 shadow-sm">$85k</div>
-                                    </div>
-                                </div>
-                                <div className="px-2 pb-2">
-                                    <h4 className="font-bold text-gray-900">Stellar Wind</h4>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
             </div>
         </main>
     );

@@ -5,7 +5,7 @@ import LivePreviewCard from "./LivePreviewCard";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 
-export default function SellHorseLayout({ children, currentStep = 1, nextLink = "#", backLink = "#", onSaveDraft, onNext, loading = false }) {
+export default function SellHorseLayout({ children, currentStep = 1, nextLink = "#", backLink = "#", onNext, loading = false }) {
     return (
         <div className="bg-[#f8fafc] min-h-screen pt-8 md:pt-10 mb-8 md:pb-16">
             <div className="container-width mx-auto px-3 lg:px-14">
@@ -18,36 +18,26 @@ export default function SellHorseLayout({ children, currentStep = 1, nextLink = 
                         {children}
 
                         {/* Bottom Actions - Now aligned with form content */}
-                        <div className=" mt-5 bg-white rounded-[10px] md:rounded-[20px] p-3 sm:p-3 border border-gray-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
-                            <div className="flex items-center gap-3 w-full sm:w-auto">
-                                <button
-                                    onClick={onSaveDraft}
-                                    disabled={loading}
-                                    className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 text-[13px] sm:text-[14px] font-bold text-white bg_color rounded-[10px] hover:opacity-90 transition-all border border-gray-100/50 whitespace-nowrap cursor-pointer flex items-center justify-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
-                                >
-                                    {loading ? (
-                                        <>
-                                            <Loader2 size={16} className="animate-spin" />
-                                            Saving...
-                                        </>
-                                    ) : (
-                                        "Save as Draft"
-                                    )}
-                                </button>
-                                <Link
-                                    href={backLink}
-                                    className="flex-1 sm:hidden px-4 py-4 text-[13px] font-bold text-[#1e293b] bg-[#f8fafc] rounded-2xl hover:bg-gray-100 transition-all border border-gray-100/50 flex items-center justify-center"
-                                >
-                                    Back
-                                </Link>
-                            </div>
+                        <div className=" mt-5 bg-white rounded-[10px] md:rounded-[20px] p-3 sm:p-3 border border-gray-100 shadow-sm flex flex-col sm:flex-row items-center justify-end gap-4 sm:gap-6">
+                            {currentStep > 1 && (
+                                <div className="flex items-center gap-3 w-full sm:w-auto sm:hidden">
+                                    <Link
+                                        href={backLink}
+                                        className="flex-1 sm:hidden px-4 py-4 text-[13px] font-bold text-[#1e293b] bg-[#f8fafc] rounded-2xl hover:bg-gray-100 transition-all border border-gray-100/50 flex items-center justify-center"
+                                    >
+                                        Back
+                                    </Link>
+                                </div>
+                            )}
                             <div className="flex items-center w-full sm:w-auto">
-                                <Link
-                                    href={backLink}
-                                    className="hidden sm:flex px-8 py-3 text-[14px] font-bold text-[#1e293b] bg-gray-300 rounded-[10px] hover:bg-gray-200 transition-all mr-4 items-center justify-center min-w-[120px]"
-                                >
-                                    Back
-                                </Link>
+                                {currentStep > 1 && (
+                                    <Link
+                                        href={backLink}
+                                        className="hidden sm:flex px-8 py-3 text-[14px] font-bold text-[#1e293b] bg-gray-300 rounded-[10px] hover:bg-gray-200 transition-all mr-4 items-center justify-center min-w-[120px]"
+                                    >
+                                        Back
+                                    </Link>
+                                )}
                                 {currentStep === 4 ? (
                                     <button
                                         onClick={onNext}

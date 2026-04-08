@@ -12,10 +12,8 @@ export const horseListingStep1 = createAsyncThunk(
           Authorization: `token ${auth.token}`,
         },
       };
-      console.log("Horse Data Payload:", horseData);
-      const response = await axios.post(API_ENDPOINTS.HORSE_STEP1, horseData, config);
-      console.log("Horse 1 Response Success:", response);
-      return response.data;
+            const response = await axios.post(API_ENDPOINTS.HORSE_STEP1, horseData, config);
+            return response.data;
     } catch (error) {
       console.error("Horse 1 Response Error:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data || error.message);
@@ -42,12 +40,10 @@ export const horseListingStep2 = createAsyncThunk(
         }
         
         // Log FormData as object for debugging
-        console.log("Horse 2 Data Payload (FormData):", Object.fromEntries(horseData.entries()));
-      } else {
+              } else {
         const horseIdFromState = horse.horseStep1.horseId;
         payload = { ...horseData, horse_id: horseData.horse_id || horseIdFromState };
-        console.log("Horse 2 Data Payload (Object):", payload);
-      }
+              }
 
       const config = {
         headers: {
@@ -56,8 +52,7 @@ export const horseListingStep2 = createAsyncThunk(
       };
 
       const response = await axios.post(API_ENDPOINTS.HORSE_STEP2, payload, config);
-      console.log("Horse 2 Response Success:", response);
-      return response.data;
+            return response.data;
     } catch (error) {
       // console.error("Horse 2 Response Error:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data || error.message);
@@ -78,8 +73,7 @@ export const horseListingStep3 = createAsyncThunk(
         horse_id: horseData.horse_id || horseIdFromState 
       };
 
-      console.log("Horse 3 Data Payload:", payload);
-      const config = {
+            const config = {
         headers: {
           Authorization: `token ${auth.token}`,
           'Content-Type': 'application/json',
@@ -87,8 +81,7 @@ export const horseListingStep3 = createAsyncThunk(
       };
 
       const response = await axios.post(API_ENDPOINTS.HORSE_STEP3, payload, config);
-      console.log("Horse 3 Response Success:", response);
-      return response.data;
+            return response.data;
     } catch (error) {
       console.error("Horse 3 Response Error:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data || error.message);
@@ -109,8 +102,7 @@ export const horseListingStep4 = createAsyncThunk(
         horse_id: horseData.horse_id || horseIdFromState 
       };
 
-      console.log("Horse 4 Data Payload:", payload);
-      const config = {
+            const config = {
         headers: {
           Authorization: `token ${auth.token}`,
           'Content-Type': 'application/json',
@@ -118,10 +110,41 @@ export const horseListingStep4 = createAsyncThunk(
       };
 
       const response = await axios.post(API_ENDPOINTS.HORSE_STEP4, payload, config);
-      console.log("Horse 4 Response Success:", response);
-      return response.data;
+            return response.data;
     } catch (error) {
       console.error("Horse 4 Response Error:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const fetchMarketplaceHorses = createAsyncThunk(
+  'horse/fetchMarketplaceHorses',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(API_ENDPOINTS.MARKETPLACE);
+            return response.data.results || response.data;
+    } catch (error) {
+      console.error("Marketplace Response Error:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const fetchSingleHorse = createAsyncThunk(
+  'horse/fetchSingleHorse',
+  async (id, { rejectWithValue, getState }) => {
+    try {
+      const { auth } = getState();
+      const config = {
+        headers: {
+          Authorization: `token ${auth.token}`,
+        },
+      };
+      const response = await axios.get(API_ENDPOINTS.GET_SINGLE_HORSE(id), config);
+            return response.data;
+    } catch (error) {
+      console.error("Single Horse Error:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -130,6 +153,7 @@ export const horseListingStep4 = createAsyncThunk(
 const initialState = {
   listings: [],
   selectedHorse: null,
+  currentListing: null,
   loading: false,
   error: null,
   filters: {
@@ -137,6 +161,11 @@ const initialState = {
     age: '',
     priceRange: [0, 1000000],
     location: '',
+  },
+  marketplace: {
+    data: [],
+    loading: false,
+    error: null,
   },
   horseStep1: {
     loading: false,
@@ -159,6 +188,8 @@ const initialState = {
     error: null,
     success: false,
   },
+  loadingCurrentListing: false,
+  errorCurrentListing: null,
 };
 
 const horseSlice = createSlice({
@@ -170,6 +201,13 @@ const horseSlice = createSlice({
     },
     selectHorse: (state, action) => {
       state.selectedHorse = action.payload;
+    },
+    setCurrentListing: (state, action) => {
+      state.currentListing = action.payload;
+    },
+    clearCurrentListing: (state) => {
+      state.currentListing = null;
+      state.errorCurrentListing = null;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -198,6 +236,18 @@ const horseSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchSingleHorse.pending, (state) => {
+        state.loadingCurrentListing = true;
+        state.errorCurrentListing = null;
+      })
+      .addCase(fetchSingleHorse.fulfilled, (state, action) => {
+        state.loadingCurrentListing = false;
+        state.currentListing = action.payload;
+      })
+      .addCase(fetchSingleHorse.rejected, (state, action) => {
+        state.loadingCurrentListing = false;
+        state.errorCurrentListing = action.payload;
+      })
       .addCase(horseListingStep1.pending, (state) => {
         state.horseStep1.loading = true;
         state.horseStep1.error = null;
@@ -259,9 +309,35 @@ const horseSlice = createSlice({
         state.horseStep4.loading = false;
         state.horseStep4.error = action.payload;
         state.horseStep4.success = false;
+      })
+      // Marketplace
+      .addCase(fetchMarketplaceHorses.pending, (state) => {
+        state.marketplace.loading = true;
+        state.marketplace.error = null;
+      })
+      .addCase(fetchMarketplaceHorses.fulfilled, (state, action) => {
+        state.marketplace.loading = false;
+        state.marketplace.data = action.payload;
+      })
+      .addCase(fetchMarketplaceHorses.rejected, (state, action) => {
+        state.marketplace.loading = false;
+        state.marketplace.error = action.payload;
       });
   },
 });
 
-export const { setListings, selectHorse, setLoading, setError, setFilters, addListing, resetHorseStep1, resetHorseStep2, resetHorseStep3, resetHorseStep4 } = horseSlice.actions;
+export const { 
+  setListings, 
+  selectHorse, 
+  setCurrentListing,
+  clearCurrentListing,
+  setLoading, 
+  setError, 
+  setFilters, 
+  addListing, 
+  resetHorseStep1, 
+  resetHorseStep2, 
+  resetHorseStep3, 
+  resetHorseStep4 
+} = horseSlice.actions;
 export default horseSlice.reducer;

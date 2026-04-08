@@ -8,7 +8,7 @@ import NarrativeSection from "@/components/sell-horse/NarrativeSection";
 import QuickTopicsSection from "@/components/sell-horse/QuickTopicsSection";
 import DisciplinesSection from "@/components/sell-horse/DisciplinesSection";
 import { useDispatch, useSelector } from "react-redux";
-import { horseListingStep3, resetHorseStep3 } from "@/redux/slices/horseSlice";
+import { horseListingStep3, resetHorseStep3, fetchSingleHorse } from "@/redux/slices/horseSlice";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -28,11 +28,49 @@ function NarrativePageContent() {
     const searchParams = useSearchParams();
     const horseIdFromUrl = searchParams.get("horse_id");
     
-    const { horseStep3, horseStep1 } = useSelector((state) => state.horse);
+    const { horseStep3, horseStep1, currentListing, loadingCurrentListing } = useSelector((state) => state.horse);
     const { loading, error, success } = horseStep3;
     const horseIdFromState = horseStep1.horseId;
     const effectiveHorseId = horseIdFromUrl || horseIdFromState;
     const [isNextStep, setIsNextStep] = useState(false);
+
+    // Fetch horse data if editing and not already loaded
+    useEffect(() => {
+        if (horseIdFromUrl && (!currentListing || currentListing.id !== parseInt(horseIdFromUrl))) {
+            dispatch(fetchSingleHorse(horseIdFromUrl));
+        }
+    }, [horseIdFromUrl, currentListing, dispatch]);
+
+    const formik = useFormik({
+        initialValues: {
+            description: "",
+            quick_topics: [],
+            disciplines: []
+        },
+        validationSchema: NarrativeSchema,
+        onSubmit: async (values) => {
+                        const payload = {
+                horse_id: effectiveHorseId,
+                description: values.description,
+                quick_topics: values.quick_topics,
+                disciplines: values.disciplines
+            };
+            await dispatch(horseListingStep3(payload));
+        },
+    });
+
+    // Pre-fill form values when currentListing is fetched
+    useEffect(() => {
+        if (currentListing) {
+            const data = currentListing.listing_step3 || currentListing;
+                        formik.setValues({
+                description: data.description || data.narrative || "",
+                quick_topics: Array.isArray(data.quick_topics) ? data.quick_topics : [],
+                disciplines: Array.isArray(data.disciplines) ? data.disciplines : 
+                           (data.discipline ? [data.discipline] : [])
+            });
+        }
+    }, [currentListing]);
 
     useEffect(() => {
         if (success) {
@@ -60,26 +98,7 @@ function NarrativePageContent() {
         return () => {
             dispatch(resetHorseStep3());
         };
-    }, [success, error, dispatch]);
-
-    const formik = useFormik({
-        initialValues: {
-            description: "",
-            quick_topics: [],
-            disciplines: []
-        },
-        validationSchema: NarrativeSchema,
-        onSubmit: async (values) => {
-            console.log("Narrative Data:", values);
-            const payload = {
-                horse_id: effectiveHorseId,
-                description: values.description,
-                quick_topics: values.quick_topics,
-                disciplines: values.disciplines
-            };
-            await dispatch(horseListingStep3(payload));
-        },
-    });
+    }, [success, error, dispatch, effectiveHorseId, isNextStep, router]);
 
     const handleNextStep = async () => {
         setIsNextStep(true);
@@ -90,6 +109,16 @@ function NarrativePageContent() {
         setIsNextStep(false);
         await formik.submitForm();
     };
+
+    if (loadingCurrentListing) {
+        return (
+            <SellHorseLayout currentStep={3} loading={true}>
+                <div className="flex items-center justify-center min-h-[400px]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1E293B]"></div>
+                </div>
+            </SellHorseLayout>
+        );
+    }
 
     return (
         <SellHorseLayout
@@ -102,7 +131,7 @@ function NarrativePageContent() {
         >
             <div className="flex flex-col gap-2 mb-5 md:mb-9">
                 <h1 className="text-xl md:text-4xl font-[700] md:font-[600] text-black uppercase tracking-tight">The Narrative</h1>
-                <p className="text-sm font-medium text-gray-400">Tell their story. Craft a compelling description to attract the right buyer.</p>
+                <p className="text-sm md:text-base font-medium text-gray-400">Tell their story. Craft a compelling description to attract the right buyer.</p>
             </div>
 
             <div className="flex flex-col gap-8">

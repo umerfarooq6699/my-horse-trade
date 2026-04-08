@@ -9,7 +9,6 @@ export const registerUser = createAsyncThunk(
     // console.log(userData, "signup object")
     try {
       const response = await axios.post(API_ENDPOINTS.SIGNUP, userData);
-      console.log("Signup Response:", response);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -23,7 +22,6 @@ export const loginUser = createAsyncThunk(
   async (loginData, { rejectWithValue }) => {
     try {
       const response = await axios.post(API_ENDPOINTS.LOGIN, loginData);
-      console.log("Login Response:", response);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -38,9 +36,68 @@ export const sendOtp = createAsyncThunk(
     console.log("working")
     try {
       const response = await axios.post(API_ENDPOINTS.SEND_OTP, emailData);
-      console.log("Send OTP Response:", response);
+      // console.log(response, "forgot password response")
       return response.data;
     } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Async thunk for resending OTP
+export const resendOtp = createAsyncThunk(
+  'auth/resendOtp',
+  async (emailData, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append('email', emailData.email);
+      const response = await axios.post(API_ENDPOINTS.RESEND_OTP, formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Async thunk for verifying OTP
+export const verifyOtp = createAsyncThunk(
+  'auth/verifyOtp',
+  async (otpData, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      console.log(otpData, "otpData")
+      // Sending only otp as a JSON object, with the token in headers
+      const response = await axios.post(API_ENDPOINTS.VERIFY_OTP, { otp: otpData.otp }, {
+        headers: {
+          Authorization: `token ${auth.forgotPasswordToken}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Async thunk for resetting password
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async (passwordData, { getState, rejectWithValue }) => {
+    const { auth } = getState();
+    const token = auth.forgotPasswordToken;
+    console.log("Resetting password with payload:", passwordData);
+    console.log("Using Authorization header:", `token ${token}`);
+    
+    try {
+      const response = await axios.post(API_ENDPOINTS.RESET_PASSWORD, passwordData, {
+        headers: {
+          Authorization: `token ${token}`
+        }
+      });
+      console.log(response, "reset password response success")
+      return response.data;
+    } catch (error) {
+      console.error(error.response?.data || error.message, "reset password error");
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -50,6 +107,7 @@ const initialState = {
   user: null,
   token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
   isAuthenticated: typeof window !== 'undefined' ? !!localStorage.getItem('token') : false,
+  forgotPasswordToken: typeof window !== 'undefined' ? localStorage.getItem('forgotPasswordToken') : null,
   signupData: {
     loading: false,
     error: null,
@@ -61,6 +119,16 @@ const initialState = {
     success: false,
   },
   forgotPassword: {
+    loading: false,
+    error: null,
+    success: false,
+  },
+  verifyOtpState: {
+    loading: false,
+    error: null,
+    success: false,
+  },
+  resetPasswordState: {
     loading: false,
     error: null,
     success: false,
@@ -85,10 +153,12 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      state.forgotPasswordToken = null;
       state.login = initialState.login;
       state.signupData = initialState.signupData;
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
+        localStorage.removeItem('forgotPasswordToken');
       }
     },
     updateUser: (state, action) => {
@@ -102,6 +172,12 @@ const authSlice = createSlice({
     },
     resetForgotPasswordState: (state) => {
       state.forgotPassword = initialState.forgotPassword;
+    },
+    resetVerifyOtpState: (state) => {
+      state.verifyOtpState = initialState.verifyOtpState;
+    },
+    resetPasswordStateAction: (state) => {
+      state.resetPasswordState = initialState.resetPasswordState;
     },
   },
   extraReducers: (builder) => {
@@ -153,14 +229,72 @@ const authSlice = createSlice({
       .addCase(sendOtp.fulfilled, (state, action) => {
         state.forgotPassword.loading = false;
         state.forgotPassword.success = action.payload.message || true;
+        state.forgotPasswordToken = action.payload.token;
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('forgotPasswordToken', action.payload.token);
+        }
       })
       .addCase(sendOtp.rejected, (state, action) => {
         state.forgotPassword.loading = false;
         state.forgotPassword.error = action.payload;
         state.forgotPassword.success = false;
+      })
+      // Resend OTP
+      .addCase(resendOtp.pending, (state) => {
+        state.forgotPassword.loading = true;
+        state.forgotPassword.error = null;
+        state.forgotPassword.success = false;
+      })
+      .addCase(resendOtp.fulfilled, (state, action) => {
+        state.forgotPassword.loading = false;
+        state.forgotPassword.success = action.payload.message || "OTP resent successfully!";
+        state.forgotPasswordToken = action.payload.token;
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('forgotPasswordToken', action.payload.token);
+        }
+      })
+      .addCase(resendOtp.rejected, (state, action) => {
+        state.forgotPassword.loading = false;
+        state.forgotPassword.error = action.payload;
+        state.forgotPassword.success = false;
+      })
+
+      // Verify OTP
+      .addCase(verifyOtp.pending, (state) => {
+        state.verifyOtpState.loading = true;
+        state.verifyOtpState.error = null;
+        state.verifyOtpState.success = false;
+      })
+      .addCase(verifyOtp.fulfilled, (state, action) => {
+        state.verifyOtpState.loading = false;
+        state.verifyOtpState.success = action.payload.message || true;
+      })
+      .addCase(verifyOtp.rejected, (state, action) => {
+        state.verifyOtpState.loading = false;
+        state.verifyOtpState.error = action.payload;
+        state.verifyOtpState.success = false;
+      })
+      // Reset Password
+      .addCase(resetPassword.pending, (state) => {
+        state.resetPasswordState.loading = true;
+        state.resetPasswordState.error = null;
+        state.resetPasswordState.success = false;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.resetPasswordState.loading = false;
+        state.resetPasswordState.success = action.payload.message || true;
+        state.forgotPasswordToken = null;
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('forgotPasswordToken');
+        }
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.resetPasswordState.loading = false;
+        state.resetPasswordState.error = action.payload;
+        state.resetPasswordState.success = false;
       });
   },
 });
 
-export const { loginSuccess, logout, updateUser, resetSignupState, resetLoginState, resetForgotPasswordState } = authSlice.actions;
+export const { loginSuccess, logout, updateUser, resetSignupState, resetLoginState, resetForgotPasswordState, resetVerifyOtpState, resetPasswordStateAction } = authSlice.actions;
 export default authSlice.reducer;

@@ -8,7 +8,7 @@ import PhotoGallerySection from "@/components/sell-horse/PhotoGallerySection";
 import VideoEvidenceSection from "@/components/sell-horse/VideoEvidenceSection";
 import DocumentsSection from "@/components/sell-horse/DocumentsSection";
 import { useDispatch, useSelector } from "react-redux";
-import { horseListingStep2, resetHorseStep2, fetchSingleHorse } from "@/redux/slices/horseSlice";
+import { horseListingStep2, resetHorseStep2, fetchHorsePrefillData } from "@/redux/slices/horseSlice";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -32,12 +32,12 @@ function VisualEvidencePageContent() {
     const effectiveHorseId = horseIdFromUrl || horseIdFromState;
     const [isNextStep, setIsNextStep] = useState(false);
 
-    // Fetch horse data if editing and not already loaded
+    // Fetch horse data if editing
     useEffect(() => {
-        if (horseIdFromUrl && (!currentListing || currentListing.id !== parseInt(horseIdFromUrl))) {
-            dispatch(fetchSingleHorse(horseIdFromUrl));
+        if (horseIdFromUrl) {
+            dispatch(fetchHorsePrefillData(horseIdFromUrl));
         }
-    }, [horseIdFromUrl, currentListing, dispatch]);
+    }, [horseIdFromUrl, dispatch]);
 
     const formik = useFormik({
         initialValues: {

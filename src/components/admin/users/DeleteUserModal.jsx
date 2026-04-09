@@ -29,7 +29,6 @@ export default function DeleteUserModal({ isOpen, onClose, user }) {
             dispatch(fetchAllUsers({ page: currentPage, searchValue: "" }));
             onClose();
         } catch (error) {
-            console.error("Failed to delete user:", error);
             onClose();
         }
     }

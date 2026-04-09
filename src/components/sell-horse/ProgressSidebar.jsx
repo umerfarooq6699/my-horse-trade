@@ -10,7 +10,7 @@ const steps = [
     { id: 4, title: "4. Commercials", icon: DollarSign, sub: "Sales", path: "/sell-horse/commercials" },
 ];
 
-export default function ProgressSidebar({ currentStep = 1 }) {
+export default function ProgressSidebar({ currentStep = 1, horseId }) {
     const currentStepData = steps.find(s => s.id === currentStep) || steps[0];
 
     return (
@@ -35,7 +35,7 @@ export default function ProgressSidebar({ currentStep = 1 }) {
                     return (
                         <Link
                             key={step.id}
-                            href={step.path}
+                            href={horseId ? `${step.path}?horse_id=${horseId}` : step.path}
                             className={`flex items-center gap-4 px-5 py-3 rounded-xl transition-all ${isActive
                                 ? 'bg-blue-50'
                                 : 'bg-transparent hover:bg-gray-50/50'

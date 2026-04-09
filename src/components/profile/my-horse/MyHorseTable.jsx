@@ -6,7 +6,6 @@ import { Eye, Trash2, Pencil, AlertCircle, CheckCircle, Clock, X } from "lucide-
 import React, { useState } from "react";
 
 export default function MyHorseTable({ horses, onView }) {
-    console.log(horses, "horses bbbbbbbbbbbbbbbbbb")
     const [rejectionMessage, setRejectionMessage] = useState(null);
 
     if (!horses || horses.length === 0) {

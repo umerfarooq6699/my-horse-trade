@@ -19,7 +19,6 @@ export default function ContactForm() {
             message: Yup.string().min(10, "Message must be at least 10 characters").required("Message is required")
         }),
         onSubmit: (values) => {
-            console.log("Form submitted:", values);
             alert("Thank you! Your message has been sent.");
             formik.resetForm();
         }

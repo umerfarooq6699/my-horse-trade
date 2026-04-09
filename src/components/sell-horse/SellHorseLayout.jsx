@@ -3,15 +3,19 @@
 import ProgressSidebar from "./ProgressSidebar";
 import LivePreviewCard from "./LivePreviewCard";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 export default function SellHorseLayout({ children, currentStep = 1, nextLink = "#", backLink = "#", onNext, loading = false }) {
+    const searchParams = useSearchParams();
+    const horseId = searchParams.get("horse_id");
+
     return (
         <div className="bg-[#f8fafc] min-h-screen pt-8 md:pt-10 mb-8 md:pb-16">
             <div className="container-width mx-auto px-3 lg:px-14">
                 <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
                     {/* Left Sidebar - Progress */}
-                    <ProgressSidebar currentStep={currentStep} />
+                    <ProgressSidebar currentStep={currentStep} horseId={horseId} />
 
                     {/* Middle Content - Form */}
                     <div className="flex-1 max-w-[720px]">

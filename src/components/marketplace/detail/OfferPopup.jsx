@@ -1,41 +1,63 @@
 "use client";
 
-import { X, Gavel, DollarSign } from "lucide-react";
+import { X, Gavel, DollarSign, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-
+import { useDispatch, useSelector } from "react-redux";
+import { makeOffer, resetMakeOffer } from "@/redux/slices/horseSlice";
+import { toast } from "react-toastify";
 
 export default function OfferPopup({ isOpen, onClose, horse }) {
     const [bidAmount, setBidAmount] = useState("");
-    const router = useRouter();
-
-
+    const dispatch = useDispatch();
+    const { makeOffer: makeOfferStatus } = useSelector((state) => state.horse);
+    const { loading, success, error, message } = makeOfferStatus;
 
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
+            dispatch(resetMakeOffer()); // Reset status when opening
+            setBidAmount(""); // Clear input when opening
         } else {
             document.body.style.overflow = 'unset';
         }
         return () => {
             document.body.style.overflow = 'unset';
         };
-    }, [isOpen]);
+    }, [isOpen, dispatch]);
+
+    // Handle success/error feedback
+    useEffect(() => {
+        if (success) {
+            toast.success(message || "Your bid placed successfully");
+            setBidAmount("");
+            onClose();
+            dispatch(resetMakeOffer());
+        }
+        if (error) {
+            const errorMessage = typeof error === 'string' ? error : (error.message || "Failed to place bid");
+            toast.error(errorMessage);
+            dispatch(resetMakeOffer());
+        }
+    }, [success, error, message, onClose, dispatch]);
 
     if (!isOpen) return null;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const currentBid = Number(bidAmount);
-        const previousHighestBid = horse.price - 5000;
-
-        if (currentBid <= previousHighestBid) {
-            alert(`Your bid must be greater than the previous highest bid ($${previousHighestBid.toLocaleString()})`);
+        
+        // This validation can also be performed by the backend, 
+        // but we keep a basic client-side check for UX.
+        const previousHighestBid = horse.price - 5000; // This should ideally come from backend
+        if (currentBid <= 0) {
+            toast.warning("Please enter a valid bid amount");
             return;
         }
 
-        router.push("/auction-won");
-        onClose();
+        dispatch(makeOffer({ 
+            horseId: horse.id, 
+            offerData: { offer_price: currentBid } 
+        }));
     };
 
     return (
@@ -43,7 +65,7 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
             {/* Overlay */}
             <div
                 className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
-                onClick={onClose}
+                onClick={!loading ? onClose : undefined}
             ></div>
 
             {/* Popup Content */}
@@ -51,13 +73,14 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 p-2 text-white/70 hover:text-white cursor-pointer transition-colors z-20 bg-black/20 hover:bg-black/40 rounded-full backdrop-blur-md"
+                    disabled={loading}
+                    className="absolute top-4 right-4 p-2 text-white/70 hover:text-white cursor-pointer transition-colors z-20 bg-black/20 hover:bg-black/40 rounded-full backdrop-blur-md disabled:opacity-50"
                 >
                     <X size={20} />
                 </button>
 
                 <div className="flex flex-col">
-                    {/* Header Image Section - Adjusted height for small screens */}
+                    {/* Header Image Section */}
                     <div className="relative h-40 sm:h-32 bg-gray-100">
                         <img
                             src={horse.images?.[0]?.src || horse.image}
@@ -71,7 +94,7 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
                         </div>
                     </div>
 
-                    {/* Form Section - Improved responsiveness */}
+                    {/* Form Section */}
                     <div className="p-5 sm:p-6 pb-8 sm:pb-6">
                         <div className="flex items-center justify-between mb-4 p-3 bg-blue-50/50 rounded-2xl border border-blue-100/50">
                             <div>
@@ -92,10 +115,11 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
                                     <input
                                         type="number"
                                         required
+                                        disabled={loading}
                                         value={bidAmount}
                                         onChange={(e) => setBidAmount(e.target.value)}
                                         placeholder="Enter amount"
-                                        className="w-full pl-10 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-xl focus:outline-none focus:border-blue-400 focus:bg-white transition-all text-base font-bold"
+                                        className="w-full pl-10 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-xl focus:outline-none focus:border-blue-400 focus:bg-white transition-all text-base font-bold disabled:opacity-70"
                                     />
                                     <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text_color">
                                         <DollarSign size={16} strokeWidth={3} />
@@ -106,12 +130,21 @@ export default function OfferPopup({ isOpen, onClose, horse }) {
 
                             <button
                                 type="submit"
-                                className="w-full cursor-pointer flex items-center justify-center gap-2 bg_color text-white py-3.5 rounded-xl text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98] mt-2 sm:mt-0"
+                                disabled={loading}
+                                className="w-full cursor-pointer flex items-center justify-center gap-2 bg_color text-white py-3.5 rounded-xl text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-lg shadow-blue-100 transform active:scale-[0.98] mt-2 sm:mt-0 disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                Place a Bid
-                                <Gavel size={16} />
+                                {loading ? (
+                                    <>
+                                        Placing Bid...
+                                        <Loader2 size={16} className="animate-spin" />
+                                    </>
+                                ) : (
+                                    <>
+                                        Place a Bid
+                                        <Gavel size={16} />
+                                    </>
+                                )}
                             </button>
-
                         </form>
                     </div>
                 </div>

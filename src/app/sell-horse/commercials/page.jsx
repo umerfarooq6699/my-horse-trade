@@ -7,7 +7,7 @@ import SellHorseLayout from "@/components/sell-horse/SellHorseLayout";
 import MarketingEssentialsSection from "@/components/sell-horse/MarketingEssentialsSection";
 import InclusionsTermsSection from "@/components/sell-horse/InclusionsTermsSection";
 import { useDispatch, useSelector } from "react-redux";
-import { horseListingStep4, resetHorseStep4, fetchSingleHorse } from "@/redux/slices/horseSlice";
+import { horseListingStep4, resetHorseStep4, fetchHorsePrefillData } from "@/redux/slices/horseSlice";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -33,12 +33,12 @@ function CommercialsPageContent() {
     const horseIdFromState = horseStep1.horseId;
     const effectiveHorseId = horseIdFromUrl || horseIdFromState;
 
-    // Fetch horse data if editing and not already loaded
+    // Fetch horse data if editing
     useEffect(() => {
-        if (horseIdFromUrl && (!currentListing || currentListing.id !== parseInt(horseIdFromUrl))) {
-            dispatch(fetchSingleHorse(horseIdFromUrl));
+        if (horseIdFromUrl) {
+            dispatch(fetchHorsePrefillData(horseIdFromUrl));
         }
-    }, [horseIdFromUrl, currentListing, dispatch]);
+    }, [horseIdFromUrl, dispatch]);
 
     useEffect(() => {
         if (success) {

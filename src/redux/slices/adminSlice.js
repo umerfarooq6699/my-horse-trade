@@ -13,7 +13,91 @@ export const fetchAllUsers = createAsyncThunk(
           Authorization: `token ${auth.token}`
         }
       });
-      // console.log(response, "all user data action")
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const fetchAllListings = createAsyncThunk(
+  'admin/fetchAllListings',
+  async ({ page = 1, searchValue }, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axios.get(`${API_ENDPOINTS.ADMIN_LISTINGS}?page=${page}&search=${searchValue}`, {
+        headers: {
+          Authorization: `token ${auth.token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const fetchListingStats = createAsyncThunk(
+  'admin/fetchListingStats',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axios.get(API_ENDPOINTS.ADMIN_LISTINGS_STATS, {
+        headers: {
+          Authorization: `token ${auth.token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const fetchDashboardStats = createAsyncThunk(
+  'admin/fetchDashboardStats',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axios.get(API_ENDPOINTS.ADMIN_DASHBOARD_STATS, {
+        headers: {
+          Authorization: `token ${auth.token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const fetchRecentActivity = createAsyncThunk(
+  'admin/fetchRecentActivity',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axios.get(API_ENDPOINTS.ADMIN_DASHBOARD_ACTIVITY, {
+        headers: {
+          Authorization: `token ${auth.token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const fetchDashboardCharts = createAsyncThunk(
+  'admin/fetchDashboardCharts',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axios.get(API_ENDPOINTS.ADMIN_DASHBOARD_CHARTS, {
+        headers: {
+          Authorization: `token ${auth.token}`
+        }
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -42,6 +126,24 @@ const initialState = {
     totalPages: 1,
     currentPage: 1
   },
+  listingPagination: {
+    totalListings: 0,
+    totalPages: 1,
+    currentPage: 1
+  },
+  listingStats: {
+    totalListings: { value: 0, trend: "+0%" },
+    pendingReview: { value: 0, trend: "+0%" },
+    activeAuctions: { value: 0, trend: "+0%" },
+  },
+  dashboardStats: {
+    totalUsers: 0,
+    activeListings: 0,
+    pendingTransactions: "$0",
+    openDisputes: 0,
+  },
+  recentActivity: [],
+  dashboardCharts: [],
   allListings: [],
   disputes: [],
   analytics: {
@@ -85,7 +187,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.users = action.payload.results || [];
         state.pagination = {
-          totalUsers: action.payload.totalUsers,
+          totalUsers: action.payload.totalUsers || action.payload.count || 0,
           totalPages: action.payload.totalPages,
           currentPage: action.payload.currentPage
         };
@@ -94,6 +196,44 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(fetchAllListings.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllListings.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allListings = action.payload.results || [];
+        state.listingPagination = {
+          totalListings: action.payload.totalListings,
+          totalPages: action.payload.totalPages,
+          currentPage: action.payload.currentPage
+        };
+      })
+      .addCase(fetchAllListings.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchListingStats.fulfilled, (state, action) => {
+        state.listingStats = {
+          totalListings: action.payload.totalListings || { value: 0, trend: "+0%" },
+          pendingReview: action.payload.pendingReview || { value: 0, trend: "+0%" },
+          activeAuctions: action.payload.activeAuctions || { value: 0, trend: "+0%" },
+        };
+      })
+      .addCase(fetchDashboardStats.fulfilled, (state, action) => {
+        state.dashboardStats = {
+          totalUsers: action.payload.totalUsers || 0,
+          activeListings: action.payload.activeListings || 0,
+          pendingTransactions: action.payload.pendingTransactions || "$0",
+          openDisputes: action.payload.openDisputes || 0,
+        };
+      })
+      .addCase(fetchRecentActivity.fulfilled, (state, action) => {
+        state.recentActivity = action.payload || [];
+      })
+      .addCase(fetchDashboardCharts.fulfilled, (state, action) => {
+        state.dashboardCharts = action.payload || [];
+      })
       .addCase(deleteUser.pending, (state) => {
         // Don't touch state.loading or state.error — deletion has its own
         // loading state handled in the modal. Mixing them breaks the user list UI.
@@ -101,7 +241,6 @@ const adminSlice = createSlice({
         state.deleteError = null;
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
-        console.log(action.payload, "all users payload")
         state.deleteLoading = false;
         // Remove the deleted user from the list immediately
         const deletedId = action.meta.arg;

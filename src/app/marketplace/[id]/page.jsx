@@ -69,6 +69,7 @@ export default function HorseDetailPage() {
 
     // Map API data to the format expected by the UI components
     const horse = {
+        id: currentListing.id || id, // Pass the ID from currentListing or the URL params
         name: currentListing.name || currentListing.horse_name || "Untitled Horse",
         price: currentListing.price || 0,
         breed: currentListing.breed || "Horse",
@@ -77,9 +78,9 @@ export default function HorseDetailPage() {
         gender: currentListing.gender || "Gelding",
         tags: currentListing.tags || (currentListing.discipline ? [currentListing.discipline] : ["FEATURED"]),
         // Map images: ensure all URLs are absolute
-        images: (Array.isArray(currentListing.photos) && currentListing.photos.length > 0 
-                ? currentListing.photos 
-                : (currentListing.image ? [currentListing.image] : [])).map(url => getAbsoluteUrl(url)),
+        images: (Array.isArray(currentListing.photos) && currentListing.photos.length > 0
+            ? currentListing.photos
+            : (currentListing.image ? [currentListing.image] : [])).map(url => getAbsoluteUrl(url)),
         description: currentListing.description || currentListing.listing_step3?.description || "No description available for this horse.",
         location: currentListing.location || "N/A"
     };

@@ -8,7 +8,7 @@ import NarrativeSection from "@/components/sell-horse/NarrativeSection";
 import QuickTopicsSection from "@/components/sell-horse/QuickTopicsSection";
 import DisciplinesSection from "@/components/sell-horse/DisciplinesSection";
 import { useDispatch, useSelector } from "react-redux";
-import { horseListingStep3, resetHorseStep3, fetchSingleHorse } from "@/redux/slices/horseSlice";
+import { horseListingStep3, resetHorseStep3, fetchHorsePrefillData } from "@/redux/slices/horseSlice";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -34,12 +34,12 @@ function NarrativePageContent() {
     const effectiveHorseId = horseIdFromUrl || horseIdFromState;
     const [isNextStep, setIsNextStep] = useState(false);
 
-    // Fetch horse data if editing and not already loaded
+    // Fetch horse data if editing
     useEffect(() => {
-        if (horseIdFromUrl && (!currentListing || currentListing.id !== parseInt(horseIdFromUrl))) {
-            dispatch(fetchSingleHorse(horseIdFromUrl));
+        if (horseIdFromUrl) {
+            dispatch(fetchHorsePrefillData(horseIdFromUrl));
         }
-    }, [horseIdFromUrl, currentListing, dispatch]);
+    }, [horseIdFromUrl, dispatch]);
 
     const formik = useFormik({
         initialValues: {

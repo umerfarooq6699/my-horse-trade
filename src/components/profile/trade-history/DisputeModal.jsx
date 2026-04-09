@@ -55,7 +55,6 @@ export default function DisputeModal({ isOpen, onClose, initialData }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Dispute submitted:", formData);
         onClose();
     };
 

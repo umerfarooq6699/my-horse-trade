@@ -22,8 +22,6 @@ export default function UsersManagement() {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const filterRef = useRef(null);
 
-    console.log(userList, "all user data in table")
-
     useEffect(() => {
         dispatch(fetchAllUsers({ page: 1, searchValue: "" }));
     }, [dispatch]);

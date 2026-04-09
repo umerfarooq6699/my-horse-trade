@@ -18,11 +18,9 @@ export default function SignupForm() {
     const { signupData, isAuthenticated } = useSelector((state) => state.auth);
     const { loading, error, success } = signupData;
 
-    // console.log("Signup State:", signupData);
 
     useEffect(() => {
         if (success) {
-            console.log("Signup Success Data:", success);
             toast.success(typeof success === "string" ? success : "Account created successfully!", {
                 position: "top-center",
                 toastId: "signup-success"
@@ -35,7 +33,6 @@ export default function SignupForm() {
         }
 
         if (error) {
-            console.log("Signup Error Data:", error);
             const errorMessage = typeof error === 'object' ? Object.values(error).flat().join(', ') : error;
             toast.error(errorMessage || "Signup failed!", {
                 position: "top-center",
@@ -80,7 +77,6 @@ export default function SignupForm() {
         }
     });
 
-    // console.log("Signup Formik Values:", formik.values);
 
     const inputs = [
         {

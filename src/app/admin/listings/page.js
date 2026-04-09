@@ -5,22 +5,79 @@ import {
     Eye, CheckCircle, XCircle, Pencil, Trash2,
     ChevronRight, ChevronDown, AlertTriangle, Calendar, X
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ListingDetailsModal from "@/components/admin/listings/ListingDetailsModal";
 import Link from "next/link";
-import { mockHorses } from "@/components/marketplace/HorseGrid";
-
-const stats = [
-    { label: "Total Listings", value: "1,240", trend: "+12%", type: "listings" },
-    { label: "Pending Review", value: "15", trend: "-5%", type: "pending", icon: AlertTriangle },
-    { label: "Active Auctions", value: "45", trend: "+2%", type: "auctions" },
-];
-
-const listings = mockHorses;
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllListings, fetchListingStats } from "@/redux/slices/adminSlice";
 
 export default function ListingManagement() {
+    const dispatch = useDispatch();
+    const { allListings, listingStats, loading, error, listingPagination: pagination } = useSelector((state) => state.admin);
+
     const [selectedListing, setSelectedListing] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchValue, setSearchValue] = useState("");
+    const searchTimer = useRef(null);
+
+    useEffect(() => {
+        dispatch(fetchAllListings({ page: 1, searchValue: "" }));
+        dispatch(fetchListingStats());
+    }, [dispatch]);
+
+    const handleSearch = (e) => {
+        const value = e.target.value;
+        setSearchValue(value);
+        clearTimeout(searchTimer.current);
+        searchTimer.current = setTimeout(() => {
+            dispatch(fetchAllListings({ page: 1, searchValue: value }));
+        }, 300);
+    };
+
+    const handlePageChange = (page) => {
+        dispatch(fetchAllListings({ page, searchValue }));
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return "N/A";
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    };
+
+    const getSellerDisplay = (item) => {
+        if (!item) return "Unknown Seller";
+
+        // Handle seller as an object or string
+        const seller = item.seller;
+        if (typeof seller === 'string') return seller;
+        if (seller && typeof seller === 'object') {
+            return seller.user_name || seller.name || `${seller.first_name || ''} ${seller.last_name || ''}`.trim() || "Unknown Seller";
+        }
+
+        return item.user_name || "Unknown Seller";
+    };
+
+    const stats = [
+        { 
+            label: "Total Listings", 
+            value: listingStats.totalListings.value.toLocaleString() || "0", 
+            trend: listingStats.totalListings.trend, 
+            type: "listings" 
+        },
+        { 
+            label: "Pending Review", 
+            value: listingStats.pendingReview.value.toLocaleString() || "0", 
+            trend: listingStats.pendingReview.trend, 
+            type: "pending", 
+            icon: AlertTriangle 
+        },
+        { 
+            label: "Active Auctions", 
+            value: listingStats.activeAuctions.value.toLocaleString() || "0", 
+            trend: listingStats.activeAuctions.trend, 
+            type: "auctions" 
+        },
+    ];
 
     return (
         <div className="space-y-5 sm:space-y-8 pb-10">
@@ -41,7 +98,7 @@ export default function ListingManagement() {
                     </p>
                 </div>
                 <div className="flex">
-                    <Link 
+                    <Link
                         href="/sell-horse"
                         className="flex items-center gap-2 px-4 sm:px-6 py-3 bg-[#2563EB] text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 w-fit cursor-pointer"
                     >
@@ -52,31 +109,52 @@ export default function ListingManagement() {
             </div>
 
             {/* Stats Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {stats.map((stat, i) => (
-                    <div key={i} className="bg-white p-6 rounded-[24px] border border-[#F1F5F9] shadow-sm flex items-center justify-between relative overflow-hidden group">
-                        <div className="space-y-1 z-10">
-                            <p className="text-xs font-bold text-gray-500 tracking-tight uppercase">{stat.label}</p>
-                            <div className="flex items-baseline gap-3">
-                                <h3 className="text-[20px] sm:text-[28px] font-[700] text-[#1E293B] leading-none">{stat.value}</h3>
-                                <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded-lg ${stat.trend.startsWith('+') ? "text-[#22C55E] bg-[#F0FDF4]" : "text-[#EF4444] bg-[#FEF2F2]"
-                                    }`}>
-                                    {stat.trend}
-                                </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {loading ? (
+                    // Stats Skeletons
+                    [...Array(3)].map((_, i) => (
+                        <div key={i} className="bg-white p-6 rounded-[24px] border border-[#F1F5F9] shadow-sm animate-pulse h-[140px] flex flex-col justify-between">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="h-4 w-24 bg-gray-100 rounded-md" />
+                                <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center">
+                                    <div className="w-6 h-6 bg-gray-100 rounded-md" />
+                                </div>
+                            </div>
+                            <div className="flex items-end gap-2">
+                                <div className="h-8 w-16 bg-gray-100 rounded-md" />
+                                <div className="h-4 w-8 bg-gray-50 rounded-md" />
                             </div>
                         </div>
-                        {stat.icon && (
-                            <div className="w-12 h-12 rounded-2xl bg-[#FFF7ED] flex items-center justify-center text-[#F97316]">
-                                <stat.icon className="w-6 h-6" />
+                    ))
+                ) : (
+                    stats.map((stat, i) => (
+                        <div key={i} className="bg-white p-6 rounded-[24px] border border-[#F1F5F9] shadow-sm relative overflow-hidden flex flex-col justify-between group h-[140px]">
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="text-sm font-semibold text-[#64748B]">{stat.label}</span>
+                                {stat.icon && (
+                                    <div className="w-12 h-12 rounded-2xl bg-[#FFF7ED] flex items-center justify-center text-[#F97316]">
+                                        <stat.icon className="w-6 h-6" />
+                                    </div>
+                                )}
+                                {!stat.icon && i === 0 && (
+                                    <div className="absolute -right-6 -bottom-6 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity">
+                                        <FileDown className="w-24 h-24" />
+                                    </div>
+                                )}
                             </div>
-                        )}
-                        {!stat.icon && i === 0 && (
-                            <div className="absolute -right-6 -bottom-6 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity">
-                                <FileDown className="w-24 h-24" />
+                            <div>
+                                <div className="flex items-end gap-2">
+                                    <span className="text-[28px] font-bold text-[#1E293B] leading-none">{stat.value}</span>
+                                    {stat.trend && (
+                                        <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded-lg ${stat.trend.startsWith('+') ? 'text-[#22C55E] bg-green-50' : 'text-[#EF4444] bg-red-50'}`}>
+                                            {stat.trend}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
-                        )}
-                    </div>
-                ))}
+                        </div>
+                    ))
+                )}
             </div>
 
             {/* Filters & Search */}
@@ -85,6 +163,7 @@ export default function ListingManagement() {
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
                     <input
                         type="text"
+                        onChange={handleSearch}
                         placeholder="Search listings..."
                         className="w-full pl-12 pr-6 py-2.5 bg-[#F8FAFC] border-none rounded-xl text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-[#2563EB]/10"
                     />
@@ -119,94 +198,208 @@ export default function ListingManagement() {
 
             {/* Listings Table */}
             <div className="bg-white rounded-[32px] border border-[#F1F5F9] shadow-sm overflow-hidden">
-                <div className="overflow-x-auto lg:overflow-x-visible">
-                    <table className="w-full text-left border-collapse min-w-[1000px] lg:min-w-0">
-                        <thead>
-                            <tr className="border-b border-[#F8FAFC]">
-                                <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest pl-4 sm:pl-8">Horse Details</th>
-                                <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Seller</th>
-                                <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Type & Price</th>
-                                <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Status</th>
-                                <th className="pb-4 text-[11px] font-bold text-[#93A3B8] uppercase tracking-widest px-4 sm:px-8">Date Posted</th>
-                                <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest text-right pr-4 sm:pr-8">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#F8FAFC]">
-                            {listings.map((item, i) => (
-                                <tr key={i} className={`group hover:bg-gray-50 transition-all ${item.status === "Pending Review" ? "bg-[#FFFBF2]/30 hover:bg-[#FFFBF2]/50" : ""}`}>
-                                    <td className="py-5 pl-4 sm:pl-8">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-16 h-12 rounded-xl overflow-hidden flex-shrink-0 border border-[#F1F5F9]">
-                                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                                            </div>
-                                            <div>
-                                                <h4 className="text-sm font-bold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">{item.name}</h4>
-                                                <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">ID: {item.id} • {item.breed}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="py-5 px-4 sm:px-8">
-                                        <div className="flex items-center gap-2">
-                                            <img src={item.sellerAvatar} className="w-6 h-6 rounded-full" />
-                                            <span className="text-sm font-bold text-[#64748B]">{item.seller}</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-5 px-4 sm:px-8">
-                                        <div className="space-y-1">
-                                            <span className="px-2 py-0.5 rounded-lg bg-[#F5F3FF] text-[#7C3AED] text-[10px] font-bold">{item.type}</span>
-                                            <p className="text-sm font-black text-[#1E293B]">{item.type === "Auction" ? `Bid: $${item.price.toLocaleString()}` : `$${item.price.toLocaleString()}`}</p>
-                                        </div>
-                                    </td>
-                                    <td className="py-5 px-4 sm:px-8">
-                                        <div className="flex items-center gap-2">
-                                            <div className={`w-2 h-2 rounded-full ${item.status === "Active" ? "bg-[#22C55E]" :
-                                                item.status === "Pending Review" ? "bg-[#F97316]" :
-                                                    item.status === "Sold" ? "bg-[#CBD5E1]" : "bg-[#EF4444]"
-                                                }`} />
-                                            <span className={`text-[11px] font-black uppercase tracking-wider ${item.status === "Active" ? "text-[#22C55E]" :
-                                                item.status === "Pending Review" ? "text-[#F97316]" :
-                                                    item.status === "Sold" ? "text-[#94A3B8]" : "text-[#EF4444]"
-                                                }`}>
-                                                {item.status}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td className="py-5 px-4 sm:px-8">
-                                        <span className="text-sm text-[#64748B] font-medium">{item.date}</span>
-                                    </td>
-                                    <td className="py-5 text-right pr-4 sm:pr-8">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <button
-                                                onClick={() => { setSelectedListing(item); setIsModalOpen(true); }}
-                                                className="p-2 text-[#94A3B8] hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-all cursor-pointer"
-                                            >
-                                                <Eye className="w-5 h-5" />
-                                            </button>
-                                            <button className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer">
-                                                <Trash2 className="w-5 h-5" />
-                                            </button>
-                                        </div>
-                                    </td>
+                <div className="overflow-x-auto min-h-[400px]">
+                    {loading ? (
+                        <table className="w-full text-left border-collapse min-w-[800px] lg:min-w-full">
+                            <thead>
+                                <tr className="border-b border-[#F8FAFC]">
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest pl-4 sm:pl-8">Horse Details</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Seller</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Type & Price</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Status</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#93A3B8] uppercase tracking-widest px-4 sm:px-8">Date Posted</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest text-right pr-4 sm:pr-8">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="divide-y divide-[#F8FAFC]">
+                                {[...Array(6)].map((_, i) => (
+                                    <tr key={i} className="animate-pulse">
+                                        <td className="py-5 pl-4 sm:pl-8">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-16 h-12 rounded-xl bg-gray-100 flex-shrink-0" />
+                                                <div className="space-y-2">
+                                                    <div className="h-4 w-32 bg-gray-100 rounded-md" />
+                                                    <div className="h-3 w-24 bg-gray-50 rounded-md" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="py-5 px-4 sm:px-8">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-6 h-6 rounded-full bg-gray-100" />
+                                                <div className="h-4 w-20 bg-gray-100 rounded-md" />
+                                            </div>
+                                        </td>
+                                        <td className="py-5 px-4 sm:px-8">
+                                            <div className="space-y-2">
+                                                <div className="h-4 w-12 bg-gray-100 rounded-md" />
+                                                <div className="h-4 w-16 bg-gray-50 rounded-md" />
+                                            </div>
+                                        </td>
+                                        <td className="py-5 px-4 sm:px-8">
+                                            <div className="h-7 w-20 bg-gray-100 rounded-full" />
+                                        </td>
+                                        <td className="py-5 px-4 sm:px-8">
+                                            <div className="h-4 w-24 bg-gray-100 rounded-md" />
+                                        </td>
+                                        <td className="py-5 text-right pr-4 sm:pr-8">
+                                            <div className="flex justify-end gap-2">
+                                                <div className="w-8 h-8 bg-gray-100 rounded-lg" />
+                                                <div className="w-8 h-8 bg-gray-100 rounded-lg" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : error ? (
+                        <div className="flex flex-col items-center justify-center h-64 gap-4 text-center px-4">
+                            <AlertTriangle className="w-10 h-10 text-red-500" />
+                            <p className="text-[#EF4444] font-medium">{typeof error === 'string' ? error : "Failed to fetch listings"}</p>
+                            <button
+                                onClick={() => dispatch(fetchAllListings({ page: pagination.currentPage, searchValue }))}
+                                className="px-4 py-2 bg-[#2563EB] text-white rounded-xl text-sm font-bold"
+                            >
+                                Try Again
+                            </button>
+                        </div>
+                    ) : (
+                        <table className="w-full text-left border-collapse min-w-[800px] lg:min-w-full">
+                            <thead>
+                                <tr className="border-b border-[#F8FAFC]">
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest pl-4 sm:pl-8">Horse Details</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Seller</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Type & Price</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest px-4 sm:px-8">Status</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#93A3B8] uppercase tracking-widest px-4 sm:px-8">Date Posted</th>
+                                    <th className="pb-4 text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest text-right pr-4 sm:pr-8">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[#F8FAFC]">
+                                {allListings?.length > 0 ? (
+                                    allListings.map((item, i) => (
+                                        <tr key={item._id || i} className={`group hover:bg-gray-50 transition-all ${item.status === "Pending Review" ? "bg-[#FFFBF2]/30 hover:bg-[#FFFBF2]/50" : ""}`}>
+                                            <td className="py-5 pl-4 sm:pl-8">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-16 h-12 rounded-xl overflow-hidden flex-shrink-0 border border-[#F1F5F9] bg-gray-50">
+                                                        <img
+                                                            src={item.image || (item.photos && item.photos[0]) || "/placeholder-horse.png"}
+                                                            alt={item.name}
+                                                            className="w-full h-full object-cover"
+                                                            onError={(e) => {
+                                                                if (e.target.src.includes("/placeholder-horse.png")) {
+                                                                    // If the placeholder also fails, stop trying and hide the image or use a base64 tiny pixel
+                                                                    e.target.onerror = null; // Prevent further loops
+                                                                    e.target.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+                                                                } else {
+                                                                    e.target.src = "/placeholder-horse.png";
+                                                                }
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="text-sm font-bold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">{item.name}</h4>
+                                                        <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">ID: {item.horse_id || item._id?.slice(-6) || i} • {item.breed}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="py-5 px-4 sm:px-8">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-6 h-6 rounded-full bg-[#2563EB]/10 flex items-center justify-center overflow-hidden text-[10px] font-bold text-[#2563EB]">
+                                                        {item.sellerAvatar ? (
+                                                            <img src={item.sellerAvatar} className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <span>{getSellerDisplay(item).charAt(0).toUpperCase()}</span>
+                                                        )}
+                                                    </div>
+                                                    <span className="text-sm font-bold text-[#64748B]">{getSellerDisplay(item)}</span>
+                                                </div>
+                                            </td>
+                                            <td className="py-5 px-4 sm:px-8">
+                                                <div className="space-y-1">
+                                                    <span className="px-2 py-0.5 rounded-lg bg-[#F5F3FF] text-[#7C3AED] text-[10px] font-bold">{item.type || "Fixed"}</span>
+                                                    <p className="text-sm font-black text-[#1E293B]">{item.type === "Auction" ? `Bid: $${(item.price || 0).toLocaleString()}` : `$${(item.price || 0).toLocaleString()}`}</p>
+                                                </div>
+                                            </td>
+                                            <td className="py-5 px-4 sm:px-8">
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`w-2 h-2 rounded-full ${item.status === "Active" ? "bg-[#22C55E]" :
+                                                        item.status === "Pending Review" ? "bg-[#F97316]" :
+                                                            item.status === "Sold" ? "bg-[#CBD5E1]" : "bg-[#EF4444]"
+                                                        }`} />
+                                                    <span className={`text-[11px] font-black uppercase tracking-wider ${item.status === "Active" ? "text-[#22C55E]" :
+                                                        item.status === "Pending Review" ? "text-[#F97316]" :
+                                                            item.status === "Sold" ? "text-[#94A3B8]" : "text-[#EF4444]"
+                                                        }`}>
+                                                        {item.status || "Pending Review"}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td className="py-5 px-4 sm:px-8">
+                                                <span className="text-sm text-[#64748B] font-medium">{formatDate(item.createdAt || item.date)}</span>
+                                            </td>
+                                            <td className="py-5 text-right pr-4 sm:pr-8">
+                                                <div className="flex items-center justify-end gap-2">
+                                                    <button
+                                                        onClick={() => { setSelectedListing(item); setIsModalOpen(true); }}
+                                                        className="p-2 text-[#94A3B8] hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-all cursor-pointer"
+                                                    >
+                                                        <Eye className="w-5 h-5" />
+                                                    </button>
+                                                    <button className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer">
+                                                        <Trash2 className="w-5 h-5" />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="6" className="py-10 text-center text-[#64748B] font-medium">No listings found.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
 
                 {/* Pagination */}
-                <div className="p-4 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#F8FAFC]">
-                    <p className="text-xs font-bold text-[#94A3B8]">Showing 1-5 of 1,240 results</p>
-                    <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto max-w-full">
-                        <button className="text-[11px] sm:text-xs font-bold text-[#94A3B8] hover:text-[#1E293B] disabled:opacity-50 whitespace-nowrap" disabled>Previous</button>
-                        <div className="flex items-center gap-1 sm:gap-2">
-                            <button className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#2563EB] text-white text-[11px] sm:text-xs font-bold">1</button>
-                            <button className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-white text-[#64748B] text-[11px] sm:text-xs font-bold border border-transparent hover:border-[#E2E8F0]">2</button>
-                            <button className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-white text-[#64748B] text-[11px] sm:text-xs font-bold border border-transparent hover:border-[#E2E8F0]">3</button>
-                            <span className="px-2 text-[#94A3B8] text-[11px] sm:text-xs">...</span>
+                {!loading && allListings?.length > 0 && (
+                    <div className="p-4 sm:p-8 border-t border-[#F1F5F9] flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p className="text-xs font-bold text-[#94A3B8]">
+                            Showing 10 of {pagination?.totalListings || 0} results
+                        </p>
+                        <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto max-w-full">
+                            <button
+                                onClick={() => handlePageChange(pagination.currentPage - 1)}
+                                disabled={pagination?.currentPage === 1 || loading}
+                                className="text-[11px] sm:text-xs font-bold text-[#94A3B8] hover:text-[#1E293B] disabled:opacity-50 whitespace-nowrap cursor-pointer"
+                            >
+                                Previous
+                            </button>
+                            <div className="flex items-center gap-1 sm:gap-2">
+                                {[...Array(pagination?.totalPages || 0)].map((_, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => handlePageChange(i + 1)}
+                                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${pagination?.currentPage === i + 1
+                                            ? "bg-[#2563EB] text-white"
+                                            : "hover:bg-white text-[#64748B] border border-transparent hover:border-[#E2E8F0]"
+                                            }`}
+                                    >
+                                        {i + 1}
+                                    </button>
+                                ))}
+                            </div>
+                            <button
+                                onClick={() => handlePageChange(pagination.currentPage + 1)}
+                                disabled={pagination?.currentPage === pagination?.totalPages || loading}
+                                className="text-[11px] sm:text-xs font-bold text-[#64748B] hover:text-[#1E293B] whitespace-nowrap cursor-pointer"
+                            >
+                                Next
+                            </button>
                         </div>
-                        <button className="text-[11px] sm:text-xs font-bold text-[#64748B] hover:text-[#1E293B] whitespace-nowrap">Next</button>
                     </div>
-                </div>
+                )}
             </div>
             <ListingDetailsModal
                 isOpen={isModalOpen}
@@ -216,4 +409,3 @@ export default function ListingManagement() {
         </div>
     );
 }
-

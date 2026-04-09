@@ -5,9 +5,7 @@ import { API_ENDPOINTS } from '@/utils/urls';
 export const changePassword = createAsyncThunk(
   'profile/changePassword',
   async (passwordData, { rejectWithValue, getState }) => {
-    console.log(passwordData, "changePassword slice data")
     try {
-      console.log("working")
       const { auth } = getState();
       const config = {
         headers: {
@@ -15,7 +13,6 @@ export const changePassword = createAsyncThunk(
         },
       };
       const response = await axios.post(API_ENDPOINTS.CHANGE_PASSWORD, passwordData, config);
-      console.log(response, "change password response")
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -27,7 +24,6 @@ export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
   async (profileData, { rejectWithValue, getState, dispatch }) => {
     try {
-      // console.log(profileData instanceof FormData ? Object.fromEntries(profileData.entries()) : profileData, "slice profile data")
       const { auth } = getState();
       const config = {
         headers: {

@@ -8,7 +8,7 @@ import MetricsSection from "@/components/sell-horse/MetricsSection";
 import AppearanceSection from "@/components/sell-horse/AppearanceSection";
 import SaleMethodSection from "@/components/sell-horse/SaleMethodSection";
 import { useDispatch, useSelector } from "react-redux";
-import { horseListingStep1, resetHorseStep1, fetchSingleHorse, clearCurrentListing } from "@/redux/slices/horseSlice";
+import { horseListingStep1, resetHorseStep1, fetchHorsePrefillData, clearCurrentListing } from "@/redux/slices/horseSlice";
 import { useEffect, useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -54,9 +54,10 @@ function SellHorsePageContent() {
     const [isNextStep, setIsNextStep] = useState(false);
 
     // Fetch horse data if editing
+    console.log(currentListing, "currentListing")
     useEffect(() => {
         if (horseIdFromUrl) {
-            dispatch(fetchSingleHorse(horseIdFromUrl));
+            dispatch(fetchHorsePrefillData(horseIdFromUrl));
         } else {
             dispatch(clearCurrentListing());
         }
@@ -82,7 +83,7 @@ function SellHorsePageContent() {
         },
         validationSchema: VitalStatisticsSchema,
         onSubmit: async (values) => {
-                        const payload = {
+            const payload = {
                 name: values.horse_name,
                 breed: values.breed,
                 gender: values.gender,
@@ -98,7 +99,7 @@ function SellHorsePageContent() {
             if (horseIdFromUrl) {
                 payload.horse_id = horseIdFromUrl;
             }
-                        await dispatch(horseListingStep1(payload));
+            await dispatch(horseListingStep1(payload));
         },
     });
 
@@ -107,7 +108,7 @@ function SellHorsePageContent() {
         if (currentListing) {
             // Support both nested (from draft) and flat (from marketplace) structures
             const data = currentListing.listing_step1 || currentListing;
-                        
+
             formik.setValues({
                 horse_name: data.name || data.horse_name || "",
                 breed: data.breed || "",

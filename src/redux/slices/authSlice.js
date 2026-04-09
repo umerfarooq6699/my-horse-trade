@@ -6,7 +6,6 @@ import { API_ENDPOINTS } from '@/utils/urls';
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (userData, { rejectWithValue }) => {
-    // console.log(userData, "signup object")
     try {
       const response = await axios.post(API_ENDPOINTS.SIGNUP, userData);
       return response.data;
@@ -33,10 +32,8 @@ export const loginUser = createAsyncThunk(
 export const sendOtp = createAsyncThunk(
   'auth/sendOtp',
   async (emailData, { rejectWithValue }) => {
-    console.log("working")
     try {
       const response = await axios.post(API_ENDPOINTS.SEND_OTP, emailData);
-      // console.log(response, "forgot password response")
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -65,7 +62,6 @@ export const verifyOtp = createAsyncThunk(
   async (otpData, { getState, rejectWithValue }) => {
     try {
       const { auth } = getState();
-      console.log(otpData, "otpData")
       // Sending only otp as a JSON object, with the token in headers
       const response = await axios.post(API_ENDPOINTS.VERIFY_OTP, { otp: otpData.otp }, {
         headers: {
@@ -85,8 +81,6 @@ export const resetPassword = createAsyncThunk(
   async (passwordData, { getState, rejectWithValue }) => {
     const { auth } = getState();
     const token = auth.forgotPasswordToken;
-    console.log("Resetting password with payload:", passwordData);
-    console.log("Using Authorization header:", `token ${token}`);
     
     try {
       const response = await axios.post(API_ENDPOINTS.RESET_PASSWORD, passwordData, {
@@ -94,10 +88,8 @@ export const resetPassword = createAsyncThunk(
           Authorization: `token ${token}`
         }
       });
-      console.log(response, "reset password response success")
       return response.data;
     } catch (error) {
-      console.error(error.response?.data || error.message, "reset password error");
       return rejectWithValue(error.response?.data || error.message);
     }
   }

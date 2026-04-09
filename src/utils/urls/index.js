@@ -20,9 +20,16 @@ export const API_ENDPOINTS = {
   HORSE_STEP2: `${API_BASE_URL}/horse-step2/`,
   HORSE_STEP3: `${API_BASE_URL}/horse-step3/`,
   HORSE_STEP4: `${API_BASE_URL}/horse-step4/`,
-  MARKETPLACE: `${API_BASE_URL}/marketplace/`,
+  MARKETPLACE: `${API_BASE_URL}/all-horses-listing/`,
   USER_PROFILE_LISTING: `${API_BASE_URL}/user-profile-listing/`,
-  GET_SINGLE_HORSE: (id) => `${API_BASE_URL}/marketplace/${id}/`,
+  GET_USER_PROFILE_LISTING: (id) => `${API_BASE_URL}/user-profile-listing/${id}/`,
+  GET_SINGLE_HORSE: (id) => `${API_BASE_URL}/all-horses-listing/${id}/`,
+  ADMIN_LISTINGS: `${API_BASE_URL}/admin/listings/`,
+  ADMIN_LISTINGS_STATS: `${API_BASE_URL}/admin/listings/stats/`,
+  ADMIN_DASHBOARD_STATS: `${API_BASE_URL}/admin/dashboard/stats/`,
+  ADMIN_DASHBOARD_ACTIVITY: `${API_BASE_URL}/admin/dashboard/activity/`,
+  ADMIN_DASHBOARD_CHARTS: `${API_BASE_URL}/admin/dashboard/charts/`,
+  MAKE_OFFER: (id) => `${API_BASE_URL}/horse/${id}/make-offer/`,
 };
 
 // Frontend Routes

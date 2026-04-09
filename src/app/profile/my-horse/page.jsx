@@ -37,7 +37,6 @@ export default function MyHorsePage() {
     }, [])
 
     // Filtering Logic
-    console.log(realHorses, "raw realHorses before filtering");
     const filteredHorses = realHorses.filter(horse => {
         const s = horse.status?.toLowerCase() || '';
         if (activeTab === "Active Listings") return ["approved", "pending", "rejected", "active"].includes(s);
@@ -45,7 +44,6 @@ export default function MyHorsePage() {
         if (activeTab === "Sold History") return s === "sold";
         return true;
     });
-    console.log(filteredHorses, `filteredHorses for tab ${activeTab}`);
 
     // Mapping for display
     const mappedHorses = filteredHorses.map(horse => {

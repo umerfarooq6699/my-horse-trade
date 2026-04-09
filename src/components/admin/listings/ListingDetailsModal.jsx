@@ -283,7 +283,6 @@ export default function ListingDetailsModal({ isOpen, onClose, listing }) {
                                 <button
                                     onClick={() => {
                                         // Handle rejection logic here
-                                        console.log("Rejected with reason:", rejectionReason);
                                         setIsRejectionModalOpen(false);
                                         onClose(); // Close both modals after rejection
                                     }}

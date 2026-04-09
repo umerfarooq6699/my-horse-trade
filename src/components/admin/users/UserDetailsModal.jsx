@@ -4,7 +4,6 @@ import { UserRound, X } from "lucide-react";
 import { useEffect } from "react";
 
 export default function UserDetailsModal({ isOpen, onClose, user }) {
-    console.log(user, "user details modal")
     // Scroll lock
     useEffect(() => {
         if (isOpen) {

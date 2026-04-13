@@ -66,8 +66,8 @@ export default function ListingDetailsModal({ isOpen, onClose, listing }) {
                         {/* Image Section */}
                         <div className="relative rounded-[24px] overflow-hidden aspect-[16/10] shadow-lg lg:w-[80%] lg:mx-auto">
                             <img
-                                src={listing.image}
-                                alt={listing.name}
+                                src={listing.horse_details?.image || listing.image}
+                                alt={listing.horse_details?.name || listing.name}
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute top-4 right-4 bg-blue-100/90 backdrop-blur text-blue-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
@@ -77,19 +77,19 @@ export default function ListingDetailsModal({ isOpen, onClose, listing }) {
 
                         {/* Title Section */}
                         <div className="space-y-1 px-1">
-                            <h3 className="text-2xl font-black text-[#1E293B] leading-tight">{listing.name}</h3>
-                            <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest">ID: {listing.id}</p>
+                            <h3 className="text-2xl font-black text-[#1E293B] leading-tight">{listing.horse_details?.name || listing.name}</h3>
+                            <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest">ID: {listing.horse_details?.id_ref || listing.id}</p>
                         </div>
 
                         {/* Stats Grid */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-[#F8FAFC] p-4 rounded-2xl border border-gray-100/50">
                                 <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Breed</div>
-                                <div className="text-sm font-bold text-[#1E293B]">{listing.breed || "Stallion"}</div>
+                                <div className="text-sm font-bold text-[#1E293B]">{listing.horse_details?.breed || listing.breed || "Stallion"}</div>
                             </div>
                             <div className="bg-[#F8FAFC] p-4 rounded-2xl border border-gray-100/50">
                                 <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Age</div>
-                                <div className="text-sm font-bold text-[#1E293B]">{listing.age || "7 Years"}</div>
+                                <div className="text-sm font-bold text-[#1E293B]">{listing.horse_details?.age || listing.age || "7 Years"}</div>
                             </div>
                             <div className="bg-[#F8FAFC] p-4 rounded-2xl border border-gray-100/50">
                                 <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Height</div>
@@ -114,11 +114,7 @@ export default function ListingDetailsModal({ isOpen, onClose, listing }) {
                             <div className="bg-[#F8FAFC] p-4 rounded-2xl border border-gray-100/50">
                                 <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Type & Price</div>
                                 <div className="text-sm font-bold text-[#1E293B]">
-                                    {listing.type === "Auction" ? (
-                                        <>Auction (Start: {listing.price || "$1,000"})</>
-                                    ) : (
-                                        <>Fixed Price ({listing.price || "$12,500"})</>
-                                    )}
+                                    {listing.type_and_price?.type || listing.type} ({listing.type_and_price?.amount || listing.price || "N/A"})
                                 </div>
                             </div>
                         </div>

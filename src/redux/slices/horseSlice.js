@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from '@/utils/urls';
 
 export const horseListingStep1 = createAsyncThunk(
   'horse/horseListingStep1',
-  async (horseData, { rejectWithValue, getState }) => {
+  async ({ data, isEditable }, { rejectWithValue, getState }) => {
     try {
       const { auth } = getState();
       const config = {
@@ -12,8 +12,10 @@ export const horseListingStep1 = createAsyncThunk(
           Authorization: `token ${auth.token}`,
         },
       };
-            const response = await axios.post(API_ENDPOINTS.HORSE_STEP1, horseData, config);
-            return response.data;
+      const response = isEditable
+        ? await axios.patch(API_ENDPOINTS.HORSE_STEP1_UPDATE(data.horse_id), data, config)
+        : await axios.post(API_ENDPOINTS.HORSE_STEP1, data, config);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -23,26 +25,27 @@ export const horseListingStep1 = createAsyncThunk(
 // Async thunk for horse listing step 2
 export const horseListingStep2 = createAsyncThunk(
   'horse/horseListingStep2',
-  async (horseData, { rejectWithValue, getState }) => {
+  async ({ data: horseData, isEditable }, { rejectWithValue, getState }) => {
     try {
       const { auth, horse } = getState();
-      
+
       let payload = horseData;
-      
+      let horseId;
+
       // Handle FormData vs Plain Object
       if (horseData instanceof FormData) {
         const horseIdFromState = horse.horseStep1.horseId;
         const horseIdFromData = horseData.get("horse_id");
-        
+        horseId = horseIdFromData || horseIdFromState;
+
         if (!horseIdFromData && horseIdFromState) {
           horseData.append("horse_id", horseIdFromState);
         }
-        
-        // Log FormData as object for debugging
-              } else {
+      } else {
         const horseIdFromState = horse.horseStep1.horseId;
-        payload = { ...horseData, horse_id: horseData.horse_id || horseIdFromState };
-              }
+        horseId = horseData.horse_id || horseIdFromState;
+        payload = { ...horseData, horse_id: horseId };
+      }
 
       const config = {
         headers: {
@@ -50,8 +53,10 @@ export const horseListingStep2 = createAsyncThunk(
         },
       };
 
-      const response = await axios.post(API_ENDPOINTS.HORSE_STEP2, payload, config);
-            return response.data;
+      const response = isEditable
+        ? await axios.patch(API_ENDPOINTS.HORSE_STEP2_UPDATE(horseId), payload, config)
+        : await axios.post(API_ENDPOINTS.HORSE_STEP2, payload, config);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -61,25 +66,28 @@ export const horseListingStep2 = createAsyncThunk(
 // Async thunk for horse listing step 3
 export const horseListingStep3 = createAsyncThunk(
   'horse/horseListingStep3',
-  async (horseData, { rejectWithValue, getState }) => {
+  async ({ data: horseData, isEditable }, { rejectWithValue, getState }) => {
     try {
       const { auth, horse } = getState();
       const horseIdFromState = horse.horseStep1.horseId;
-      
-      const payload = { 
-        ...horseData, 
-        horse_id: horseData.horse_id || horseIdFromState 
+      const horseId = horseData.horse_id || horseIdFromState;
+
+      const payload = {
+        ...horseData,
+        horse_id: horseId
       };
 
-            const config = {
+      const config = {
         headers: {
           Authorization: `token ${auth.token}`,
           'Content-Type': 'application/json',
         },
       };
 
-      const response = await axios.post(API_ENDPOINTS.HORSE_STEP3, payload, config);
-            return response.data;
+      const response = isEditable
+        ? await axios.patch(API_ENDPOINTS.HORSE_STEP3_UPDATE(horseId), payload, config)
+        : await axios.post(API_ENDPOINTS.HORSE_STEP3, payload, config);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -89,25 +97,28 @@ export const horseListingStep3 = createAsyncThunk(
 // Async thunk for horse listing step 4
 export const horseListingStep4 = createAsyncThunk(
   'horse/horseListingStep4',
-  async (horseData, { rejectWithValue, getState }) => {
+  async ({ data: horseData, isEditable }, { rejectWithValue, getState }) => {
     try {
       const { auth, horse } = getState();
       const horseIdFromState = horse.horseStep1.horseId;
-      
-      const payload = { 
-        ...horseData, 
-        horse_id: horseData.horse_id || horseIdFromState 
+      const horseId = horseData.horse_id || horseIdFromState;
+
+      const payload = {
+        ...horseData,
+        horse_id: horseId
       };
 
-            const config = {
+      const config = {
         headers: {
           Authorization: `token ${auth.token}`,
           'Content-Type': 'application/json',
         },
       };
 
-      const response = await axios.post(API_ENDPOINTS.HORSE_STEP4, payload, config);
-            return response.data;
+      const response = isEditable
+        ? await axios.patch(API_ENDPOINTS.HORSE_STEP4_UPDATE(horseId), payload, config)
+        : await axios.post(API_ENDPOINTS.HORSE_STEP4, payload, config);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }

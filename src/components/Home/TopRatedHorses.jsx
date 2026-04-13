@@ -1,5 +1,10 @@
+"use client";
+
 import SectionHeader from "./SectionHeader";
 import trendingImage from "../../assets/images/home-trending1.png";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMarketplaceHorses } from "@/redux/slices/horseSlice";
 
 const topRated = [
     {
@@ -55,6 +60,24 @@ function TopRatedCard({ horse }) {
 }
 
 export default function TopRatedHorses() {
+    const dispatch = useDispatch();
+    const { data: marketplaceHorses, loading } = useSelector((state) => state.horse.marketplace);
+
+    useEffect(() => {
+        dispatch(fetchMarketplaceHorses());
+    }, [dispatch]);
+
+    const horsesToDisplay = marketplaceHorses && marketplaceHorses.length > 0
+        ? marketplaceHorses.slice(0, 3).map(horse => ({
+            id: horse.id,
+            name: horse.name,
+            category: horse.breed,
+            price: horse.price,
+            image: horse.image || trendingImage.src,
+            rating: 5
+        }))
+        : topRated;
+
     return (
         <section className="mobile_spaces lg_spaces bg-white">
             <div className="container-width">
@@ -66,7 +89,7 @@ export default function TopRatedHorses() {
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {topRated.map((horse) => (
+                    {horsesToDisplay.map((horse) => (
                         <TopRatedCard key={horse.id} horse={horse} />
                     ))}
                 </div>

@@ -1,9 +1,14 @@
+"use client";
+
 import SectionHeader from "./SectionHeader";
 import HorseCard from "./HorseCard";
 import image1 from "../../assets/images/marketplace1.png";
 import image2 from "../../assets/images/marketplace2.png";
 import image3 from "../../assets/images/marketplace3.png";
 import image4 from "../../assets/images/marketplace4.png";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMarketplaceHorses } from "@/redux/slices/horseSlice";
 
 const featuredHorses = [
     {
@@ -56,6 +61,22 @@ const featuredHorses = [
 ];
 
 export default function FeaturedHorses() {
+    const dispatch = useDispatch();
+    const { data: marketplaceHorses, loading } = useSelector((state) => state.horse.marketplace);
+
+    useEffect(() => {
+        dispatch(fetchMarketplaceHorses());
+    }, [dispatch]);
+
+    const horsesToDisplay = marketplaceHorses && marketplaceHorses.length > 0
+        ? marketplaceHorses.slice(0, 4).map(horse => ({
+            ...horse,
+            image: horse.image || image1.src,
+            category: horse.breed,
+            tag: "Featured"
+        }))
+        : featuredHorses;
+
     return (
         <section className="mobile_spaces lg_spaces bg-white">
             <div className="container-width">
@@ -67,7 +88,7 @@ export default function FeaturedHorses() {
                 />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {featuredHorses.map((horse) => (
+                    {horsesToDisplay.map((horse) => (
                         <HorseCard key={horse.id} horse={horse} />
                     ))}
                 </div>

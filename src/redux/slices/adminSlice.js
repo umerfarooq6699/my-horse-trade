@@ -117,7 +117,21 @@ export const deleteUser = createAsyncThunk("adminSlice/deleteUser", async (userI
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
   }
-})
+});
+
+export const deleteListing = createAsyncThunk("admin/deleteListing", async (listingId, { getState, rejectWithValue }) => {
+  try {
+    const { auth } = getState();
+    const response = await axios.delete(API_ENDPOINTS.DELETE_ADMIN_LISTING(listingId), {
+      headers: {
+        Authorization: `token ${auth.token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
 
 const initialState = {
   users: [],
@@ -204,7 +218,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.allListings = action.payload.results || [];
         state.listingPagination = {
-          totalListings: action.payload.totalListings,
+          totalListings: action.payload.totalListings || action.payload.total_listings || action.payload.count || 0,
           totalPages: action.payload.totalPages,
           currentPage: action.payload.currentPage
         };
@@ -251,6 +265,21 @@ const adminSlice = createSlice({
         state.deleteLoading = false;
         state.deleteError = action.payload;
         // Do NOT set state.error — that would show "Failed to fetch users"
+      })
+      .addCase(deleteListing.pending, (state) => {
+        state.deleteLoading = true;
+        state.deleteError = null;
+      })
+      .addCase(deleteListing.fulfilled, (state, action) => {
+        state.deleteLoading = false;
+        // Remove the deleted listing from state
+        const deletedId = action.meta.arg;
+        state.allListings = state.allListings.filter(listing => (listing.id || listing._id) !== deletedId);
+        state.listingPagination.totalListings = Math.max(0, state.listingPagination.totalListings - 1);
+      })
+      .addCase(deleteListing.rejected, (state, action) => {
+        state.deleteLoading = false;
+        state.deleteError = action.payload;
       });
   },
 });

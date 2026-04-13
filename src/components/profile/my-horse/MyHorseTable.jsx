@@ -84,7 +84,7 @@ export default function MyHorseTable({ horses, onView }) {
                                                 <Eye size={20} className="stroke-[2.5]" />
                                             </button>
                                             <Link
-                                                href={`/sell-horse?horse_id=${horse.id}`}
+                                                href={`/sell-horse?horse_id=${horse.id}&is_edit=true`}
                                                 className="p-2.5 bg-gray-50 text-[#0fb478] hover:bg-green-50 rounded-2xl transition-all cursor-pointer"
                                                 title="Edit"
                                             >

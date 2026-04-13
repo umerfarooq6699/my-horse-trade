@@ -27,6 +27,7 @@ function NarrativePageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const horseIdFromUrl = searchParams.get("horse_id");
+    const isEditFromUrl = searchParams.get("is_edit") === "true";
     
     const { horseStep3, horseStep1, currentListing, loadingCurrentListing } = useSelector((state) => state.horse);
     const { loading, error, success } = horseStep3;
@@ -55,7 +56,7 @@ function NarrativePageContent() {
                 quick_topics: values.quick_topics,
                 disciplines: values.disciplines
             };
-            await dispatch(horseListingStep3(payload));
+            await dispatch(horseListingStep3({ data: payload, isEditable: isEditFromUrl }));
         },
     });
 
@@ -75,7 +76,7 @@ function NarrativePageContent() {
     useEffect(() => {
         if (success) {
             if (isNextStep) {
-                router.push(`/sell-horse/commercials?horse_id=${effectiveHorseId}`);
+                router.push(`/sell-horse/commercials?horse_id=${effectiveHorseId}${isEditFromUrl ? '&is_edit=true' : ''}`);
             } else {
                 toast.success("Narrative saved successfully!", {
                     position: "top-center",

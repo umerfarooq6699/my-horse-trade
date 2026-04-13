@@ -25,6 +25,7 @@ function VisualEvidencePageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const horseIdFromUrl = searchParams.get("horse_id");
+    const isEditFromUrl = searchParams.get("is_edit") === "true";
 
     const { horseStep2, horseStep1, currentListing, loadingCurrentListing } = useSelector((state) => state.horse);
     const { loading, error, success } = horseStep2;
@@ -75,7 +76,7 @@ function VisualEvidencePageContent() {
                 }
             });
 
-                        await dispatch(horseListingStep2(formData));
+                        await dispatch(horseListingStep2({ data: formData, isEditable: isEditFromUrl }));
         },
     });
 
@@ -129,7 +130,7 @@ function VisualEvidencePageContent() {
     useEffect(() => {
         if (success) {
             if (isNextStep) {
-                router.push(`/sell-horse/narrative?horse_id=${effectiveHorseId}`);
+                router.push(`/sell-horse/narrative?horse_id=${effectiveHorseId}${isEditFromUrl ? '&is_edit=true' : ''}`);
             } else {
                 toast.success("Visual evidence saved successfully!", {
                     position: "top-center",

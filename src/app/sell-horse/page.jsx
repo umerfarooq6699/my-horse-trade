@@ -48,6 +48,7 @@ function SellHorsePageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const horseIdFromUrl = searchParams.get("horse_id");
+    const isEditFromUrl = searchParams.get("is_edit") === "true";
 
     const { horseStep1, currentListing, loadingCurrentListing } = useSelector((state) => state.horse);
     const { loading, error, success, horseId } = horseStep1;
@@ -99,7 +100,7 @@ function SellHorsePageContent() {
             if (horseIdFromUrl) {
                 payload.horse_id = horseIdFromUrl;
             }
-            await dispatch(horseListingStep1(payload));
+            await dispatch(horseListingStep1({ data: payload, isEditable: isEditFromUrl }));
         },
     });
 
@@ -133,7 +134,7 @@ function SellHorsePageContent() {
         if (success) {
             const effectiveId = horseId || horseIdFromUrl;
             if (isNextStep && effectiveId) {
-                router.push(`/sell-horse/visuals?horse_id=${effectiveId}`);
+                router.push(`/sell-horse/visuals?horse_id=${effectiveId}${isEditFromUrl ? '&is_edit=true' : ''}`);
             } else {
                 toast.success("Draft saved successfully!", {
                     position: "top-center",

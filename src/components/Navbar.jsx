@@ -4,16 +4,34 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { getUserDetails } from "@/redux/slices/profileSlice";
+import { API_BASE_URL } from "@/utils/urls";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const { isAuthenticated: isLoggedIn, user } = useSelector((state) => state.auth);
+    const profileUser = useSelector((state) => state.profile.user);
     const pathname = usePathname();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setMounted(true);
-    }, []);
+        if (isLoggedIn && !profileUser) {
+            dispatch(getUserDetails());
+        }
+    }, [isLoggedIn, profileUser, dispatch]);
+
+    const getImageUrl = (imagePath, fallbackName) => {
+        if (!imagePath) return "https://avatar.iran.liara.run/public/boy?username=" + fallbackName;
+        if (imagePath.startsWith("http")) return imagePath.replace("http://hassanakhtar.pythonanywhere.com", "https://hassanakhtar.pythonanywhere.com");
+        return `${API_BASE_URL || "http://localhost:8000"}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
+    };
+
+    const displayName = profileUser?.user_name || profileUser?.name || user?.user_name || "User";
+    const shortName = displayName.split(" ")[0];
+    const displayImage = getImageUrl(profileUser?.profile_photo || user?.avatar, displayName);
 
     if (!mounted) {
         return (
@@ -101,12 +119,19 @@ export default function Navbar() {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
                                     <div className="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></div>
                                 </button>
-                                <div className="w-11 h-11 rounded-full border-2 border-white shadow-md overflow-hidden cursor-pointer hover:scale-110 transition-transform">
-                                    <img
-                                        src="https://avatar.iran.liara.run/public/boy?username=Alex"
-                                        alt="Alex Rider"
-                                        className="w-full h-full object-cover"
-                                    />
+                                <div className="flex flex-col items-center cursor-pointer hover:scale-105 transition-transform group">
+                                    <div className="w-9 h-9 rounded-full border-2 border-white shadow-md overflow-hidden bg-gray-100">
+                                        <img
+                                            src={displayImage}
+                                            alt={displayName}
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = "https://avatar.iran.liara.run/public/boy?username=" + displayName;
+                                            }}
+                                        />
+                                    </div>
+                                    <span className="text-[11px] font-bold text-gray-600 group-hover:text_color mt-1">{shortName}</span>
                                 </div>
                             </div>
                         </div>
@@ -165,16 +190,20 @@ export default function Navbar() {
                         {isLoggedIn ? (
                             <div className="flex items-center justify-between bg-gray-50/50 p-4 rounded-xl">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden">
+                                    <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-gray-100">
                                         <img
-                                            src={user?.avatar || "https://avatar.iran.liara.run/public/boy?username=Alex"}
-                                            alt={user?.user_name || "User"}
+                                            src={displayImage}
+                                            alt={displayName}
                                             className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = "https://avatar.iran.liara.run/public/boy?username=" + displayName;
+                                            }}
                                         />
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-sm font-bold text-gray-900">{user?.user_name || "Profile"}</span>
-                                        <span className="text-[10px] text-gray-500">{user?.email || "View Profile"}</span>
+                                        <span className="text-sm font-bold text-gray-900 line-clamp-1">{displayName}</span>
+                                        <span className="text-[10px] text-gray-500 line-clamp-1">{profileUser?.email || user?.email || "View Profile"}</span>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">

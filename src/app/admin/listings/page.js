@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import ListingDetailsModal from "@/components/admin/listings/ListingDetailsModal";
+import DeleteListingModal from "@/components/admin/listings/DeleteListingModal";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllListings, fetchListingStats } from "@/redux/slices/adminSlice";
@@ -17,13 +18,26 @@ export default function ListingManagement() {
 
     const [selectedListing, setSelectedListing] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [listingToDelete, setListingToDelete] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
     const [searchValue, setSearchValue] = useState("");
     const searchTimer = useRef(null);
+    console.log(allListings, "admin listings")
+
 
     useEffect(() => {
         dispatch(fetchAllListings({ page: 1, searchValue: "" }));
         dispatch(fetchListingStats());
     }, [dispatch]);
+
+    // Auto-navigate to previous page when current page becomes empty
+    useEffect(() => {
+        if (!loading && allListings?.length === 0 && pagination?.currentPage > 1) {
+            dispatch(fetchAllListings({ page: pagination.currentPage - 1, searchValue }));
+        }
+    }, [allListings, loading, pagination, dispatch, searchValue]);
 
     const handleSearch = (e) => {
         const value = e.target.value;
@@ -47,35 +61,35 @@ export default function ListingManagement() {
     const getSellerDisplay = (item) => {
         if (!item) return "Unknown Seller";
 
-        // Handle seller as an object or string
+        // Handle seller based on the new structure
         const seller = item.seller;
-        if (typeof seller === 'string') return seller;
         if (seller && typeof seller === 'object') {
-            return seller.user_name || seller.name || `${seller.first_name || ''} ${seller.last_name || ''}`.trim() || "Unknown Seller";
+            return seller.name || seller.user_name || "Unknown Seller";
         }
+        if (typeof seller === 'string') return seller;
 
-        return item.user_name || "Unknown Seller";
+        return "Unknown Seller";
     };
 
     const stats = [
-        { 
-            label: "Total Listings", 
-            value: listingStats.totalListings.value.toLocaleString() || "0", 
-            trend: listingStats.totalListings.trend, 
-            type: "listings" 
+        {
+            label: "Total Listings",
+            value: listingStats.totalListings.value.toLocaleString() || "0",
+            trend: listingStats.totalListings.trend,
+            type: "listings"
         },
-        { 
-            label: "Pending Review", 
-            value: listingStats.pendingReview.value.toLocaleString() || "0", 
-            trend: listingStats.pendingReview.trend, 
-            type: "pending", 
-            icon: AlertTriangle 
+        {
+            label: "Pending Review",
+            value: listingStats.pendingReview.value.toLocaleString() || "0",
+            trend: listingStats.pendingReview.trend,
+            type: "pending",
+            icon: AlertTriangle
         },
-        { 
-            label: "Active Auctions", 
-            value: listingStats.activeAuctions.value.toLocaleString() || "0", 
-            trend: listingStats.activeAuctions.trend, 
-            type: "auctions" 
+        {
+            label: "Active Auctions",
+            value: listingStats.activeAuctions.value.toLocaleString() || "0",
+            trend: listingStats.activeAuctions.trend,
+            type: "auctions"
         },
     ];
 
@@ -277,18 +291,17 @@ export default function ListingManagement() {
                             <tbody className="divide-y divide-[#F8FAFC]">
                                 {allListings?.length > 0 ? (
                                     allListings.map((item, i) => (
-                                        <tr key={item._id || i} className={`group hover:bg-gray-50 transition-all ${item.status === "Pending Review" ? "bg-[#FFFBF2]/30 hover:bg-[#FFFBF2]/50" : ""}`}>
+                                        <tr key={item.id || i} className={`group hover:bg-gray-50 transition-all ${item.status?.toLowerCase() === "pending" || item.status === "Pending Review" ? "bg-[#FFFBF2]/30 hover:bg-[#FFFBF2]/50" : ""}`}>
                                             <td className="py-5 pl-4 sm:pl-8">
                                                 <div className="flex items-center gap-4">
                                                     <div className="w-16 h-12 rounded-xl overflow-hidden flex-shrink-0 border border-[#F1F5F9] bg-gray-50">
                                                         <img
-                                                            src={item.image || (item.photos && item.photos[0]) || "/placeholder-horse.png"}
-                                                            alt={item.name}
+                                                            src={item.horse_details?.image || "/placeholder-horse.png"}
+                                                            alt={item.horse_details?.name}
                                                             className="w-full h-full object-cover"
                                                             onError={(e) => {
                                                                 if (e.target.src.includes("/placeholder-horse.png")) {
-                                                                    // If the placeholder also fails, stop trying and hide the image or use a base64 tiny pixel
-                                                                    e.target.onerror = null; // Prevent further loops
+                                                                    e.target.onerror = null;
                                                                     e.target.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
                                                                 } else {
                                                                     e.target.src = "/placeholder-horse.png";
@@ -297,16 +310,16 @@ export default function ListingManagement() {
                                                         />
                                                     </div>
                                                     <div>
-                                                        <h4 className="text-sm font-bold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">{item.name}</h4>
-                                                        <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">ID: {item.horse_id || item._id?.slice(-6) || i} • {item.breed}</p>
+                                                        <h4 className="text-sm font-bold text-[#1E293B] group-hover:text-[#2563EB] transition-colors">{item.horse_details?.name || "Unnamed Horse"}</h4>
+                                                        <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">ID: {item.horse_details?.id_ref || "N/A"} • {item.horse_details?.breed || "Breed N/A"}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="py-5 px-4 sm:px-8">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-6 h-6 rounded-full bg-[#2563EB]/10 flex items-center justify-center overflow-hidden text-[10px] font-bold text-[#2563EB]">
-                                                        {item.sellerAvatar ? (
-                                                            <img src={item.sellerAvatar} className="w-full h-full object-cover" />
+                                                        {item.seller?.avatar ? (
+                                                            <img src={item.seller.avatar} className="w-full h-full object-cover" />
                                                         ) : (
                                                             <span>{getSellerDisplay(item).charAt(0).toUpperCase()}</span>
                                                         )}
@@ -316,26 +329,26 @@ export default function ListingManagement() {
                                             </td>
                                             <td className="py-5 px-4 sm:px-8">
                                                 <div className="space-y-1">
-                                                    <span className="px-2 py-0.5 rounded-lg bg-[#F5F3FF] text-[#7C3AED] text-[10px] font-bold">{item.type || "Fixed"}</span>
-                                                    <p className="text-sm font-black text-[#1E293B]">{item.type === "Auction" ? `Bid: $${(item.price || 0).toLocaleString()}` : `$${(item.price || 0).toLocaleString()}`}</p>
+                                                    <span className="px-2 py-0.5 rounded-lg bg-[#F5F3FF] text-[#7C3AED] text-[10px] font-bold">{item.type_and_price?.type || "Fixed"}</span>
+                                                    <p className="text-sm font-black text-[#1E293B]">{item.type_and_price?.amount || "$0"}</p>
                                                 </div>
                                             </td>
                                             <td className="py-5 px-4 sm:px-8">
                                                 <div className="flex items-center gap-2">
-                                                    <div className={`w-2 h-2 rounded-full ${item.status === "Active" ? "bg-[#22C55E]" :
-                                                        item.status === "Pending Review" ? "bg-[#F97316]" :
-                                                            item.status === "Sold" ? "bg-[#CBD5E1]" : "bg-[#EF4444]"
+                                                    <div className={`w-2 h-2 rounded-full ${item.status?.toLowerCase() === "active" ? "bg-[#22C55E]" :
+                                                        item.status?.toLowerCase() === "pending" || item.status === "Pending Review" ? "bg-[#F97316]" :
+                                                            item.status?.toLowerCase() === "sold" ? "bg-[#CBD5E1]" : "bg-[#EF4444]"
                                                         }`} />
-                                                    <span className={`text-[11px] font-black uppercase tracking-wider ${item.status === "Active" ? "text-[#22C55E]" :
-                                                        item.status === "Pending Review" ? "text-[#F97316]" :
-                                                            item.status === "Sold" ? "text-[#94A3B8]" : "text-[#EF4444]"
+                                                    <span className={`text-[11px] font-black uppercase tracking-wider ${item.status?.toLowerCase() === "active" ? "text-[#22C55E]" :
+                                                        item.status?.toLowerCase() === "pending" || item.status === "Pending Review" ? "text-[#F97316]" :
+                                                            item.status?.toLowerCase() === "sold" ? "text-[#94A3B8]" : "text-[#EF4444]"
                                                         }`}>
-                                                        {item.status || "Pending Review"}
+                                                        {item.status || "Pending"}
                                                     </span>
                                                 </div>
                                             </td>
                                             <td className="py-5 px-4 sm:px-8">
-                                                <span className="text-sm text-[#64748B] font-medium">{formatDate(item.createdAt || item.date)}</span>
+                                                <span className="text-sm text-[#64748B] font-medium">{formatDate(item.date_posted)}</span>
                                             </td>
                                             <td className="py-5 text-right pr-4 sm:pr-8">
                                                 <div className="flex items-center justify-end gap-2">
@@ -345,7 +358,10 @@ export default function ListingManagement() {
                                                     >
                                                         <Eye className="w-5 h-5" />
                                                     </button>
-                                                    <button className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer">
+                                                    <button
+                                                        onClick={() => { setListingToDelete(item); setIsDeleteModalOpen(true); }}
+                                                        className="p-2 text-[#EF4444] hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                                                    >
                                                         <Trash2 className="w-5 h-5" />
                                                     </button>
                                                 </div>
@@ -366,7 +382,7 @@ export default function ListingManagement() {
                 {!loading && allListings?.length > 0 && (
                     <div className="p-4 sm:p-8 border-t border-[#F1F5F9] flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-xs font-bold text-[#94A3B8]">
-                            Showing 10 of {pagination?.totalListings || 0} results
+                            Showing {allListings?.length || 0} of {pagination?.totalListings || 0} results
                         </p>
                         <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto max-w-full">
                             <button
@@ -405,6 +421,11 @@ export default function ListingManagement() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 listing={selectedListing}
+            />
+            <DeleteListingModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                listing={listingToDelete}
             />
         </div>
     );

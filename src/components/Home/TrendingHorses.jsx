@@ -9,6 +9,9 @@ import image3 from "../../assets/images/marketplace3.png";
 import image4 from "../../assets/images/marketplace4.png";
 import image5 from "../../assets/images/marketplace5.png";
 import image6 from "../../assets/images/marketplace6.png";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMarketplaceHorses } from "@/redux/slices/horseSlice";
 
 const trendingHorses = [
     {
@@ -85,6 +88,22 @@ export default function TrendingHorses() {
         }
     };
 
+    const dispatch = useDispatch();
+    const { data: marketplaceHorses, loading } = useSelector((state) => state.horse.marketplace);
+
+    useEffect(() => {
+        dispatch(fetchMarketplaceHorses());
+    }, [dispatch]);
+
+    const horsesToDisplay = marketplaceHorses && marketplaceHorses.length > 0
+        ? marketplaceHorses.slice(0, 5).map(horse => ({
+            ...horse,
+            image: horse.image || image2.src,
+            category: horse.breed,
+            tag: "Trending"
+        }))
+        : trendingHorses;
+
     return (
         <section className="bg-white mobile_spaces lg_spaces">
             <div className="container-width">
@@ -129,7 +148,7 @@ export default function TrendingHorses() {
                     className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                    {trendingHorses.map((horse) => (
+                    {horsesToDisplay.map((horse) => (
                         <div key={horse.id} className="min-w-[300px] md:min-w-[340px] snap-center">
                             <HorseCard horse={horse} />
                         </div>

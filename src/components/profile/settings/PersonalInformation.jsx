@@ -3,12 +3,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails, updateProfile } from "@/redux/slices/profileSlice";
+import { API_BASE_URL } from "@/utils/urls";
 
 export default function PersonalInformation() {
     const dispatch = useDispatch()
     const data = useSelector((state) => state.profile.user)
     const loading = useSelector((state) => state.profile.loading)
-        
+    console.log(data, "profile data")
 
     useEffect(() => {
         dispatch(getUserDetails())
@@ -79,13 +80,12 @@ export default function PersonalInformation() {
         payload.append('email', formData.email);
         payload.append('bio', formData.bio || "");
 
+        // Only send the image if it's a new file. Sending a URL string will cause backend errors.
         if (imageFile) {
             payload.append('profile_photo', imageFile);
-        } else if (profileImage) {
-            payload.append('profile_photo', profileImage);
         }
 
-                dispatch(updateProfile(payload));
+        dispatch(updateProfile(payload));
     };
 
     return (
@@ -100,7 +100,21 @@ export default function PersonalInformation() {
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-50 flex items-center justify-center flex-shrink-0 border border-gray-100 overflow-hidden">
                         {profileImage ? (
-                            <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                            <img 
+                                src={
+                                    profileImage.startsWith("blob:") ? profileImage : 
+                                    (profileImage.startsWith("http") 
+                                        ? profileImage.replace("http://hassanakhtar.pythonanywhere.com", "https://hassanakhtar.pythonanywhere.com") 
+                                        : `${API_BASE_URL || "http://localhost:8000"}${profileImage.startsWith("/") ? "" : "/"}${profileImage}`)
+                                } 
+                                alt="Profile" 
+                                className="w-full h-full object-cover" 
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = "/placeholder-user.jpg"; 
+                                    // Make sure you have a fallback or hide it.
+                                }}
+                            />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
                                 <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />

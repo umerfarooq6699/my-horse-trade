@@ -68,28 +68,31 @@ export default function PhotoGallerySection({ formik }) {
                             <div key={photo.id} className="relative group aspect-square rounded-xl overflow-hidden border border-gray-100">
                                 <img src={photo.url} alt="Horse" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
 
-                                {/* Overlay */}
-                                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-end p-1.5">
-                                    <button
-                                        type="button"
-                                        onClick={() => removePhoto(photo.id)}
-                                        className="p-1 bg-white/90 backdrop-blur-sm rounded-lg text-red-500 hover:bg-white hover:scale-110 transition-all shadow-sm"
-                                    >
-                                        <X size={14} strokeWidth={2.5} />
-                                    </button>
-                                </div>
-
                                 {/* Badge */}
                                 {photo.isCover && (
-                                    <div className="absolute bottom-0 left-0 w-full bg_color py-1.5 text-center">
-                                        <span className="text-[8px] font-bold text-white uppercase tracking-widest">Cover Photo</span>
+                                    <div className="absolute inset-0 bg_color/90 flex flex-col items-center justify-center lg:bottom-0 lg:top-auto lg:h-auto lg:flex-row lg:bg_color lg:py-1.5 z-0">
+                                        <span className="text-[11px] lg:text-[8px] font-bold text-white uppercase tracking-widest text-center leading-tight lg:leading-normal">Cover<br className="lg:hidden" /> Photo</span>
                                     </div>
                                 )}
 
                                 {/* Selection Status */}
                                 {photo.isCover && (
-                                    <div className="absolute inset-0 border-[3px] border_color rounded-xl pointer-events-none"></div>
+                                    <div className="absolute inset-0 border-[3px] border_color rounded-xl pointer-events-none z-10"></div>
                                 )}
+
+                                {/* Overlay (Delete Button) */}
+                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-end p-1.5 z-20">
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            removePhoto(photo.id);
+                                        }}
+                                        className="p-1.5 bg-white/95 backdrop-blur-sm rounded-lg text-red-500 hover:bg-white hover:scale-110 transition-transform shadow-md"
+                                    >
+                                        <X size={16} strokeWidth={3} />
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>

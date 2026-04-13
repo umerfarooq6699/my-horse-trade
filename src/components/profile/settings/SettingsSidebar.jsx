@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserDetails } from "@/redux/slices/profileSlice";
+import { API_BASE_URL } from "@/utils/urls";
 
 const settingsNavItems = [
     {
@@ -48,21 +52,41 @@ const settingsNavItems = [
 
 export default function SettingsSidebar() {
     const pathname = usePathname();
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.profile);
+
+    useEffect(() => {
+        if (!user) {
+            dispatch(getUserDetails());
+        }
+    }, [dispatch, user]);
+
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return "https://avatar.iran.liara.run/public/boy?username=" + (user?.name || user?.user_name || "User");
+        if (imagePath.startsWith("http")) return imagePath.replace("http://hassanakhtar.pythonanywhere.com", "https://hassanakhtar.pythonanywhere.com");
+        return `${API_BASE_URL || "http://localhost:8000"}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
+    };
+
+    const displayName = user?.name || user?.user_name || "User";
 
     return (
         <div className="bg-white rounded-2xl border border-gray-100 p-6">
             {/* Profile Section */}
             <div className="flex items-center gap-3 pb-6 mb-6 border-b border-gray-100">
-                <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-gray-100">
                     <img
-                        src="https://avatar.iran.liara.run/public/boy?username=AlexColeman"
-                        alt="Alex Coleman"
+                        src={getImageUrl(user?.profile_photo)}
+                        alt={displayName}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "https://avatar.iran.liara.run/public/boy?username=" + displayName;
+                        }}
                     />
                 </div>
                 <div>
-                    <h3 className="text-sm font-bold text-gray-900">Alex Coleman</h3>
-                    <p className="text-xs text-gray-500">Member since 2021</p>
+                    <h3 className="text-sm font-bold text-gray-900 line-clamp-1">{displayName}</h3>
+                    <p className="text-xs text-gray-500">Member</p>
                 </div>
             </div>
 
@@ -90,3 +114,4 @@ export default function SettingsSidebar() {
         </div>
     );
 }
+

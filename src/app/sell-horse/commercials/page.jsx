@@ -27,6 +27,7 @@ function CommercialsPageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const horseIdFromUrl = searchParams.get("horse_id");
+    const isEditFromUrl = searchParams.get("is_edit") === "true";
 
     const { horseStep4, horseStep1, currentListing, loadingCurrentListing } = useSelector((state) => state.horse);
     const { loading, error, success } = horseStep4;
@@ -79,7 +80,7 @@ function CommercialsPageContent() {
                 horse_id: effectiveHorseId,
                 ...values
             };
-            await dispatch(horseListingStep4(payload));
+            await dispatch(horseListingStep4({ data: payload, isEditable: isEditFromUrl }));
         },
     });
 

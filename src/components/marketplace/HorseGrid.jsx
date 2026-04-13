@@ -113,7 +113,7 @@ import { fetchMarketplaceHorses } from "@/redux/slices/horseSlice";
 export default function HorseGrid({ viewMode }) {
     const dispatch = useDispatch();
     const { data: marketplaceHorses, loading, error } = useSelector((state) => state.horse.marketplace);
-
+    console.log(marketplaceHorses, "marketplaceHorses")
     useEffect(() => {
         dispatch(fetchMarketplaceHorses());
     }, [dispatch]);

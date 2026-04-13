@@ -1,8 +1,31 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserDetails } from "@/redux/slices/profileSlice";
+import { API_BASE_URL } from "@/utils/urls";
 
 export default function Header() {
+    const { user } = useSelector((state) => state.profile);
+    const authUser = useSelector((state) => state.auth.user);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!user) {
+            dispatch(getUserDetails());
+        }
+    }, [dispatch, user]);
+
+    const getImageUrl = (imagePath, fallbackName) => {
+        if (!imagePath) return "https://avatar.iran.liara.run/public/boy?username=" + fallbackName;
+        if (imagePath.startsWith("http")) return imagePath.replace("http://hassanakhtar.pythonanywhere.com", "https://hassanakhtar.pythonanywhere.com");
+        return `${API_BASE_URL || "http://localhost:8000"}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
+    };
+
+    const displayName = user?.user_name || user?.name || authUser?.user_name || "User";
+    const displayImage = getImageUrl(user?.profile_photo || authUser?.avatar, displayName);
+
     return (
         <header className="h-24 bg-transparent flex items-center justify-between px-10">
             {/* Nav Links */}
@@ -38,11 +61,15 @@ export default function Header() {
                     <button className="p-2.5 bg-gray-50 rounded-xl text-gray-500 hover:text_color hover:bg-blue-50 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
                     </button>
-                    <div className="w-10 h-10 rounded-full bg-blue-50 border border_color flex items-center justify-center overflow-hidden cursor-pointer hover:scale-105 transition-transform">
+                    <div className="w-10 h-10 rounded-full bg-gray-100 border border_color flex items-center justify-center overflow-hidden cursor-pointer hover:scale-105 transition-transform">
                         <img
-                            src="https://avatar.iran.liara.run/public/boy?username=Alex"
-                            alt="User"
+                            src={displayImage}
+                            alt={displayName}
                             className="w-full h-full object-cover"
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "https://avatar.iran.liara.run/public/boy?username=" + displayName;
+                            }}
                         />
                     </div>
                 </div>
